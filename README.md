@@ -79,7 +79,20 @@ Não gera criativos. Especifica: formato, duração, proporção, conceito, hook
 
 ---
 
-## 4. Estrutura do Repositório
+## 4. Development Workflow
+
+O desenvolvimento do projeto segue uma política rigorosa de branches para garantir a integridade do código e a rastreabilidade das alterações:
+
+* **Branches de Feature/Fix**: Todas as alterações devem ser realizadas em branches que sigam o prefixo `ai/` (ex: `ai/feature-add-ga4-support` ou `ai/fix-orchestrator-logic`).
+* **Workflow**: 
+    1. Criar branch a partir da `main` utilizando o prefixo `ai/`.
+    2. Implementar as alterações mantendo a atomicidade dos commits.
+    3. Submeter um Pull Request para a branch `main`.
+* **Revisão**: Nenhuma alteração é integrada sem revisão humana e validação da integridade do sistema.
+
+---
+
+## 5. Estrutura do Repositório
 
 ```
 ads-intelligence/
