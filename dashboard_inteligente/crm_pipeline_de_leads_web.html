@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GrowthOps AI - CRM &amp; Pipeline de Atribuição de Leads</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+  <script src="/google-ads-theme.js"></script>
+  <script>
+    tailwind.config = window.googleAdsTailwindConfig;
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/chart-helper.js"></script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0f131d;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #262a35;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #464554;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased overflow-x-hidden font-body-md text-body-md select-none">
+<!-- Left SideNavBar (Shared Component JSON anchor) -->
+<aside class="docked full-height left-0 w-64 fixed h-screen z-40 bg-surface-container-low border-r border-outline-variant/20 shadow-2xl">
+<div class="flex flex-col justify-between h-full p-4 select-none">
+<!-- Nav Header & Logo -->
+<div>
+<div class="flex items-center gap-3 px-2 py-3 mb-6">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-secondary-container to-primary-container flex items-center justify-center shadow-lg shadow-secondary-container/30 border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="auto_mode">auto_mode</span>
+</div>
+<div>
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface flex items-center gap-1 leading-none tracking-tight">
+              GrowthOps AI
+            </span>
+<span class="text-label-sm font-label-sm text-outline">Autonomous Ad Engine</span>
+</div>
+</div>
+<!-- Primary CTA from JSON -->
+<button class="w-full mb-6 bg-gradient-to-r from-primary-container to-secondary-container text-on-primary font-label-md text-label-md py-2.5 px-4 rounded-lg shadow-lg shadow-primary-container/20 flex items-center justify-center gap-2 hover:opacity-95 transition-all duration-200 active:scale-[0.98]">
+<span class="material-symbols-outlined text-lg" data-icon="bolt">bolt</span>
+<span>Otimizar Orçamento</span>
+</button>
+<!-- Navigation Tabs -->
+<nav class="space-y-1">
+<!-- Visão Geral -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest/50 hover:text-on-surface transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="dashboard">dashboard</span>
+<span>Visão Geral</span>
+</a>
+<!-- Campanhas IA -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest/50 hover:text-on-surface transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="auto_mode">auto_mode</span>
+<span>Campanhas IA</span>
+</a>
+<!-- CRM & Pipeline (ACTIVE TAB) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-high text-primary font-label-md text-label-md border-l-2 border-primary shadow-sm" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="account_tree">account_tree</span>
+<span>CRM &amp; Pipeline</span>
+</a>
+<!-- Radar de Concorrentes -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest/50 hover:text-on-surface transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="radar">radar</span>
+<span>Radar de Concorrentes</span>
+</a>
+<!-- Automações -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest/50 hover:text-on-surface transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="smart_toy">smart_toy</span>
+<span>Automações</span>
+</a>
+<!-- Configurações -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest/50 hover:text-on-surface transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="settings">settings</span>
+<span>Configurações</span>
+</a>
+</nav>
+</div>
+<!-- Nav Footer Tabs from JSON -->
+<div class="pt-4 border-t border-outline-variant/20 space-y-2">
+<div class="flex items-center justify-between px-3 py-2 rounded-lg bg-surface-container-lowest/60 border border-outline-variant/20 text-data-mono font-data-mono text-outline">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-base text-tertiary animate-spin" data-icon="sync" style="animation-duration: 3s;">sync</span>
+<span>Sync: 24ms (Ativo)</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50"></span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container/40 border border-outline-variant/20">
+<div class="w-8 h-8 rounded-full bg-primary-container/20 border border-primary/40 flex items-center justify-center text-primary font-bold">
+            GS
+          </div>
+<div class="overflow-hidden">
+<p class="text-label-md font-label-md text-on-surface truncate">Guilherme Salles</p>
+<p class="text-label-sm font-label-sm text-outline truncate">CMO &amp; Growth Lead</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-lg ml-auto cursor-pointer" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Canvas Wrapper -->
+<div class="ml-64 min-h-screen flex flex-col bg-background">
+<!-- TopNavBar (Shared Component JSON anchor) -->
+<header class="docked full-width top-0 sticky z-30 bg-surface-container/80 backdrop-blur-md border-b border-outline-variant/20 shadow-sm">
+<div class="flex items-center justify-between px-6 py-3.5 w-full">
+<!-- Search bar on left as dictated by JSON -->
+<div class="flex items-center gap-4 w-96">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg" data-icon="search">search</span>
+<input class="w-full bg-surface-container-lowest/80 border border-outline-variant/30 rounded-lg pl-9 pr-4 py-1.5 text-body-sm font-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all duration-150" placeholder="Buscar por lead, empresa, canal de atribuição ou tag..." type="text"/>
+</div>
+</div>
+<!-- Trailing actions & indicators from JSON -->
+<div class="flex items-center gap-3">
+<!-- Copilot Autônomo Badge -->
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary-container/20 border border-secondary-container/40 text-secondary text-label-md font-label-md">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span>Copilot Autônomo: Ativo</span>
+</div>
+<!-- Secondary Action: Exportar Dados -->
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-outline-variant/30 text-on-surface hover:bg-surface-variant/40 transition-all duration-150 active:scale-95 text-label-md font-label-md">
+<span class="material-symbols-outlined text-base" data-icon="file_download">file_download</span>
+<span>Exportar Dados</span>
+</button>
+<div class="h-4 w-[1px] bg-outline-variant/30 mx-1"></div>
+<!-- Icon actions: notifications, date_range, tune -->
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 transition-all duration-150 active:scale-95 relative" title="Notificações">
+<span class="material-symbols-outlined text-xl" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary ring-2 ring-surface"></span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 transition-all duration-150 active:scale-95" title="Período">
+<span class="material-symbols-outlined text-xl" data-icon="date_range">date_range</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-variant/40 transition-all duration-150 active:scale-95" title="Ajustes de Modelo">
+<span class="material-symbols-outlined text-xl" data-icon="tune">tune</span>
+</button>
+<div class="h-4 w-[1px] bg-outline-variant/30 mx-1"></div>
+<!-- Profile Thumbnail -->
+<div class="flex items-center gap-2 pl-1 cursor-pointer">
+<div class="w-8 h-8 rounded-full border border-outline-variant/40 overflow-hidden ring-1 ring-primary/20">
+<img class="w-full h-full object-cover" data-alt="A sophisticated executive headshot portrait of CMO Guilherme Salles in a sleek high-tech corporate office studio. He has a determined expression and is illuminated by cool cinematic rim lights and soft dark violet background ambiance. Deep navy and tech noir aesthetic with crisp ultra-realistic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCQmVy8jpYFFM4uwEgVo6KdLajQ2UuM9QO1zeiN3wxS-m8MMdrjDc6zneQmvCGVtZz2vAPtYizz9ELnCQXfGx7qIFZ0ivAXP7Y1y0CAF-D-1UXU8V76G_jRRf6OzjAJNEJXeNL0PUPHsdY6MUTBOQyBodca4aznHvJkpUlSX3LrkJfiVNW-5G9zGvNek9L2vqDn0fV6UbtjV8gpeVJ9gzIXT5cuWxQIA4u6XOY2x3xvdwKrL9JkfCD"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="p-6 space-y-6 flex-1 max-w-[1600px] w-full mx-auto">
+<!-- Section 1: Header + Integration Status + Filtering Controls -->
+<div class="space-y-4">
+<div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-3">
+<h1 class="text-headline-lg font-headline-lg text-on-surface tracking-tight">CRM &amp; Atribuição de Leads Multi-Touch</h1>
+<span class="px-2.5 py-0.5 rounded-full bg-primary-container/20 border border-primary/30 text-primary text-label-sm font-label-sm uppercase tracking-wider">
+                Full-Funnel Closed-Loop
+              </span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">
+              Rastreamento determinístico e preditivo de ponta a ponta: do primeiro clique em mídia paga até o fechamento contratual no CRM.
+            </p>
+</div>
+<!-- Active Closed-Loop Sync Badge -->
+<div class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-surface-container border border-outline-variant/30 text-on-surface shadow-sm">
+<span class="material-symbols-outlined text-emerald-400 text-lg" data-icon="verified_user">verified_user</span>
+<div class="text-label-sm font-label-sm">
+<span class="text-outline">Sincronização Closed-Loop: </span>
+<span class="text-on-surface font-semibold">HubSpot + Salesforce + RD Station + Meta CAPI</span>
+<span class="ml-1.5 px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-data-mono font-medium border border-emerald-500/20">99.8% match rate</span>
+</div>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/20 flex flex-wrap items-center justify-between gap-3">
+<div class="flex flex-wrap items-center gap-2.5">
+<!-- Filter: Date Range -->
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface text-label-md font-label-md">
+<span class="material-symbols-outlined text-base text-primary" data-icon="calendar_month">calendar_month</span>
+<span>Últimos 30 Dias (01 Mai - 30 Mai)</span>
+<span class="material-symbols-outlined text-sm text-outline" data-icon="arrow_drop_down">arrow_drop_down</span>
+</div>
+<!-- Filter: Channel / Source -->
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface text-label-md font-label-md">
+<span class="material-symbols-outlined text-base text-tertiary" data-icon="filter_alt">filter_alt</span>
+<span>Origem: Todas as Mídias Atribuídas</span>
+<span class="material-symbols-outlined text-sm text-outline" data-icon="arrow_drop_down">arrow_drop_down</span>
+</div>
+<!-- Filter: Status -->
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface text-label-md font-label-md">
+<span class="material-symbols-outlined text-base text-secondary" data-icon="adjust">adjust</span>
+<span>Status: MQL + SQL Ativos</span>
+<span class="material-symbols-outlined text-sm text-outline" data-icon="arrow_drop_down">arrow_drop_down</span>
+</div>
+<!-- Model Switcher Pill -->
+<div class="flex items-center bg-surface-container-highest/40 p-0.5 rounded-lg border border-outline-variant/30 text-label-sm font-label-sm">
+<button class="px-2.5 py-1 rounded-md bg-primary-container text-on-primary font-semibold shadow">Multi-Touch W-Shaped</button>
+<button class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface">Linear Ponderado</button>
+<button class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface">Data-Driven IA</button>
+</div>
+</div>
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-outline">
+<span class="material-symbols-outlined text-base" data-icon="cached">cached</span>
+<span>Atribuição reprocessada há 4 min</span>
+</div>
+</div>
+</div>
+<!-- Section 2: Top Metrics Ribbon (5 Dense KPI Tiles) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+<!-- Metric 1: Novos Leads -->
+<div class="p-4 rounded-xl bg-surface-container border border-outline-variant/20 relative overflow-hidden group hover:border-outline-variant/40 transition-all duration-200">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-label-sm text-outline">Novos Leads (Últimos 30d)</span>
+<span class="flex items-center text-label-sm font-label-sm text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+<span class="material-symbols-outlined text-xs mr-0.5" data-icon="trending_up">trending_up</span>
+              +18.4%
+            </span>
+</div>
+<div class="text-metric-stat-lg font-metric-stat-lg text-on-surface tracking-tight">3.840</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-1 flex items-center justify-between">
+<span>Volume capturado</span>
+<span class="text-data-mono font-data-mono text-outline">128 / dia</span>
+</div>
+<div class="w-full bg-surface-container-highest/40 h-1 mt-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 78%;"></div>
+</div>
+</div>
+<!-- Metric 2: Qualificados pela IA (MQL preditivo) -->
+<div class="p-4 rounded-xl bg-surface-container border border-outline-variant/20 relative overflow-hidden group hover:border-outline-variant/40 transition-all duration-200">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-label-sm text-outline">Qualificados IA (MQL)</span>
+<span class="flex items-center text-label-sm font-label-sm text-primary bg-primary/10 px-1.5 py-0.5 rounded border border-primary/20">
+              Score ≥ 80
+            </span>
+</div>
+<div class="text-metric-stat-lg font-metric-stat-lg text-on-surface tracking-tight">2.120</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-1 flex items-center justify-between">
+<span>Taxa conversão MQL</span>
+<span class="text-data-mono font-data-mono text-emerald-400 font-semibold">55.2%</span>
+</div>
+<div class="w-full bg-surface-container-highest/40 h-1 mt-3 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 55%;"></div>
+</div>
+</div>
+<!-- Metric 3: Reuniões Agendadas -->
+<div class="p-4 rounded-xl bg-surface-container border border-outline-variant/20 relative overflow-hidden group hover:border-outline-variant/40 transition-all duration-200">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-label-sm text-outline">Reuniões Agendadas</span>
+<span class="flex items-center text-label-sm font-label-sm text-tertiary bg-tertiary/10 px-1.5 py-0.5 rounded border border-tertiary/20">
+              SQL Confirmado
+            </span>
+</div>
+<div class="text-metric-stat-lg font-metric-stat-lg text-on-surface tracking-tight">640</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-1 flex items-center justify-between">
+<span>Aproveitamento MQL</span>
+<span class="text-data-mono font-data-mono text-tertiary font-semibold">30.1%</span>
+</div>
+<div class="w-full bg-surface-container-highest/40 h-1 mt-3 rounded-full overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 30%;"></div>
+</div>
+</div>
+<!-- Metric 4: Pipeline Total Gerado -->
+<div class="p-4 rounded-xl bg-surface-container border border-outline-variant/20 relative overflow-hidden group hover:border-outline-variant/40 transition-all duration-200">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-label-sm text-outline">Pipeline Total Gerado</span>
+<span class="flex items-center text-label-sm font-label-sm text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+              +32.6% YoY
+            </span>
+</div>
+<div class="text-metric-stat-lg font-metric-stat-lg text-on-surface tracking-tight flex items-baseline gap-1">
+<span class="text-headline-sm font-headline-sm text-outline">R$</span>
+<span>2.450.000</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-1 flex items-center justify-between">
+<span>Ticket médio est.</span>
+<span class="text-data-mono font-data-mono text-on-surface">R$ 38.280</span>
+</div>
+<div class="w-full bg-surface-container-highest/40 h-1 mt-3 rounded-full overflow-hidden">
+<div class="bg-emerald-400 h-full rounded-full" style="width: 84%;"></div>
+</div>
+</div>
+<!-- Metric 5: CAC Médio Real Ponderado -->
+<div class="p-4 rounded-xl bg-surface-container border border-outline-variant/20 relative overflow-hidden group hover:border-outline-variant/40 transition-all duration-200">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-label-sm text-outline">CAC Médio Ponderado</span>
+<span class="flex items-center text-label-sm font-label-sm text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+              -12.8% vs meta
+            </span>
+</div>
+<div class="text-metric-stat-lg font-metric-stat-lg text-on-surface tracking-tight flex items-baseline gap-1">
+<span class="text-headline-sm font-headline-sm text-outline">R$</span>
+<span>84,20</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-1 flex items-center justify-between">
+<span>ROAS Projetado</span>
+<span class="text-data-mono font-data-mono text-secondary font-semibold">6.4x</span>
+</div>
+<div class="w-full bg-surface-container-highest/40 h-1 mt-3 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full" style="width: 92%;"></div>
+</div>
+</div>
+</div>
+<!-- Section 3: Multi-Touch Attribution Insight Bar (Interactive Journey Diagram) -->
+<div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/30 shadow-lg relative overflow-hidden">
+<!-- Header of attribution widget -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4 pb-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="route">route</span>
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface font-semibold">Modelo de Atribuição Multi-Touch Ponderado</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Distribuição de crédito de conversão ao longo da esteira de decisão B2B</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-label-sm font-label-sm text-outline">Algoritmo de Atribuição:</span>
+<span class="px-2.5 py-1 rounded bg-surface-container-high text-primary border border-outline-variant/30 text-label-sm font-label-sm font-data-mono">
+              IA Shapley-Markov Ponderado
+            </span>
+</div>
+</div>
+<!-- Visual Multi-Touch Stacked Journey Bar -->
+<div class="space-y-3">
+<div class="w-full h-11 bg-surface-container-lowest rounded-xl p-1 flex items-center gap-1.5 border border-outline-variant/20">
+<!-- First Click Google Search (42%) -->
+<div class="h-full rounded-lg bg-gradient-to-r from-blue-600/80 to-blue-500/90 flex items-center justify-between px-3 text-white transition-all duration-300 hover:brightness-110 cursor-pointer shadow-sm" style="width: 42%;">
+<div class="flex items-center gap-2 overflow-hidden truncate">
+<span class="material-symbols-outlined text-sm shrink-0" data-icon="search">search</span>
+<span class="text-label-md font-label-md font-semibold truncate">First Click: Google Search</span>
+</div>
+<span class="text-data-mono font-data-mono font-bold text-sm ml-2 shrink-0">42%</span>
+</div>
+<!-- Mid-Funnel Meta Ads Retargeting (36%) -->
+<div class="h-full rounded-lg bg-gradient-to-r from-indigo-600/80 to-purple-600/90 flex items-center justify-between px-3 text-white transition-all duration-300 hover:brightness-110 cursor-pointer shadow-sm" style="width: 36%;">
+<div class="flex items-center gap-2 overflow-hidden truncate">
+<span class="material-symbols-outlined text-sm shrink-0" data-icon="ads_click">ads_click</span>
+<span class="text-label-md font-label-md font-semibold truncate">Mid-Funnel: Meta Ads Retargeting</span>
+</div>
+<span class="text-data-mono font-data-mono font-bold text-sm ml-2 shrink-0">36%</span>
+</div>
+<!-- Fechamento WhatsApp Cadência IA (22%) -->
+<div class="h-full rounded-lg bg-gradient-to-r from-emerald-600/80 to-teal-500/90 flex items-center justify-between px-3 text-white transition-all duration-300 hover:brightness-110 cursor-pointer shadow-sm" style="width: 22%;">
+<div class="flex items-center gap-2 overflow-hidden truncate">
+<span class="material-symbols-outlined text-sm shrink-0" data-icon="forum">forum</span>
+<span class="text-label-md font-label-md font-semibold truncate">Fechamento: WhatsApp IA</span>
+</div>
+<span class="text-data-mono font-data-mono font-bold text-sm ml-2 shrink-0">22%</span>
+</div>
+</div>
+<!-- Touchpoint Breakdown Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+<div class="p-3 rounded-lg bg-surface-container/60 border border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20">
+<span class="material-symbols-outlined text-base" data-icon="travel_explore">travel_explore</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-outline">Descoberta Inicial (Top of Funnel)</div>
+<div class="text-body-sm font-body-sm font-medium text-on-surface">Termos Fundo de Funil &amp; B2B SaaS</div>
+</div>
+</div>
+<div class="text-right">
+<div class="text-data-mono font-data-mono text-on-surface font-semibold">R$ 1.029.000</div>
+<div class="text-label-sm font-label-sm text-outline">atribuídos</div>
+</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container/60 border border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center border border-purple-500/20">
+<span class="material-symbols-outlined text-base" data-icon="video_settings">video_settings</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-outline">Nutrição &amp; Prova Social (MoFu)</div>
+<div class="text-body-sm font-body-sm font-medium text-on-surface">Cases em Vídeo + Calculadora ROI</div>
+</div>
+</div>
+<div class="text-right">
+<div class="text-data-mono font-data-mono text-on-surface font-semibold">R$ 882.000</div>
+<div class="text-label-sm font-label-sm text-outline">atribuídos</div>
+</div>
+</div>
+<div class="p-3 rounded-lg bg-surface-container/60 border border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+<span class="material-symbols-outlined text-base" data-icon="smart_toy">smart_toy</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-outline">Conversão Assistida (BoFu)</div>
+<div class="text-body-sm font-body-sm font-medium text-on-surface">Cadência Reativa &amp; Agendamento Instantâneo</div>
+</div>
+</div>
+<div class="text-right">
+<div class="text-data-mono font-data-mono text-on-surface font-semibold">R$ 539.000</div>
+<div class="text-label-sm font-label-sm text-outline">atribuídos</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 4 & 5: Leads Pipeline Table + Autonomous Cadence Quick Drawer Side Card -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- Section 4: Advanced Leads Pipeline Table (8 or 9 cols desktop) -->
+<div class="lg:col-span-8 xl:col-span-9 space-y-3">
+<!-- Table Header / Controls -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="table_chart">table_chart</span>
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface font-semibold">Fila Prioritária de Leads Atribuídos</h3>
+<p class="text-label-sm font-label-sm text-outline">Ordenação preditiva baseada em probabilidade de fechamento nas próximas 72h</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm text-outline">Exibindo 4 de 128 oportunidades prioritárias</span>
+<button class="p-1.5 rounded-lg bg-surface-container hover:bg-surface-variant text-on-surface transition-all">
+<span class="material-symbols-outlined text-base" data-icon="refresh">refresh</span>
+</button>
+</div>
+</div>
+<!-- Table Container -->
+<div class="rounded-xl border border-outline-variant/20 bg-surface-container-low overflow-hidden shadow-xl">
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/20 bg-surface-container/60 text-label-sm font-label-sm text-outline uppercase tracking-wider">
+<th class="py-3 px-4">Lead / Empresa</th>
+<th class="py-3 px-4">Score IA &amp; Propensão</th>
+<th class="py-3 px-4">Origem Atribuída &amp; Criativo</th>
+<th class="py-3 px-4">Valor Est.</th>
+<th class="py-3 px-4">Estágio</th>
+<th class="py-3 px-4">Última Ação</th>
+<th class="py-3 px-4 text-right">Ações Rápidas</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10 text-body-sm font-body-sm">
+<!-- Lead 1: Camila Duarte -->
+<tr class="hover:bg-surface-container/40 transition-colors duration-150 group">
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-gradient-to-tr from-primary-container to-secondary-container text-white font-bold flex items-center justify-center text-xs shadow-md">
+                          CD
+                        </div>
+<div>
+<div class="font-semibold text-on-surface flex items-center gap-1.5">
+<span>Camila Duarte</span>
+<span class="material-symbols-outlined text-blue-400 text-sm" title="Decisor Confirmado">verified</span>
+</div>
+<div class="text-label-sm font-label-sm text-outline">CEO na NexaCorp Logistics</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 font-label-sm font-label-sm">
+<span class="w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
+<span class="font-bold">Score 98</span>
+<span>• Compra Iminente</span>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="space-y-1">
+<div class="flex items-center gap-1 text-on-surface font-medium text-xs">
+<span class="w-2 h-2 rounded-full bg-blue-400"></span>
+<span>Google Search → Meta CAPI Retarget</span>
+</div>
+<div class="text-label-sm font-label-sm text-outline font-data-mono">
+                          ad_cr_v4_depoimento_cmo.mp4
+                        </div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="text-data-mono font-data-mono font-bold text-on-surface text-sm">
+                        R$ 48.000
+                      </div>
+<div class="text-label-sm font-label-sm text-outline">ARR Anual</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-label-sm font-label-sm font-semibold">
+                        Reunião Agendada
+                      </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="text-on-surface text-xs font-medium">Respondeu Cadência IA</div>
+<div class="text-label-sm font-label-sm text-outline">Há 12 min via WhatsApp</div>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="p-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-emerald-400 hover:bg-emerald-500/10 transition-colors" title="Conversar no WhatsApp Web">
+<span class="material-symbols-outlined text-lg" data-icon="chat">chat</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-tertiary hover:bg-tertiary/10 transition-colors" title="Ligar Agora">
+<span class="material-symbols-outlined text-lg" data-icon="call">call</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-primary hover:bg-primary/10 transition-colors" title="Ver Jornada Multi-touch Completa">
+<span class="material-symbols-outlined text-lg" data-icon="timeline">timeline</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Lead 2: Lucas Mendes -->
+<tr class="hover:bg-surface-container/40 transition-colors duration-150 group">
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-high border border-outline-variant/40 text-secondary font-bold flex items-center justify-center text-xs shadow-md">
+                          LM
+                        </div>
+<div>
+<div class="font-semibold text-on-surface flex items-center gap-1.5">
+<span>Lucas Mendes</span>
+<span class="material-symbols-outlined text-blue-400 text-sm" title="Decisor Técnico">verified</span>
+</div>
+<div class="text-label-sm font-label-sm text-outline">CTO na Veloce Cloud Platform</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 font-label-sm font-label-sm">
+<span class="w-2 h-2 rounded-full bg-purple-400"></span>
+<span class="font-bold">Score 94</span>
+<span>• Compra Iminente</span>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="space-y-1">
+<div class="flex items-center gap-1 text-on-surface font-medium text-xs">
+<span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+<span>LinkedIn InMail → Direct Doc Download</span>
+</div>
+<div class="text-label-sm font-label-sm text-outline font-data-mono">
+                          whitepaper_cloud_benchmark_v2
+                        </div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="text-data-mono font-data-mono font-bold text-on-surface text-sm">
+                        R$ 65.000
+                      </div>
+<div class="text-label-sm font-label-sm text-outline">Contrato Enterprise</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-1 rounded-md bg-secondary-container/20 border border-secondary-container/40 text-secondary text-label-sm font-label-sm font-semibold">
+                        SQL Qualificado
+                      </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="text-on-surface text-xs font-medium">Requisitou Proposta Comercial</div>
+<div class="text-label-sm font-label-sm text-outline">Há 45 min via Portal</div>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="p-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-emerald-400 hover:bg-emerald-500/10 transition-colors" title="Conversar no WhatsApp Web">
+<span class="material-symbols-outlined text-lg" data-icon="chat">chat</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-tertiary hover:bg-tertiary/10 transition-colors" title="Ligar Agora">
+<span class="material-symbols-outlined text-lg" data-icon="call">call</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-primary hover:bg-primary/10 transition-colors" title="Ver Jornada Multi-touch Completa">
+<span class="material-symbols-outlined text-lg" data-icon="timeline">timeline</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Lead 3: Rodrigo Silveira -->
+<tr class="hover:bg-surface-container/40 transition-colors duration-150 group">
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-high border border-outline-variant/40 text-tertiary font-bold flex items-center justify-center text-xs shadow-md">
+                          RS
+                        </div>
+<div>
+<div class="font-semibold text-on-surface flex items-center gap-1.5">
+<span>Rodrigo Silveira</span>
+</div>
+<div class="text-label-sm font-label-sm text-outline">Diretor Marketing na Aurora FinTech</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-300 font-label-sm font-label-sm">
+<span class="w-2 h-2 rounded-full bg-blue-400"></span>
+<span class="font-bold">Score 88</span>
+<span>• Alto Engajamento</span>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="space-y-1">
+<div class="flex items-center gap-1 text-on-surface font-medium text-xs">
+<span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+<span>Meta Ads Feed → Landing Page VSL</span>
+</div>
+<div class="text-label-sm font-label-sm text-outline font-data-mono">
+                          ad_carousel_comparativo_concorrentes
+                        </div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="text-data-mono font-data-mono font-bold text-on-surface text-sm">
+                        R$ 32.500
+                      </div>
+<div class="text-label-sm font-label-sm text-outline">Setup + Mensal</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-1 rounded-md bg-primary-container/20 border border-primary/30 text-primary text-label-sm font-label-sm font-semibold">
+                        MQL Quente
+                      </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="text-on-surface text-xs font-medium">Abriu Calculadora de ROI (3x)</div>
+<div class="text-label-sm font-label-sm text-outline">Há 2h no site</div>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="p-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-emerald-400 hover:bg-emerald-500/10 transition-colors" title="Conversar no WhatsApp Web">
+<span class="material-symbols-outlined text-lg" data-icon="chat">chat</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-primary-container hover:bg-primary/10 transition-colors" title="Acionar Cadência IA">
+<span class="material-symbols-outlined text-lg" data-icon="smart_toy">smart_toy</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-primary hover:bg-primary/10 transition-colors" title="Ver Jornada Multi-touch Completa">
+<span class="material-symbols-outlined text-lg" data-icon="timeline">timeline</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Lead 4: Beatriz Lima -->
+<tr class="hover:bg-surface-container/40 transition-colors duration-150 group">
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-high border border-outline-variant/40 text-on-surface-variant font-bold flex items-center justify-center text-xs shadow-md">
+                          BL
+                        </div>
+<div>
+<div class="font-semibold text-on-surface flex items-center gap-1.5">
+<span>Beatriz Lima</span>
+</div>
+<div class="text-label-sm font-label-sm text-outline">CPO na Omnichannel Soluções</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-300 font-label-sm font-label-sm">
+<span class="w-2 h-2 rounded-full bg-blue-400"></span>
+<span class="font-bold">Score 82</span>
+<span>• Alto Engajamento</span>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="space-y-1">
+<div class="flex items-center gap-1 text-on-surface font-medium text-xs">
+<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+<span>Google Search Brand → Demo Request</span>
+</div>
+<div class="text-label-sm font-label-sm text-outline font-data-mono">
+                          kw_growthops_inteligencia_crm
+                        </div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="text-data-mono font-data-mono font-bold text-on-surface text-sm">
+                        R$ 18.000
+                      </div>
+<div class="text-label-sm font-label-sm text-outline">Plano Pro</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-1 rounded-md bg-surface-container-high border border-outline-variant/30 text-on-surface-variant text-label-sm font-label-sm font-semibold">
+                        Qualificação IA em Andamento
+                      </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="text-on-surface text-xs font-medium">Cadência Disparada (Passo 2)</div>
+<div class="text-label-sm font-label-sm text-outline">Há 3h via WhatsApp</div>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1.5">
+<button class="p-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-emerald-400 hover:bg-emerald-500/10 transition-colors" title="Conversar no WhatsApp Web">
+<span class="material-symbols-outlined text-lg" data-icon="chat">chat</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-primary-container hover:bg-primary/10 transition-colors" title="Acionar Cadência IA">
+<span class="material-symbols-outlined text-lg" data-icon="smart_toy">smart_toy</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-primary hover:bg-primary/10 transition-colors" title="Ver Jornada Multi-touch Completa">
+<span class="material-symbols-outlined text-lg" data-icon="timeline">timeline</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer Pagination / Status -->
+<div class="p-3.5 bg-surface-container/30 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-label-sm font-label-sm text-outline">
+<div class="flex items-center gap-2">
+<span>Itens por página: </span>
+<span class="text-on-surface font-semibold">25</span>
+<span>• Total de 482 leads no período</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1.5 rounded bg-surface-container border border-outline-variant/30 text-on-surface hover:bg-surface-variant disabled:opacity-40" disabled="">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+</button>
+<span class="px-2 py-1 rounded bg-primary-container text-on-primary font-bold">1</span>
+<button class="px-2 py-1 rounded hover:bg-surface-container text-on-surface">2</button>
+<button class="px-2 py-1 rounded hover:bg-surface-container text-on-surface">3</button>
+<span>... 20</span>
+<button class="p-1.5 rounded bg-surface-container border border-outline-variant/30 text-on-surface hover:bg-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 5: Side Card / Quick Drawer: Cadência Autônoma de Qualificação IA -->
+<div class="lg:col-span-4 xl:col-span-3 space-y-4">
+<div class="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/30 shadow-xl space-y-5">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-secondary-container/30 text-secondary border border-secondary-container/50 flex items-center justify-center">
+<span class="material-symbols-outlined text-lg" data-icon="smart_toy">smart_toy</span>
+</div>
+<div>
+<h4 class="text-headline-sm font-headline-sm text-on-surface font-semibold text-sm">Cadência Autônoma IA</h4>
+<p class="text-label-sm font-label-sm text-outline">SDR Sintético em Operação</p>
+</div>
+</div>
+<span class="flex h-2.5 w-2.5 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+</span>
+</div>
+<!-- Stats Ribbon Inside Card -->
+<div class="grid grid-cols-2 gap-2.5">
+<div class="p-3 rounded-xl bg-surface-container border border-outline-variant/20">
+<div class="text-label-sm font-label-sm text-outline">Mensagens Enviadas</div>
+<div class="text-metric-stat-sm font-metric-stat-sm text-on-surface mt-1">1.842</div>
+<div class="text-label-sm font-label-sm text-emerald-400 flex items-center gap-0.5 mt-0.5">
+<span class="material-symbols-outlined text-xs" data-icon="arrow_upward">arrow_upward</span>
+                  99.4% entrega
+                </div>
+</div>
+<div class="p-3 rounded-xl bg-surface-container border border-outline-variant/20">
+<div class="text-label-sm font-label-sm text-outline">Taxa de Resposta</div>
+<div class="text-metric-stat-sm font-metric-stat-sm text-secondary mt-1">44.6%</div>
+<div class="text-label-sm font-label-sm text-emerald-400 flex items-center gap-0.5 mt-0.5">
+<span class="material-symbols-outlined text-xs" data-icon="trending_up">trending_up</span>
+                  +12.2% vs SDR
+                </div>
+</div>
+</div>
+<!-- AI Live Activity Feed -->
+<div class="space-y-3">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-outline">
+<span>Atividades Recentes do Agente</span>
+<span class="text-primary cursor-pointer hover:underline">Ver log</span>
+</div>
+<div class="space-y-2.5">
+<!-- Activity 1 -->
+<div class="p-2.5 rounded-lg bg-surface-container/60 border border-outline-variant/20 text-xs space-y-1">
+<div class="flex items-center justify-between font-semibold text-on-surface">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-emerald-400 text-sm" data-icon="mark_chat_read">mark_chat_read</span>
+                      Camila Duarte (NexaCorp)
+                    </span>
+<span class="text-label-sm font-label-sm text-outline">14:28</span>
+</div>
+<p class="text-on-surface-variant font-body-sm text-[12px] leading-relaxed">
+                    "Agendamento confirmado para quinta às 15:00 após resolução de dúvida sobre integração API."
+                  </p>
+</div>
+<!-- Activity 2 -->
+<div class="p-2.5 rounded-lg bg-surface-container/60 border border-outline-variant/20 text-xs space-y-1">
+<div class="flex items-center justify-between font-semibold text-on-surface">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-blue-400 text-sm" data-icon="send">send</span>
+                      Rodrigo Silveira (Aurora)
+                    </span>
+<span class="text-label-sm font-label-sm text-outline">14:15</span>
+</div>
+<p class="text-on-surface-variant font-body-sm text-[12px] leading-relaxed">
+                    Disparo de follow-up contextual baseado no tempo de permanência na calculadora de ROAS.
+                  </p>
+</div>
+<!-- Activity 3 -->
+<div class="p-2.5 rounded-lg bg-surface-container/60 border border-outline-variant/20 text-xs space-y-1">
+<div class="flex items-center justify-between font-semibold text-on-surface">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-purple-400 text-sm" data-icon="psychology">psychology</span>
+                      Análise Semântica de Resposta
+                    </span>
+<span class="text-label-sm font-label-sm text-outline">13:58</span>
+</div>
+<p class="text-on-surface-variant font-body-sm text-[12px] leading-relaxed">
+                    Classificação de objeção detectada: "Orçamento de Q3". Resposta de contorno aplicada com sucesso.
+                  </p>
+</div>
+</div>
+</div>
+<!-- Configuration / Agent Status CTA -->
+<div class="pt-2 border-t border-outline-variant/20">
+<button class="w-full py-2.5 px-3 rounded-xl bg-surface-container-high border border-outline-variant/40 hover:bg-surface-variant text-on-surface text-label-md font-label-md flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-lg text-primary" data-icon="tune">tune</span>
+<span>Configurar Regras de Abordagem</span>
+</button>
+</div>
+</div>
+<!-- Mini AI Recommendation Alert Card -->
+<div class="p-4 rounded-xl bg-gradient-to-br from-secondary-container/20 to-surface-container border border-secondary-container/40 relative overflow-hidden">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-xl shrink-0 mt-0.5" data-icon="auto_awesome">auto_awesome</span>
+<div class="space-y-1.5">
+<div class="text-label-md font-label-md text-on-surface font-semibold">Insight Preditivo de Alocação</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-snug">
+                  Leads do canal <strong class="text-on-surface">Google Search Brand</strong> com primeiro toque acima de R$ 120 apresentam <strong class="text-emerald-400">3.2x maior LTV</strong>. Aumentar bid de conversão no CAPI Meta em 18%.
+                </p>
+<div class="pt-1">
+<button class="text-label-sm font-label-sm text-primary font-semibold hover:underline flex items-center gap-1">
+<span>Aplicar Ajuste de Bid com 1-Clique</span>
+<span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

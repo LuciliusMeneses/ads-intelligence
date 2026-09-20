@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Informações do Leilão &amp; Inteligência Competitiva - Google Ads</title>
+<!-- Google Fonts: Roboto & Roboto Flex -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&amp;family=Roboto+Flex:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "google-blue": "#1A73E8",
+            "google-blue-hover": "#1557B0",
+            "google-blue-bg": "#E8F0FE",
+            "google-green": "#1E8E3E",
+            "google-green-bg": "#E6F4EA",
+            "google-red": "#D93025",
+            "google-red-bg": "#FCE8E6",
+            "google-yellow": "#F9AB00",
+            "google-gray-bg": "#F8F9FA",
+            "google-border": "#DADCE0",
+            "google-border-light": "#E8EAED",
+            "google-text-primary": "#202124",
+            "google-text-secondary": "#5F6368",
+            "google-card": "#FFFFFF"
+          },
+          fontFamily: {
+            sans: ["Roboto", "sans-serif"],
+            flex: ["Roboto Flex", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-fill {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+  </style>
+</head>
+<body class="bg-google-gray-bg text-google-text-primary font-sans antialiased text-[13px] leading-relaxed min-h-screen">
+<!-- GOOGLE ADS TOP APP BAR -->
+<header class="bg-white border-b border-google-border sticky top-0 z-50 h-14 flex items-center justify-between px-4 shadow-[0_1px_2px_rgba(60,64,67,0.08)]">
+<div class="flex items-center gap-3">
+<button class="p-2 hover:bg-gray-100 rounded-full text-google-text-secondary transition-colors" title="Menu principal">
+<span class="material-symbols-outlined text-[22px]">menu</span>
+</button>
+<!-- Google Ads Logo -->
+<div class="flex items-center gap-2 pr-4 border-r border-google-border-light">
+<div class="flex items-center">
+<svg class="w-6 h-6" fill="none" viewbox="0 0 24 24">
+<path d="M12.0003 4.8L2.40027 12L12.0003 19.2L21.6003 12L12.0003 4.8Z" fill="#FABB05"></path>
+<path d="M5.3999 18.6L12.0001 21L18.6001 18.6L12.0001 13.8L5.3999 18.6Z" fill="#34A853"></path>
+<circle cx="12" cy="7.2" fill="#4285F4" r="4.8"></circle>
+<circle cx="17.4" cy="14.4" fill="#EA4335" r="3.6"></circle>
+</svg>
+</div>
+<span class="text-[17px] font-medium tracking-tight text-[#5f6368] flex items-center gap-1">
+<span class="text-[#4285F4] font-semibold">Google</span> Ads
+        </span>
+</div>
+<!-- Account Info Selector -->
+<div class="hidden sm:flex items-center gap-2 text-google-text-secondary hover:bg-gray-50 px-2 py-1 rounded cursor-pointer">
+<div class="w-6 h-6 rounded-full bg-google-blue-bg text-google-blue font-bold flex items-center justify-center text-[11px]">
+          GA
+        </div>
+<span class="font-medium text-google-text-primary text-[13px]">GrowthOps Pro - Brasil (Search &amp; Shopping)</span>
+<span class="text-[11px] text-google-text-secondary">492-381-9014</span>
+<span class="material-symbols-outlined text-[18px]">arrow_drop_down</span>
+</div>
+</div>
+<!-- Right Header Tools -->
+<div class="flex items-center gap-1 sm:gap-2">
+<div class="relative hidden md:block w-72">
+<span class="material-symbols-outlined absolute left-2.5 top-2 text-google-text-secondary text-[18px]">search</span>
+<input class="w-full bg-google-gray-bg hover:bg-[#EEF0F2] focus:bg-white text-[13px] border border-transparent focus:border-google-blue rounded-md pl-9 pr-3 py-1.5 focus:outline-none transition-all" placeholder="Pesquisar concorrentes, relatórios ou ações..." type="text"/>
+</div>
+<button class="p-2 hover:bg-gray-100 rounded-full text-google-text-secondary" title="Relatórios">
+<span class="material-symbols-outlined">bar_chart</span>
+</button>
+<button class="p-2 hover:bg-gray-100 rounded-full text-google-text-secondary" title="Ferramentas e configurações">
+<span class="material-symbols-outlined">build</span>
+</button>
+<button class="p-2 hover:bg-gray-100 rounded-full text-google-text-secondary relative" title="Notificações e Alertas">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-google-red rounded-full"></span>
+</button>
+<button class="p-2 hover:bg-gray-100 rounded-full text-google-text-secondary" title="Ajuda">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="pl-2">
+<div class="w-8 h-8 rounded-full bg-google-blue text-white font-medium text-[13px] flex items-center justify-center cursor-pointer shadow-sm">
+          GS
+        </div>
+</div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-3.5rem)]">
+<!-- SUB-NAV / TAB BAR (Google Ads 2nd Tier Navigation) -->
+<aside class="w-60 bg-white border-r border-google-border flex-shrink-0 hidden lg:flex flex-col justify-between py-3 select-none">
+<div>
+<div class="px-4 pb-3 border-b border-google-border-light text-[11px] font-semibold tracking-wider text-google-text-secondary uppercase">
+          Navegação da Conta
+        </div>
+<nav class="mt-2 space-y-0.5">
+<a class="flex items-center gap-3 px-4 py-2 text-google-text-secondary hover:bg-gray-100 hover:text-google-text-primary text-[13px]" href="#">
+<span class="material-symbols-outlined text-[19px]">dashboard</span>
+<span>Visão geral</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-google-text-secondary hover:bg-gray-100 hover:text-google-text-primary text-[13px]" href="#">
+<span class="material-symbols-outlined text-[19px]">campaign</span>
+<span>Campanhas</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-google-text-secondary hover:bg-gray-100 hover:text-google-text-primary text-[13px]" href="#">
+<span class="material-symbols-outlined text-[19px]">lightbulb</span>
+<span>Recomendações</span>
+<span class="ml-auto text-[11px] bg-google-blue-bg text-google-blue font-bold px-1.5 py-0.2 rounded-full">94.8%</span>
+</a>
+<!-- ACTIVE ITEM -->
+<a class="flex items-center gap-3 px-4 py-2 bg-google-blue-bg text-google-blue font-medium text-[13px] border-l-4 border-google-blue" href="#">
+<span class="material-symbols-outlined text-[19px] material-symbols-fill">insights</span>
+<span>Informações do leilão</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-google-text-secondary hover:bg-gray-100 hover:text-google-text-primary text-[13px]" href="#">
+<span class="material-symbols-outlined text-[19px]">key</span>
+<span>Palavras-chave de pesquisa</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-google-text-secondary hover:bg-gray-100 hover:text-google-text-primary text-[13px]" href="#">
+<span class="material-symbols-outlined text-[19px]">ads_click</span>
+<span>Anúncios e recursos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-google-text-secondary hover:bg-gray-100 hover:text-google-text-primary text-[13px]" href="#">
+<span class="material-symbols-outlined text-[19px]">storefront</span>
+<span>Produtos &amp; Shopping</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-google-text-secondary hover:bg-gray-100 hover:text-google-text-primary text-[13px]" href="#">
+<span class="material-symbols-outlined text-[19px]">tune</span>
+<span>Configurações</span>
+</a>
+</nav>
+</div>
+<div class="px-4 pt-4 border-t border-google-border-light text-[11px] text-google-text-secondary space-y-1">
+<div class="flex items-center gap-1.5 text-google-green">
+<span class="w-2 h-2 rounded-full bg-google-green"></span>
+<span class="font-medium text-[12px]">Leilão sincronizado</span>
+</div>
+<p>Atualizado hoje às 14:48</p>
+</div>
+</aside>
+<!-- MAIN DASHBOARD CONTENT AREA -->
+<main class="flex-1 min-w-0 overflow-y-auto">
+<!-- BREADCRUMB & HEADER -->
+<div class="bg-white border-b border-google-border px-6 pt-4 pb-3">
+<div class="flex items-center gap-2 text-xs text-google-text-secondary mb-1">
+<span>Campanhas de Pesquisa</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="font-medium text-google-text-primary">Informações do leilão</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h1 class="text-xl md:text-[22px] font-normal text-google-text-primary tracking-tight font-flex flex items-center gap-2">
+              Informações do leilão e Inteligência Competitiva
+              <span class="text-[12px] font-normal bg-google-blue-bg text-google-blue border border-google-blue/30 px-2 py-0.5 rounded">
+                Pesquisa &amp; Shopping
+              </span>
+</h1>
+<p class="text-xs text-google-text-secondary mt-0.5">
+              Compare seu desempenho de lances e visibilidade com outros anunciantes que participam dos mesmos leilões que você.
+            </p>
+</div>
+<!-- Utility Actions -->
+<div class="flex items-center flex-wrap gap-2">
+<button class="h-9 px-3 border border-google-border rounded hover:bg-gray-50 text-google-text-secondary hover:text-google-text-primary font-medium text-xs flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[18px]">view_column</span>
+<span>Colunas</span>
+</button>
+<button class="h-9 px-3 border border-google-border rounded hover:bg-gray-50 text-google-text-secondary hover:text-google-text-primary font-medium text-xs flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[18px]">splitscreen</span>
+<span>Segmentar</span>
+</button>
+<button class="h-9 px-3 border border-google-border rounded hover:bg-gray-50 text-google-text-secondary hover:text-google-text-primary font-medium text-xs flex items-center gap-1.5 transition-colors" title="Exportar para CSV ou Google Planilhas">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Fazer download (CSV/Sheets)</span>
+</button>
+<button class="h-9 px-3.5 bg-google-blue hover:bg-google-blue-hover text-white rounded font-medium text-xs flex items-center gap-1.5 shadow-sm transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>+ Adicionar domínio monitorado</span>
+</button>
+</div>
+</div>
+<!-- FILTER BAR (Google Ads Standard) -->
+<div class="mt-4 pt-3 border-t border-google-border-light flex flex-wrap items-center justify-between gap-3">
+<div class="flex flex-wrap items-center gap-2">
+<div class="flex items-center gap-1.5 bg-google-gray-bg border border-google-border rounded px-2.5 py-1 text-xs text-google-text-primary hover:border-gray-400 cursor-pointer">
+<span class="material-symbols-outlined text-google-text-secondary text-[16px]">filter_list</span>
+<span class="text-google-text-secondary">Campanha:</span>
+<span class="font-medium">Todas as campanhas de pesquisa e shopping</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</div>
+<div class="flex items-center gap-1.5 bg-google-gray-bg border border-google-border rounded px-2.5 py-1 text-xs text-google-text-primary hover:border-gray-400 cursor-pointer">
+<span class="text-google-text-secondary">Dispositivo:</span>
+<span class="font-medium">Todos</span>
+<span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+</div>
+<div class="flex items-center gap-1.5 bg-white border border-google-border rounded px-2.5 py-1 text-xs text-google-blue hover:bg-google-blue-bg/40 cursor-pointer">
+<span class="material-symbols-outlined text-[16px]">add</span>
+<span>Adicionar filtro</span>
+</div>
+</div>
+<!-- Date Picker Button (Google Ads classic style) -->
+<div class="flex items-center gap-2 border border-google-border bg-white rounded px-3 py-1 text-xs cursor-pointer hover:border-gray-400 shadow-sm">
+<span class="material-symbols-outlined text-google-text-secondary text-[16px]">calendar_today</span>
+<span class="font-medium text-google-text-primary">Últimos 30 dias: 17 de fev. – 18 de mar. de 2025</span>
+<span class="material-symbols-outlined text-google-text-secondary text-[16px]">arrow_drop_down</span>
+</div>
+</div>
+</div>
+<div class="p-6 space-y-6 max-w-[1680px] mx-auto">
+<!-- 3. SCORECARDS DE BENCHMARK DE LEILÃO (Google Auction Insights Metrics) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+<!-- Card 1: Parcela de Impressões -->
+<div class="bg-white border border-google-border rounded-lg p-4 shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="text-[12px] font-medium text-google-text-secondary flex items-center gap-1">
+                Parcela de impressões (Search)
+                <span class="material-symbols-outlined text-[15px] text-gray-400 cursor-help" title="Porcentagem de vezes que seus anúncios foram exibidos em comparação com o total estimado disponível.">info</span>
+</span>
+<span class="inline-flex items-center text-[11px] font-medium text-google-green bg-google-green-bg px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[13px] mr-0.5">arrow_upward</span> +3,8%
+              </span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="text-[26px] font-normal text-google-text-primary tracking-tight font-flex">32,4%</span>
+<span class="text-xs text-google-text-secondary">vs 28,6% ant.</span>
+</div>
+<!-- Google Progress bar -->
+<div class="w-full bg-gray-100 rounded-full h-1.5 mt-3 overflow-hidden">
+<div class="bg-google-blue h-1.5 rounded-full" style="width: 32.4%"></div>
+</div>
+<div class="mt-2.5 text-[11px] text-google-text-secondary flex items-center justify-between">
+<span>Classificação da conta: <strong>#1 no Leilão</strong></span>
+<span class="text-google-blue font-medium">Meta: 35,0%</span>
+</div>
+</div>
+<!-- Card 2: Taxa de Sobreposição -->
+<div class="bg-white border border-google-border rounded-lg p-4 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="text-[12px] font-medium text-google-text-secondary flex items-center gap-1">
+                Taxa de sobreposição
+                <span class="material-symbols-outlined text-[15px] text-gray-400 cursor-help" title="Com que frequência os anúncios de outros concorrentes recebem uma impressão simultaneamente com a sua.">info</span>
+</span>
+<span class="text-[11px] font-medium text-google-text-secondary bg-gray-100 px-1.5 py-0.5 rounded">
+                8 concorrentes
+              </span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="text-[26px] font-normal text-google-text-primary tracking-tight font-flex">46,2%</span>
+<span class="text-xs text-google-text-secondary">concorrência ativa</span>
+</div>
+<div class="w-full bg-gray-100 rounded-full h-1.5 mt-3 overflow-hidden">
+<div class="bg-purple-600 h-1.5 rounded-full" style="width: 46.2%"></div>
+</div>
+<div class="mt-2.5 text-[11px] text-google-text-secondary">
+              Maior sobreposição com: <strong class="text-google-text-primary">AlphaTech (54,1%)</strong>
+</div>
+</div>
+<!-- Card 3: Taxa de Posição Superior -->
+<div class="bg-white border border-google-border rounded-lg p-4 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="text-[12px] font-medium text-google-text-secondary flex items-center gap-1">
+                Taxa de posição superior (Top of Page)
+                <span class="material-symbols-outlined text-[15px] text-gray-400 cursor-help" title="Frequência com que seu anúncio é exibido no topo da página de resultados de pesquisa.">info</span>
+</span>
+<span class="inline-flex items-center text-[11px] font-medium text-google-green bg-google-green-bg px-1.5 py-0.5 rounded">
+                Excelente
+              </span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="text-[26px] font-normal text-google-text-primary tracking-tight font-flex">68,5%</span>
+<span class="text-xs text-google-text-secondary">taxa 1ª pos: 22,4%</span>
+</div>
+<div class="w-full bg-gray-100 rounded-full h-1.5 mt-3 overflow-hidden">
+<div class="bg-google-green h-1.5 rounded-full" style="width: 68.5%"></div>
+</div>
+<div class="mt-2.5 text-[11px] text-google-text-secondary">
+              68 de 100 impressões acima dos orgânicos
+            </div>
+</div>
+<!-- Card 4: Benchmark de CPA -->
+<div class="bg-white border border-google-border rounded-lg p-4 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="text-[12px] font-medium text-google-text-secondary flex items-center gap-1">
+                CPA Médio (Sua Conta vs Setor)
+                <span class="material-symbols-outlined text-[15px] text-gray-400 cursor-help" title="Custo por aquisição estimado com base na inteligência de concorrência e lances médios.">info</span>
+</span>
+<span class="inline-flex items-center text-[11px] font-semibold text-google-green bg-google-green-bg px-1.5 py-0.5 rounded">
+                31% mais eficiente
+              </span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="text-[26px] font-medium text-google-green tracking-tight font-flex">R$ 32,10</span>
+<span class="text-xs text-google-text-secondary line-through">R$ 46,50 (setor)</span>
+</div>
+<div class="w-full bg-gray-100 rounded-full h-1.5 mt-3 overflow-hidden flex">
+<div class="bg-google-green h-1.5" style="width: 41%" title="Sua conta"></div>
+<div class="bg-google-red/40 h-1.5" style="width: 59%" title="Média de mercado"></div>
+</div>
+<div class="mt-2.5 text-[11px] text-google-text-secondary flex justify-between">
+<span>Economia est.: <strong>R$ 14,40 / lead</strong></span>
+<span class="text-google-green font-medium">Índice Qualidade: 8.8/10</span>
+</div>
+</div>
+</div>
+<!-- 4. TABELA OFICIAL DE INFORMAÇÕES DO LEILÃO (Auction Insights Table) -->
+<div class="bg-white border border-google-border rounded-lg shadow-sm overflow-hidden">
+<div class="px-5 py-3.5 border-b border-google-border-light flex flex-wrap items-center justify-between gap-3 bg-white">
+<div class="flex items-center gap-2">
+<span class="text-[14px] font-medium text-google-text-primary">Participantes do leilão</span>
+<span class="text-xs text-google-text-secondary">(Exibindo 6 anunciantes concorrentes diretos)</span>
+</div>
+<div class="flex items-center gap-2 text-xs">
+<button class="px-2.5 py-1 border border-google-border rounded hover:bg-gray-50 text-google-text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">tune</span>
+<span>Editar métricas</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs border-collapse">
+<thead>
+<tr class="bg-google-gray-bg border-b border-google-border text-google-text-secondary font-medium">
+<th class="py-3 px-4 w-60">Domínio de exibição</th>
+<th class="py-3 px-4 text-right cursor-pointer hover:bg-gray-200/60 transition-colors">
+<div class="inline-flex items-center gap-1">
+<span>Parcela de impressões</span>
+<span class="material-symbols-outlined text-[15px] text-google-blue">arrow_downward</span>
+</div>
+</th>
+<th class="py-3 px-4 text-right cursor-pointer hover:bg-gray-200/60">Taxa de sobreposição</th>
+<th class="py-3 px-4 text-right cursor-pointer hover:bg-gray-200/60">Taxa de posição superior</th>
+<th class="py-3 px-4 text-right cursor-pointer hover:bg-gray-200/60">Taxa da primeira posição</th>
+<th class="py-3 px-4 text-right cursor-pointer hover:bg-gray-200/60">Parcela de superação</th>
+<th class="py-3 px-4 text-center">Status / Ação</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-google-border-light">
+<!-- ROW 1: SUA CONTA (Destacada em azul suave #E8F0FE) -->
+<tr class="bg-[#E8F0FE] hover:bg-[#DCE7F9] font-medium text-google-text-primary transition-colors">
+<td class="py-3.5 px-4 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-google-blue"></span>
+<span class="text-google-blue font-semibold">Você (Sua Conta Principal)</span>
+<span class="bg-white/80 border border-google-blue/30 text-google-blue text-[10px] px-1.5 py-0.5 rounded font-bold">VOCÊ</span>
+</td>
+<td class="py-3.5 px-4 text-right font-semibold text-google-blue">32,4%</td>
+<td class="py-3.5 px-4 text-right text-google-text-secondary">--</td>
+<td class="py-3.5 px-4 text-right font-medium">68,5%</td>
+<td class="py-3.5 px-4 text-right font-medium">22,4%</td>
+<td class="py-3.5 px-4 text-right text-google-text-secondary">--</td>
+<td class="py-3.5 px-4 text-center">
+<span class="text-[11px] bg-google-green-bg text-google-green px-2 py-0.5 rounded font-medium">
+                      Líder de leilão
+                    </span>
+</td>
+</tr>
+<!-- ROW 2: AlphaTech.com.br -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-purple-500"></span>
+<a class="text-google-blue hover:underline font-medium" href="#">alphatech.com.br</a>
+<span class="material-symbols-outlined text-[14px] text-gray-400">open_in_new</span>
+</div>
+</td>
+<td class="py-3 px-4 text-right font-medium">30,1%</td>
+<td class="py-3 px-4 text-right">54,1%</td>
+<td class="py-3 px-4 text-right">61,2%</td>
+<td class="py-3 px-4 text-right">18,7%</td>
+<td class="py-3 px-4 text-right font-medium text-google-green">58,3%</td>
+<td class="py-3 px-4 text-center">
+<span class="text-[11px] bg-google-red-bg text-google-red px-2 py-0.5 rounded font-medium inline-flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-google-red animate-pulse"></span>
+                      Agressivo (+14 ads)
+                    </span>
+</td>
+</tr>
+<!-- ROW 3: GrowthScale.io -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+<a class="text-google-blue hover:underline font-medium" href="#">growthscale.io</a>
+<span class="material-symbols-outlined text-[14px] text-gray-400">open_in_new</span>
+</div>
+</td>
+<td class="py-3 px-4 text-right font-medium">24,5%</td>
+<td class="py-3 px-4 text-right">41,8%</td>
+<td class="py-3 px-4 text-right">52,4%</td>
+<td class="py-3 px-4 text-right">14,2%</td>
+<td class="py-3 px-4 text-right font-medium text-google-green">63,1%</td>
+<td class="py-3 px-4 text-center">
+<span class="text-[11px] bg-gray-100 text-google-text-secondary px-2 py-0.5 rounded font-medium">
+                      Estável
+                    </span>
+</td>
+</tr>
+<!-- ROW 4: BetaDigital.com -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+<a class="text-google-blue hover:underline font-medium" href="#">betadigital.com</a>
+<span class="material-symbols-outlined text-[14px] text-gray-400">open_in_new</span>
+</div>
+</td>
+<td class="py-3 px-4 text-right font-medium">18,3%</td>
+<td class="py-3 px-4 text-right">32,7%</td>
+<td class="py-3 px-4 text-right">44,8%</td>
+<td class="py-3 px-4 text-right">9,6%</td>
+<td class="py-3 px-4 text-right font-medium text-google-green">74,2%</td>
+<td class="py-3 px-4 text-center">
+<span class="text-[11px] bg-gray-100 text-google-text-secondary px-2 py-0.5 rounded font-medium">
+                      Estável
+                    </span>
+</td>
+</tr>
+<!-- ROW 5: LeadMaster.tech -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+<a class="text-google-blue hover:underline font-medium" href="#">leadmaster.tech</a>
+<span class="material-symbols-outlined text-[14px] text-gray-400">open_in_new</span>
+</div>
+</td>
+<td class="py-3 px-4 text-right font-medium">12,6%</td>
+<td class="py-3 px-4 text-right">24,3%</td>
+<td class="py-3 px-4 text-right">36,0%</td>
+<td class="py-3 px-4 text-right">6,1%</td>
+<td class="py-3 px-4 text-right font-medium text-google-green">81,5%</td>
+<td class="py-3 px-4 text-center">
+<span class="text-[11px] bg-gray-100 text-google-text-secondary px-2 py-0.5 rounded font-medium">
+                      Queda (-2,4%)
+                    </span>
+</td>
+</tr>
+<!-- ROW 6: NexaBoost.com.br -->
+<tr class="hover:bg-gray-50 transition-colors">
+<td class="py-3 px-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-rose-400"></span>
+<a class="text-google-blue hover:underline font-medium" href="#">nexaboost.com.br</a>
+<span class="material-symbols-outlined text-[14px] text-gray-400">open_in_new</span>
+</div>
+</td>
+<td class="py-3 px-4 text-right font-medium">9,4%</td>
+<td class="py-3 px-4 text-right">18,5%</td>
+<td class="py-3 px-4 text-right">29,3%</td>
+<td class="py-3 px-4 text-right">3,8%</td>
+<td class="py-3 px-4 text-right font-medium text-google-green">87,0%</td>
+<td class="py-3 px-4 text-center">
+<span class="text-[11px] bg-gray-100 text-google-text-secondary px-2 py-0.5 rounded font-medium">
+                      Queda
+                    </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer Pagination -->
+<div class="px-5 py-2.5 bg-google-gray-bg border-t border-google-border-light flex items-center justify-between text-xs text-google-text-secondary">
+<div>Mostrando 1–6 de 6 domínios de concorrentes</div>
+<div class="flex items-center gap-4">
+<span>Linhas por página: <strong>10</strong></span>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded hover:bg-gray-200 disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="p-1 rounded hover:bg-gray-200 disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- 5. PAINEL DE INTELIGÊNCIA DE ANÚNCIOS DA IA (Google Recommendations Style) -->
+<div class="space-y-4">
+<!-- Recommendation Card Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-google-blue text-[22px] material-symbols-fill">auto_awesome</span>
+<h2 class="text-base font-medium text-google-text-primary">
+                Recomendações e Alertas de Contra-Ataque de IA
+              </h2>
+<span class="bg-google-blue-bg text-google-blue text-[11px] px-2 py-0.5 rounded font-medium">
+                2 Oportunidades Identificadas
+              </span>
+</div>
+<span class="text-xs text-google-text-secondary">Pontuação de otimização: <strong>94,8%</strong></span>
+</div>
+<!-- AI RECOMMENDATION ACTION CARD (Google style) -->
+<div class="bg-white border-2 border-google-blue/30 rounded-lg p-5 shadow-sm">
+<div class="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
+<div class="flex items-start gap-3">
+<div class="w-10 h-10 rounded-full bg-google-red-bg text-google-red flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">crisis_alert</span>
+</div>
+<div>
+<div class="flex items-center gap-2 flex-wrap">
+<h3 class="text-[15px] font-medium text-google-text-primary">
+                      AlphaTech aumentou lances na palavra-chave [software de gestão] hoje (+14 novos anúncios)
+                    </h3>
+<span class="bg-google-red-bg text-google-red text-[11px] font-semibold px-2 py-0.5 rounded">
+                      ALERTA CRÍTICO DE LEILÃO
+                    </span>
+</div>
+<p class="text-xs text-google-text-secondary mt-1 max-w-3xl">
+                    Detectamos uma investida agressiva do concorrente <strong>AlphaTech</strong> com 14 variações criativas voltadas a roubar sua primeira posição na busca exata. Sua taxa de sobreposição nesta palavra-chave subiu de 42% para 64% nas últimas 6 horas.
+                  </p>
+<div class="mt-3 p-3 bg-google-blue-bg/50 border border-google-blue/20 rounded-md text-xs text-google-text-primary flex items-start gap-2">
+<span class="material-symbols-outlined text-google-blue text-[18px] mt-0.5">verified</span>
+<div>
+<strong class="text-google-blue">Contra-ataque recomendado pelo Google AI Engine:</strong>
+<p class="mt-0.5">
+                        Aumentar lance de parcela de impressões alvo para 75% e ativar anúncio responsivo de pesquisa focado em diferenciais de produto e integração sem fricção.
+                      </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Recommendation Buttons -->
+<div class="flex lg:flex-col items-end gap-2 flex-shrink-0">
+<button class="px-4 py-2 bg-google-blue hover:bg-google-blue-hover text-white rounded font-medium text-xs shadow-sm flex items-center gap-1.5 transition-all">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+<span>Aplicar estratégia em 1 clique</span>
+</button>
+<button class="px-3 py-1.5 border border-google-border hover:bg-gray-50 text-google-text-secondary rounded text-xs transition-colors">
+                  Ver detalhes do lance
+                </button>
+<button class="text-[11px] text-google-text-secondary hover:text-google-red py-0.5">
+                  Dispensar alerta
+                </button>
+</div>
+</div>
+</div>
+<!-- CRIATIVOS MONITORADOS (SPY FEED COM CARDS LIMPOS) -->
+<div class="mt-6">
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-[14px] font-medium text-google-text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-google-text-secondary">visibility</span>
+                Criativos e Textos Capturados no Leilão Atual
+              </h3>
+<span class="text-xs text-google-text-secondary">Ordenados por tempo de veiculação e impacto</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+<!-- AD SPY CARD 1: AlphaTech (Search & Video) -->
+<div class="bg-white border border-google-border rounded-lg p-4 shadow-sm hover:border-google-blue/50 transition-all flex flex-col justify-between space-y-3">
+<div class="flex items-center justify-between pb-2 border-b border-google-border-light">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded bg-purple-100 text-purple-700 font-bold flex items-center justify-center text-xs">
+                      AT
+                    </div>
+<div>
+<span class="font-medium text-xs text-google-text-primary">AlphaTech Suite</span>
+<span class="text-[11px] text-google-text-secondary block">alphatech.com.br/gestao-pro</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[11px] bg-purple-50 text-purple-700 border border-purple-200 px-2 py-0.5 rounded font-medium">
+                      Google Search + YouTube Ads
+                    </span>
+</div>
+</div>
+<!-- Ad Copy Preview (Exact Google Search Ad layout) -->
+<div class="bg-google-gray-bg border border-google-border-light rounded p-3">
+<div class="text-[11px] text-google-text-secondary flex items-center gap-1.5 mb-1">
+<span class="font-bold text-google-text-primary">Anúncio</span>
+<span>·</span>
+<span>https://www.alphatech.com.br/gestao</span>
+</div>
+<a class="text-[15px] text-[#1A0DAB] hover:underline font-normal block leading-snug" href="#">
+                    Pare de perder dinheiro com tráfego cego | Software de Automação Total
+                  </a>
+<p class="text-xs text-google-text-secondary mt-1 leading-relaxed">
+                    Conheça o software que automatiza 100% da sua alocação de verba em tempo real. Fazer Teste Grátis de 14 Dias sem Cartão. Migração imediata em 5 minutos.
+                  </p>
+<div class="flex flex-wrap gap-1.5 mt-2.5 pt-2 border-t border-google-border-light text-[11px]">
+<span class="bg-white border border-gray-200 px-2 py-0.5 rounded text-google-text-secondary">Sitelink: Casos de Sucesso</span>
+<span class="bg-white border border-gray-200 px-2 py-0.5 rounded text-google-text-secondary">Sitelink: Tabela de Preços</span>
+<span class="bg-white border border-gray-200 px-2 py-0.5 rounded text-google-text-secondary">Frase: Suporte 24/7 Brasil</span>
+</div>
+</div>
+<!-- Telemetry & Insights -->
+<div class="flex items-center justify-between text-xs pt-1 text-google-text-secondary">
+<span>Gasto estimado: <strong class="text-google-text-primary">R$ 14.200 - R$ 18.500</strong></span>
+<span class="text-google-green font-medium">Detectado há 4 dias</span>
+</div>
+<div class="bg-google-blue-bg/40 border border-google-blue/20 rounded p-2.5 text-xs text-google-text-primary">
+<strong class="text-google-blue flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">lightbulb</span> Ponto fraco identificado:
+                  </strong>
+                  Foco exclusivo em automação mecânica sem garantia de integridade com CRM ou precisão de atribuição.
+                </div>
+</div>
+<!-- AD SPY CARD 2: GrowthScale.io -->
+<div class="bg-white border border-google-border rounded-lg p-4 shadow-sm hover:border-google-blue/50 transition-all flex flex-col justify-between space-y-3">
+<div class="flex items-center justify-between pb-2 border-b border-google-border-light">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded bg-cyan-100 text-cyan-800 font-bold flex items-center justify-center text-xs">
+                      GS
+                    </div>
+<div>
+<span class="font-medium text-xs text-google-text-primary">GrowthScale Performance</span>
+<span class="text-[11px] text-google-text-secondary block">growthscale.io/escala-b2b</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[11px] bg-cyan-50 text-cyan-800 border border-cyan-200 px-2 py-0.5 rounded font-medium">
+                      Performance Max + Search
+                    </span>
+</div>
+</div>
+<!-- Ad Copy Preview (Exact Google Search Ad layout) -->
+<div class="bg-google-gray-bg border border-google-border-light rounded p-3">
+<div class="text-[11px] text-google-text-secondary flex items-center gap-1.5 mb-1">
+<span class="font-bold text-google-text-primary">Anúncio</span>
+<span>·</span>
+<span>https://www.growthscale.io/b2b-growth</span>
+</div>
+<a class="text-[15px] text-[#1A0DAB] hover:underline font-normal block leading-snug" href="#">
+                    Como escalamos o faturamento de 83 empresas B2B | Sem dobrar equipe
+                  </a>
+<p class="text-xs text-google-text-secondary mt-1 leading-relaxed">
+                    Acelere sua operação de mídia paga com metodologia validada em mais de R$ 50M gerados. Agende uma sessão estratégica com nossos especialistas de growth.
+                  </p>
+<div class="flex flex-wrap gap-1.5 mt-2.5 pt-2 border-t border-google-border-light text-[11px]">
+<span class="bg-white border border-gray-200 px-2 py-0.5 rounded text-google-text-secondary">Sitelink: Agendar Diagnóstico</span>
+<span class="bg-white border border-gray-200 px-2 py-0.5 rounded text-google-text-secondary">Sitelink: Calculadora de ROI</span>
+</div>
+</div>
+<!-- Telemetry & Insights -->
+<div class="flex items-center justify-between text-xs pt-1 text-google-text-secondary">
+<span>Gasto estimado: <strong class="text-google-text-primary">R$ 28.000 - R$ 35.000</strong></span>
+<span class="text-amber-600 font-medium">Veiculação há 19 dias (Fadiga média)</span>
+</div>
+<div class="bg-google-blue-bg/40 border border-google-blue/20 rounded p-2.5 text-xs text-google-text-primary">
+<strong class="text-google-blue flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">lightbulb</span> Ponto fraco identificado:
+                  </strong>
+                  Falta de nichamento explícito para verticais de SaaS e e-commerce de alto ticket; apelo muito genérico.
+                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

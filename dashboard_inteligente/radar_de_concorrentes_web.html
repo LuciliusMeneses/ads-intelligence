@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>GrowthOps AI - Radar de Concorrentes & Inteligência Competitiva</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/google-ads-theme.js"></script>
+  <script>
+    tailwind.config = window.googleAdsTailwindConfig;
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body class="bg-google-bg text-google-text font-sans antialiased min-h-screen">
+  <!-- SIDE NAVIGATION (GOOGLE ADS STYLE) -->
+  <aside class="w-64 fixed h-screen z-40 bg-google-card border-r border-google-outline flex flex-col p-4 shadow-sm">
+    <div class="px-2 pt-2 mb-8">
+      <div class="text-lg font-bold text-google-text flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-google-primary flex items-center justify-center text-white">
+          <span class="material-symbols-outlined">radar</span>
+        </div>
+        <span>GrowthOps AI</span>
+      </div>
+    </div>
+    <nav class="flex flex-col gap-1">
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/">
+        <span class="material-symbols-outlined">dashboard</span><span>Visão Geral</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/campaigns">
+        <span class="material-symbols-outlined">auto_mode</span><span>Campanhas IA</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/crm">
+        <span class="material-symbols-outlined">account_tree</span><span>CRM & Pipeline</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full bg-google-primary/10 text-google-primary font-bold border-l-4 border-google-primary" href="/competitors">
+        <span class="material-symbols-outlined">radar</span><span>Radar de Concorrentes</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/finance">
+        <span class="material-symbols-outlined">account_balance_wallet</span><span>Área Financeira</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/help">
+        <span class="material-symbols-outlined">help</span><span>Ajuda & Manual</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT WRAPPER -->
+  <div class="pl-64 flex flex-col min-h-screen bg-google-bg">
+    <!-- TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-30 bg-white border-b border-google-outline flex items-center justify-between px-8 py-3 w-full">
+      <div class="flex items-center gap-4">
+        <div class="text-google-textSecondary text-sm font-medium">Radar de Concorrentes</div>
+      </div>
+      <div class="flex items-center gap-4">
+        <button class="px-4 py-2 bg-google-primary hover:bg-google-primaryHover text-white font-semibold text-xs rounded-full transition">+ Adicionar Concorrente</button>
+      </div>
+    </header>
+
+    <main class="p-6 lg:p-8 flex flex-col gap-6 max-w-[1600px] w-full mx-auto">
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-google-card border border-google-outline rounded-xl p-6 hover:shadow-md transition">
+          <p class="text-xs text-google-textSecondary font-bold uppercase tracking-wider">Share of Voice Setorial</p>
+          <div class="text-3xl font-bold text-google-text mt-3">32%</div>
+          <p class="text-sm text-google-success mt-1 font-medium">+3.8% vs semana anterior</p>
+        </div>
+        <div class="bg-google-card border border-google-outline rounded-xl p-6 hover:shadow-md transition">
+          <p class="text-xs text-google-textSecondary font-bold uppercase tracking-wider">CPA Médio (Benchmark)</p>
+          <div class="text-3xl font-bold text-google-text mt-3">R$ 32,10</div>
+          <p class="text-sm text-google-success mt-1 font-medium">31% mais eficiente que a média</p>
+        </div>
+        <div class="bg-google-card border border-google-outline rounded-xl p-6 hover:shadow-md transition">
+          <p class="text-xs text-google-textSecondary font-bold uppercase tracking-wider">Alertas de Leilão Ativos</p>
+          <div class="text-3xl font-bold text-google-error mt-3">2 Concorrentes</div>
+          <p class="text-sm text-google-textSecondary mt-1 font-medium">Aumento de lances detectado</p>
+        </div>
+      </section>
+
+      <section class="bg-google-card border border-google-outline rounded-xl p-6 lg:p-8 flex flex-col gap-6 shadow-sm">
+        <h3 class="text-lg font-bold text-google-text">Feed de Anúncios dos Concorrentes (Ad Spy)</h3>
+        <p class="text-sm text-google-textSecondary">Monitoramento em tempo real de criativos e copys veiculados por concorrentes diretos.</p>
+        <div class="border border-google-outline rounded-lg p-4 bg-google-bg flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-google-text">AlphaTech Suite</span>
+            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-medium">Meta Ads</span>
+          </div>
+          <p class="text-sm text-google-text">"Pare de perder dinheiro com tráfego cego: Conheça o software que automatiza 100% da sua alocação de verba em tempo real."</p>
+          <div class="flex items-center justify-between text-xs text-google-textSecondary pt-2 border-t border-google-outline">
+            <span>Gasto estimado: R$ 14.200</span>
+            <button class="text-google-primary font-medium hover:underline">Ver análise preditiva IA</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

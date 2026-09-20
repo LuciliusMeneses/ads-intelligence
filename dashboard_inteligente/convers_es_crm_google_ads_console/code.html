@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Google Ads - Medição e Conversões de Clientes (CRM &amp; Atribuição)</title>
+<!-- Google Fonts: Roboto & Roboto Flex -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "google-blue": "#1a73e8",
+            "google-blue-hover": "#1557b0",
+            "google-blue-light": "#e8f0fe",
+            "google-blue-surface": "#f1f3f4",
+            "google-gray-bg": "#f8f9fa",
+            "google-border": "#dadce0",
+            "google-border-light": "#e8eaed",
+            "google-text-dark": "#202124",
+            "google-text-medium": "#5f6368",
+            "google-text-subtle": "#80868b",
+            "google-green": "#137333",
+            "google-green-bg": "#e6f4ea",
+            "google-amber": "#b06000",
+            "google-amber-bg": "#fef7e0",
+            "google-red": "#d93025"
+          },
+          fontFamily: {
+            sans: ["Roboto", "Segoe UI", "-apple-system", "sans-serif"],
+            mono: ["Roboto Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f3f4;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #dadce0;
+      border-radius: 3px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #bdc1c6;
+    }
+  </style>
+</head>
+<body class="bg-google-gray-bg text-google-text-dark antialiased font-sans text-sm selection:bg-google-blue-light selection:text-google-blue min-h-screen flex flex-col">
+<!-- TOP GOOGLE ADS GLOBAL BAR -->
+<header class="h-14 bg-white border-b border-google-border flex items-center justify-between px-4 sticky top-0 z-40">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-gray-100 rounded-full text-google-text-medium transition-colors" title="Menu principal">
+<span class="material-symbols-outlined text-xl">menu</span>
+</button>
+<!-- Google Ads Brand Identity -->
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1">
+<svg class="w-6 h-6 shrink-0" viewbox="0 0 192 192">
+<path d="M18.8 84.4l65.8-65.8c6-6 15.6-6 21.6 0l65.8 65.8c6 6 6 15.6 0 21.6l-65.8 65.8c-6 6-15.6 6-21.6 0L18.8 106c-6-6-6-15.6 0-21.6z" fill="#4285F4"></path>
+<path d="M37.3 118.8l47.3-81.9c6-10.4 19.3-14 29.7-8 10.4 6 14 19.3 8 29.7l-47.3 81.9c-6 10.4-19.3 14-29.7 8-10.4-6-14-19.3-8-29.7z" fill="#FBBC04"></path>
+<circle cx="52.2" cy="133.7" fill="#34A853" r="23.9"></circle>
+</svg>
+<span class="text-[17px] font-medium tracking-tight text-[#5f6368] hidden sm:inline">Google</span>
+<span class="text-[17px] font-bold tracking-tight text-google-text-dark ml-[-2px]">Ads</span>
+</div>
+<span class="text-google-border mx-1 hidden sm:inline">|</span>
+<div class="flex items-center gap-1.5 text-xs text-google-text-medium bg-gray-50 border border-google-border px-2.5 py-1 rounded">
+<span class="font-medium text-google-text-dark">NexaCorp Brasil (821-490-2190)</span>
+<span class="material-symbols-outlined text-base">arrow_drop_down</span>
+</div>
+</div>
+</div>
+<!-- Search within Google Ads -->
+<div class="hidden lg:flex items-center flex-1 max-w-xl mx-8">
+<div class="w-full relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-google-text-medium text-lg">search</span>
+<input class="w-full bg-[#f1f3f4] hover:bg-[#e8eaed] focus:bg-white text-google-text-dark text-xs rounded-full pl-9 pr-4 py-2 border border-transparent focus:border-google-blue focus:outline-none transition-all placeholder:text-google-text-subtle" placeholder="Pesquisar conversões, tags, relatórios ou ações..." type="text"/>
+</div>
+</div>
+<!-- Header Actions -->
+<div class="flex items-center gap-1 sm:gap-2 text-google-text-medium">
+<button class="p-2 hover:bg-gray-100 rounded-full text-google-text-medium" title="Ajuda">
+<span class="material-symbols-outlined text-xl">help_outline</span>
+</button>
+<button class="p-2 hover:bg-gray-100 rounded-full text-google-text-medium" title="Ferramentas e configurações">
+<span class="material-symbols-outlined text-xl">settings</span>
+</button>
+<button class="p-2 hover:bg-gray-100 rounded-full text-google-text-medium relative" title="Notificações">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-google-red rounded-full"></span>
+</button>
+<div class="h-6 w-[1px] bg-google-border mx-1"></div>
+<div class="w-8 h-8 rounded-full bg-google-blue text-white font-medium text-xs flex items-center justify-center cursor-pointer shadow-sm ml-1">
+        GS
+      </div>
+</div>
+</header>
+<!-- SUBHEADER: PAGE TITLE & LIVE INTEGRATION STATUS BADGE -->
+<section class="bg-white border-b border-google-border px-6 pt-4 pb-0">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-4">
+<div>
+<div class="flex items-center gap-2 text-xs text-google-text-medium mb-1">
+<span>Ferramentas e configurações</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span>Medição</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-google-text-dark font-medium">Conversões</span>
+</div>
+<div class="flex items-center gap-3">
+<h1 class="text-xl font-medium text-google-text-dark">Medição e Conversões de Clientes (CRM &amp; Atribuição)</h1>
+<span class="hidden sm:inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-google-blue-light text-google-blue border border-blue-200">
+            Enterprise Tracking v4
+          </span>
+</div>
+</div>
+<!-- Tag Status in authentic Google Ads style -->
+<div class="flex flex-wrap items-center gap-3">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-google-green-bg border border-[#ceead6] text-google-green text-xs font-medium">
+<span class="material-symbols-outlined text-base font-semibold">check_circle</span>
+<span>Status da tag: Ativa e verificada (Match rate 99.8% com CRM)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<button class="bg-google-blue hover:bg-google-blue-hover text-white text-xs font-medium px-3.5 py-1.5 rounded flex items-center gap-1.5 shadow-sm transition-colors">
+<span class="material-symbols-outlined text-base">add</span>
+<span>Nova ação de conversão</span>
+</button>
+<button class="bg-white hover:bg-gray-50 border border-google-border text-google-text-dark text-xs font-medium px-3 py-1.5 rounded flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-base text-google-text-medium">file_upload</span>
+<span>Importar CRM</span>
+</button>
+</div>
+</div>
+</div>
+<!-- GOOGLE ADS AUTHENTIC TABS -->
+<nav class="flex items-center gap-8 border-t border-google-border-light text-xs font-medium overflow-x-auto custom-scrollbar">
+<a class="py-3 px-1 border-b-2 border-google-blue text-google-blue flex items-center gap-1.5 whitespace-nowrap" href="#">
+<span>Resumo de conversões</span>
+<span class="px-1.5 py-0.2 rounded-full bg-google-blue-light text-[10px]">Ativo</span>
+</a>
+<a class="py-3 px-1 border-b-2 border-transparent text-google-text-medium hover:text-google-text-dark flex items-center gap-1.5 whitespace-nowrap" href="#">
+<span>Modelos de atribuição</span>
+</a>
+<a class="py-3 px-1 border-b-2 border-transparent text-google-text-medium hover:text-google-text-dark flex items-center gap-1.5 whitespace-nowrap" href="#">
+<span>Upload de conversões offline (CRM)</span>
+<span class="w-2 h-2 rounded-full bg-google-green" title="Sincronizado"></span>
+</a>
+<a class="py-3 px-1 border-b-2 border-transparent text-google-text-medium hover:text-google-text-dark flex items-center gap-1.5 whitespace-nowrap" href="#">
+<span>Caminhos de conversão</span>
+</a>
+<a class="py-3 px-1 border-b-2 border-transparent text-google-text-medium hover:text-google-text-dark flex items-center gap-1.5 whitespace-nowrap" href="#">
+<span>Diagnósticos &amp; Consent Mode</span>
+</a>
+</nav>
+</section>
+<!-- SECONDARY CONTROL FILTER BAR (DATE RANGE & FILTER CRITERIA) -->
+<div class="px-6 py-2.5 bg-white border-b border-google-border flex flex-wrap items-center justify-between gap-3 text-xs">
+<div class="flex flex-wrap items-center gap-2">
+<!-- Date Picker -->
+<button class="flex items-center gap-2 px-3 py-1.5 bg-white border border-google-border rounded hover:bg-gray-50 text-google-text-dark font-normal">
+<span class="material-symbols-outlined text-sm text-google-text-medium">calendar_today</span>
+<span>Últimos 30 dias (1 mai - 30 mai 2025)</span>
+<span class="material-symbols-outlined text-sm text-google-text-medium">arrow_drop_down</span>
+</button>
+<!-- Scope Filter -->
+<button class="flex items-center gap-1 px-3 py-1.5 bg-white border border-google-border rounded hover:bg-gray-50 text-google-text-medium">
+<span class="material-symbols-outlined text-sm">filter_alt</span>
+<span class="text-google-text-dark">Filtros:</span>
+<span>Status da conversão = Todas ativas</span>
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+<!-- Attribution Model Selector -->
+<div class="flex items-center gap-1.5 pl-2 text-google-text-medium border-l border-google-border">
+<span>Modelo:</span>
+<select class="bg-gray-50 border border-google-border rounded px-2 py-1 text-xs text-google-text-dark focus:border-google-blue focus:outline-none">
+<option selected="">Atribuição baseada em dados (DDA)</option>
+<option>Primeiro clique (First Click)</option>
+<option>Último clique (Last Click)</option>
+<option>Linear ponderado</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-3 text-google-text-subtle text-[11px]">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-google-green">sync</span>
+        Última sincronização CRM: hoje, 14:32 (GCLID Match 99.8%)
+      </span>
+<button class="text-google-blue hover:underline">Atualizar</button>
+</div>
+</div>
+<!-- MAIN DASHBOARD CONTENT -->
+<main class="flex-1 p-6 space-y-6 max-w-[1720px] w-full mx-auto">
+<!-- 3. SCORECARDS DE ATRIBUIÇÃO (Google Ads Metric Row) -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Card 1: Volume de Conversões Offline -->
+<div class="bg-white p-4 rounded-lg border border-google-border shadow-sm hover:border-google-blue transition-colors">
+<div class="flex items-center justify-between text-google-text-medium mb-1">
+<span class="text-xs font-medium">Volume de Conversões Offline</span>
+<span class="material-symbols-outlined text-base text-google-text-subtle" title="Total de eventos offline recebidos do CRM e atribuídos às campanhas">info</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="text-2xl font-normal text-google-text-dark font-sans">4.890</span>
+<span class="text-xs font-medium text-google-green flex items-center">
+<span class="material-symbols-outlined text-sm">arrow_upward</span>
+            +18.4%
+          </span>
+</div>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-google-border-light text-[11px] text-google-text-medium">
+<span>Período anterior: 4.130</span>
+<span class="text-google-blue font-medium">163 leads/dia</span>
+</div>
+</div>
+<!-- Card 2: Conversões Qualificadas (SQL) -->
+<div class="bg-white p-4 rounded-lg border border-google-border shadow-sm hover:border-google-blue transition-colors">
+<div class="flex items-center justify-between text-google-text-medium mb-1">
+<span class="text-xs font-medium">Conversões Qualificadas (SQL)</span>
+<span class="material-symbols-outlined text-base text-google-text-subtle" title="Leads que avançaram para SQL validado no CRM">info</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="text-2xl font-normal text-google-text-dark font-sans">2.120</span>
+<span class="text-xs font-medium text-google-green bg-google-green-bg px-1.5 py-0.2 rounded">
+            Taxa: 43.3%
+          </span>
+</div>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-google-border-light text-[11px] text-google-text-medium">
+<span>Reuniões agendadas: 640</span>
+<span class="text-google-text-dark font-medium">Score médio: 88/100</span>
+</div>
+</div>
+<!-- Card 3: Receita de Conversão Atribuída -->
+<div class="bg-white p-4 rounded-lg border border-google-border shadow-sm hover:border-google-blue transition-colors">
+<div class="flex items-center justify-between text-google-text-medium mb-1">
+<span class="text-xs font-medium">Receita de Conversão Atribuída</span>
+<span class="material-symbols-outlined text-base text-google-text-subtle" title="Receita fechada ou pipeline ativo ponderado pelo modelo DDA">info</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="text-2xl font-medium text-google-text-dark font-sans">R$ 2.450.000,00</span>
+</div>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-google-border-light text-[11px] text-google-text-medium">
+<span>ROAS atribuído: <strong class="text-google-green">6.4x</strong></span>
+<span class="text-google-text-dark">Ticket médio: R$ 38.280</span>
+</div>
+</div>
+<!-- Card 4: CPA Real do Funil Fechado -->
+<div class="bg-white p-4 rounded-lg border border-google-border shadow-sm hover:border-google-blue transition-colors">
+<div class="flex items-center justify-between text-google-text-medium mb-1">
+<span class="text-xs font-medium">CPA Real do Funil Fechado</span>
+<span class="material-symbols-outlined text-base text-google-text-subtle" title="Custo de aquisição ponderado considerando conversões finais no CRM">info</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="text-2xl font-normal text-google-text-dark font-sans">R$ 84,20</span>
+<span class="text-xs font-medium text-google-green flex items-center">
+<span class="material-symbols-outlined text-sm">arrow_downward</span>
+            -12.8%
+          </span>
+</div>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-google-border-light text-[11px] text-google-text-medium">
+<span>Meta definida: R$ 96,50</span>
+<span class="text-google-green font-medium">Eficiência ideal</span>
+</div>
+</div>
+</section>
+<!-- 4. VISUALIZADOR DE MODELOS DE ATRIBUIÇÃO (Estilo Google Ads Attribution Modeling) -->
+<section class="bg-white rounded-lg border border-google-border shadow-sm overflow-hidden">
+<!-- Section Header -->
+<div class="px-5 py-3.5 border-b border-google-border flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded bg-google-blue-light text-google-blue flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-lg">stacked_bar_chart</span>
+</div>
+<div>
+<h2 class="text-sm font-medium text-google-text-dark">Relatório de Atribuição e Caminhos de Conversão</h2>
+<p class="text-[11px] text-google-text-medium">Comparação entre o modelo padrão (Baseado em dados) e modelos convencionais de toque único</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs text-google-text-medium">Comparar:</span>
+<span class="px-2.5 py-1 bg-google-blue-light text-google-blue font-medium text-xs rounded border border-blue-200">
+            Atribuição baseada em dados (DDA)
+          </span>
+<span class="text-xs text-google-text-medium">vs</span>
+<span class="px-2.5 py-1 bg-gray-100 text-google-text-dark text-xs rounded border border-google-border">
+            Último clique (Last Click)
+          </span>
+</div>
+</div>
+<div class="p-5 space-y-6">
+<!-- Interactive Multi-Touch Visual Flow Stack -->
+<div>
+<div class="flex items-center justify-between text-xs text-google-text-medium mb-2">
+<span class="font-medium text-google-text-dark">Distribuição de Crédito por Canal no Funil Fechado</span>
+<span>Total ponderado: R$ 2.450.000,00</span>
+</div>
+<!-- Stacked Horizontal Bar -->
+<div class="w-full h-10 rounded bg-[#f1f3f4] flex overflow-hidden border border-google-border p-1 gap-1">
+<!-- Google Search (42%) -->
+<div class="h-full bg-google-blue rounded-sm text-white flex items-center justify-between px-3 text-xs transition-all hover:opacity-90" style="width: 42%;">
+<span class="truncate font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">search</span>
+                1º Toque: Google Search (Pesquisa)
+              </span>
+<span class="font-mono font-medium text-[11px] pl-1">42% (R$ 1.029.000)</span>
+</div>
+<!-- Meta Ads Retargeting (36%) -->
+<div class="h-full bg-[#1877f2] rounded-sm text-white flex items-center justify-between px-3 text-xs transition-all hover:opacity-90" style="width: 36%;">
+<span class="truncate font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">ads_click</span>
+                Meio de Funil: Meta Ads Retargeting
+              </span>
+<span class="font-mono font-medium text-[11px] pl-1">36% (R$ 882.000)</span>
+</div>
+<!-- Fechamento WhatsApp / SDR (22%) -->
+<div class="h-full bg-google-green rounded-sm text-white flex items-center justify-between px-3 text-xs transition-all hover:opacity-90" style="width: 22%;">
+<span class="truncate font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">forum</span>
+                Fechamento: WhatsApp / SDR IA
+              </span>
+<span class="font-mono font-medium text-[11px] pl-1">22% (R$ 539.000)</span>
+</div>
+</div>
+</div>
+<!-- Attribution Model Comparison Table in Google Ads Layout -->
+<div class="border border-google-border rounded overflow-hidden">
+<table class="w-full text-left text-xs">
+<thead class="bg-gray-50 border-b border-google-border text-google-text-medium font-medium">
+<tr>
+<th class="py-2.5 px-4 font-medium">Canal de Origem / Ponto de Contato</th>
+<th class="py-2.5 px-4 font-medium text-right">Crédito DDA (Baseado em dados)</th>
+<th class="py-2.5 px-4 font-medium text-right">Crédito Último Clique</th>
+<th class="py-2.5 px-4 font-medium text-right">Crédito Primeiro Clique</th>
+<th class="py-2.5 px-4 font-medium text-right">Variação DDA vs Último</th>
+<th class="py-2.5 px-4 font-medium text-center">Papel na Conversão</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-google-border-light text-google-text-dark">
+<tr class="hover:bg-[#f8f9fa]">
+<td class="py-2.5 px-4 flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-google-blue"></span>
+<span class="font-medium">Google Ads - Search (Fundo de Funil &amp; Marca)</span>
+</td>
+<td class="py-2.5 px-4 text-right font-mono font-medium">42,0% (R$ 1.029.000)</td>
+<td class="py-2.5 px-4 text-right font-mono text-google-text-medium">21,0% (R$ 514.500)</td>
+<td class="py-2.5 px-4 text-right font-mono text-google-text-medium">68,4% (R$ 1.675.800)</td>
+<td class="py-2.5 px-4 text-right text-google-green font-medium">+100,0%</td>
+<td class="py-2.5 px-4 text-center">
+<span class="px-2 py-0.5 rounded bg-blue-50 text-google-blue border border-blue-200 text-[10px] font-medium">Descoberta inicial</span>
+</td>
+</tr>
+<tr class="hover:bg-[#f8f9fa]">
+<td class="py-2.5 px-4 flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-[#1877f2]"></span>
+<span class="font-medium">Meta Ads (CAPI Retargeting de Decisores)</span>
+</td>
+<td class="py-2.5 px-4 text-right font-mono font-medium">36,0% (R$ 882.000)</td>
+<td class="py-2.5 px-4 text-right font-mono text-google-text-medium">29,0% (R$ 710.500)</td>
+<td class="py-2.5 px-4 text-right font-mono text-google-text-medium">18,2% (R$ 445.900)</td>
+<td class="py-2.5 px-4 text-right text-google-green font-medium">+24,1%</td>
+<td class="py-2.5 px-4 text-center">
+<span class="px-2 py-0.5 rounded bg-purple-50 text-[#681da8] border border-purple-200 text-[10px] font-medium">Nutrição e prova social</span>
+</td>
+</tr>
+<tr class="hover:bg-[#f8f9fa]">
+<td class="py-2.5 px-4 flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-google-green"></span>
+<span class="font-medium">Cadência Reativa WhatsApp / SDR Integrado</span>
+</td>
+<td class="py-2.5 px-4 text-right font-mono font-medium">22,0% (R$ 539.000)</td>
+<td class="py-2.5 px-4 text-right font-mono text-google-text-medium">50,0% (R$ 1.225.000)</td>
+<td class="py-2.5 px-4 text-right font-mono text-google-text-medium">13,4% (R$ 328.300)</td>
+<td class="py-2.5 px-4 text-right text-google-red font-medium">-56,0%</td>
+<td class="py-2.5 px-4 text-center">
+<span class="px-2 py-0.5 rounded bg-green-50 text-google-green border border-green-200 text-[10px] font-medium">Fechamento final</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- 5. TABELA DE OPORTUNIDADES E LEADS ATRIBUÍDOS (Google Ads High Density Table) -->
+<section class="bg-white rounded-lg border border-google-border shadow-sm overflow-hidden">
+<!-- Toolbar da Tabela Google Ads -->
+<div class="p-3 border-b border-google-border flex flex-wrap items-center justify-between gap-3 bg-white">
+<div class="flex items-center gap-2">
+<!-- Lead Filter Search -->
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-google-text-medium text-base">search</span>
+<input class="w-full bg-white border border-google-border rounded pl-8 pr-3 py-1.5 text-xs text-google-text-dark focus:border-google-blue focus:outline-none" placeholder="Filtrar por lead, GCLID ou campanha..." type="text"/>
+</div>
+<div class="h-5 w-[1px] bg-google-border mx-1"></div>
+<!-- Quick Filters Pills -->
+<button class="px-2.5 py-1 rounded-full border border-google-blue bg-google-blue-light text-google-blue text-xs font-medium flex items-center gap-1">
+<span>Score ≥ 80</span>
+<span class="material-symbols-outlined text-sm">check</span>
+</button>
+<button class="px-2.5 py-1 rounded-full border border-google-border bg-white text-google-text-medium hover:bg-gray-50 text-xs">
+            Reunião Agendada (640)
+          </button>
+<button class="px-2.5 py-1 rounded-full border border-google-border bg-white text-google-text-medium hover:bg-gray-50 text-xs">
+            SQL Qualificado (2.120)
+          </button>
+</div>
+<!-- Table View Options -->
+<div class="flex items-center gap-1 text-google-text-medium">
+<button class="p-1.5 hover:bg-gray-100 rounded text-google-text-dark flex items-center gap-1 text-xs px-2" title="Colunas">
+<span class="material-symbols-outlined text-base">view_column</span>
+<span>Colunas</span>
+</button>
+<button class="p-1.5 hover:bg-gray-100 rounded text-google-text-dark flex items-center gap-1 text-xs px-2" title="Segmentar">
+<span class="material-symbols-outlined text-base">splitscreen</span>
+<span>Segmento</span>
+</button>
+<button class="p-1.5 hover:bg-gray-100 rounded text-google-text-dark flex items-center gap-1 text-xs px-2" title="Fazer download">
+<span class="material-symbols-outlined text-base">download</span>
+<span>Exportar</span>
+</button>
+<div class="h-5 w-[1px] bg-google-border mx-1"></div>
+<button class="p-1.5 hover:bg-gray-100 rounded text-google-text-dark" title="Atualizar dados">
+<span class="material-symbols-outlined text-base">refresh</span>
+</button>
+</div>
+</div>
+<!-- High Density Table Container -->
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left text-xs border-collapse">
+<thead>
+<tr class="bg-gray-50 border-b border-google-border text-google-text-medium font-medium select-none">
+<th class="py-2.5 px-3 w-8 text-center">
+<input class="rounded border-google-border text-google-blue focus:ring-0 w-3.5 h-3.5" type="checkbox"/>
+</th>
+<th class="py-2.5 px-3 whitespace-nowrap">ID da Conversão</th>
+<th class="py-2.5 px-3 whitespace-nowrap">Lead / Empresa</th>
+<th class="py-2.5 px-3 whitespace-nowrap">GCLID / Parâmetro</th>
+<th class="py-2.5 px-3 whitespace-nowrap">Campanha de Origem</th>
+<th class="py-2.5 px-3 whitespace-nowrap">Criativo / Palavra-chave</th>
+<th class="py-2.5 px-3 whitespace-nowrap">Estágio CRM</th>
+<th class="py-2.5 px-3 text-right whitespace-nowrap">Valor do Negócio</th>
+<th class="py-2.5 px-3 text-center whitespace-nowrap">Score IA</th>
+<th class="py-2.5 px-3 text-right whitespace-nowrap">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-google-border-light text-google-text-dark">
+<!-- Lead 1: Camila Duarte -->
+<tr class="hover:bg-blue-50/40 transition-colors group">
+<td class="py-3 px-3 text-center">
+<input class="rounded border-google-border text-google-blue focus:ring-0 w-3.5 h-3.5" type="checkbox"/>
+</td>
+<td class="py-3 px-3 font-mono text-[11px] text-google-text-medium">
+                CV-90241-BR
+              </td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-google-blue text-white font-medium text-[11px] flex items-center justify-center shrink-0">
+                    CD
+                  </div>
+<div>
+<div class="font-medium text-google-blue hover:underline cursor-pointer flex items-center gap-1">
+<span>Camila Duarte</span>
+<span class="material-symbols-outlined text-xs text-google-blue" title="Decisor Confirmado">verified</span>
+</div>
+<div class="text-[11px] text-google-text-subtle">CEO - NexaCorp Logistics</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3">
+<div class="font-mono text-[11px] text-google-text-medium flex items-center gap-1">
+<span>EAIaIQobChMI...89x</span>
+<button class="text-google-text-subtle hover:text-google-blue" title="Copiar GCLID">
+<span class="material-symbols-outlined text-xs">content_copy</span>
+</button>
+</div>
+<div class="text-[10px] text-google-green">Verificado pelo Google Ads CAPI</div>
+</td>
+<td class="py-3 px-3">
+<div class="font-medium">BR_Search_Institucional_MaxConv</div>
+<div class="text-[11px] text-google-text-subtle">Rede de Pesquisa • ID: 819201</div>
+</td>
+<td class="py-3 px-3">
+<span class="font-mono text-[11px] bg-gray-100 px-1.5 py-0.5 rounded border border-google-border-light">
+                  [plataforma omnicanal lead]
+                </span>
+<div class="text-[10px] text-google-text-subtle mt-0.5">Criativo: ad_cr_v4_depoimento_cmo</div>
+</td>
+<td class="py-3 px-3">
+<span class="px-2 py-0.5 rounded text-[11px] font-medium bg-google-green-bg text-google-green border border-[#ceead6]">
+                  Reunião Agendada
+                </span>
+</td>
+<td class="py-3 px-3 text-right">
+<div class="font-mono font-medium">R$ 48.000,00</div>
+<div class="text-[10px] text-google-text-subtle">ARR Projetado</div>
+</td>
+<td class="py-3 px-3 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-50 text-[#681da8] border border-purple-200 font-mono font-medium text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#681da8]"></span>
+                  98
+                </span>
+</td>
+<td class="py-3 px-3 text-right">
+<div class="flex items-center justify-end gap-1 text-google-text-medium">
+<button class="p-1 hover:bg-gray-100 rounded text-google-blue" title="Ver jornada de conversão">
+<span class="material-symbols-outlined text-base">route</span>
+</button>
+<button class="p-1 hover:bg-gray-100 rounded text-google-text-dark" title="Abrir no CRM">
+<span class="material-symbols-outlined text-base">open_in_new</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Lead 2: Lucas Mendes -->
+<tr class="hover:bg-blue-50/40 transition-colors group">
+<td class="py-3 px-3 text-center">
+<input class="rounded border-google-border text-google-blue focus:ring-0 w-3.5 h-3.5" type="checkbox"/>
+</td>
+<td class="py-3 px-3 font-mono text-[11px] text-google-text-medium">
+                CV-90240-BR
+              </td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-purple-600 text-white font-medium text-[11px] flex items-center justify-center shrink-0">
+                    LM
+                  </div>
+<div>
+<div class="font-medium text-google-blue hover:underline cursor-pointer flex items-center gap-1">
+<span>Lucas Mendes</span>
+<span class="material-symbols-outlined text-xs text-google-blue" title="Decisor Técnico">verified</span>
+</div>
+<div class="text-[11px] text-google-text-subtle">CTO - Veloce Cloud Platform</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3">
+<div class="font-mono text-[11px] text-google-text-medium flex items-center gap-1">
+<span>EAIaIQobChMI...54a</span>
+<button class="text-google-text-subtle hover:text-google-blue" title="Copiar GCLID">
+<span class="material-symbols-outlined text-xs">content_copy</span>
+</button>
+</div>
+<div class="text-[10px] text-google-green">Verificado pelo Google Ads CAPI</div>
+</td>
+<td class="py-3 px-3">
+<div class="font-medium">BR_PerformanceMax_Enterprise</div>
+<div class="text-[11px] text-google-text-subtle">PMax Cross-Network • ID: 742110</div>
+</td>
+<td class="py-3 px-3">
+<span class="font-mono text-[11px] bg-gray-100 px-1.5 py-0.5 rounded border border-google-border-light">
+                  "cloud benchmark b2b"
+                </span>
+<div class="text-[10px] text-google-text-subtle mt-0.5">Asset: whitepaper_cloud_v2</div>
+</td>
+<td class="py-3 px-3">
+<span class="px-2 py-0.5 rounded text-[11px] font-medium bg-blue-50 text-google-blue border border-blue-200">
+                  SQL Qualificado
+                </span>
+</td>
+<td class="py-3 px-3 text-right">
+<div class="font-mono font-medium">R$ 65.000,00</div>
+<div class="text-[10px] text-google-text-subtle">Enterprise Fee</div>
+</td>
+<td class="py-3 px-3 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-50 text-[#681da8] border border-purple-200 font-mono font-medium text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#681da8]"></span>
+                  94
+                </span>
+</td>
+<td class="py-3 px-3 text-right">
+<div class="flex items-center justify-end gap-1 text-google-text-medium">
+<button class="p-1 hover:bg-gray-100 rounded text-google-blue" title="Ver jornada de conversão">
+<span class="material-symbols-outlined text-base">route</span>
+</button>
+<button class="p-1 hover:bg-gray-100 rounded text-google-text-dark" title="Abrir no CRM">
+<span class="material-symbols-outlined text-base">open_in_new</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Lead 3: Rodrigo Silveira -->
+<tr class="hover:bg-blue-50/40 transition-colors group">
+<td class="py-3 px-3 text-center">
+<input class="rounded border-google-border text-google-blue focus:ring-0 w-3.5 h-3.5" type="checkbox"/>
+</td>
+<td class="py-3 px-3 font-mono text-[11px] text-google-text-medium">
+                CV-90239-BR
+              </td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#b06000] text-white font-medium text-[11px] flex items-center justify-center shrink-0">
+                    RS
+                  </div>
+<div>
+<div class="font-medium text-google-blue hover:underline cursor-pointer">Rodrigo Silveira</div>
+<div class="text-[11px] text-google-text-subtle">Diretor Marketing - Aurora FinTech</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3">
+<div class="font-mono text-[11px] text-google-text-medium flex items-center gap-1">
+<span>fbclid_IwAR29...k12</span>
+<button class="text-google-text-subtle hover:text-google-blue" title="Copiar ID">
+<span class="material-symbols-outlined text-xs">content_copy</span>
+</button>
+</div>
+<div class="text-[10px] text-google-text-subtle">Meta CAPI Assisted</div>
+</td>
+<td class="py-3 px-3">
+<div class="font-medium">Meta_Retargeting_Feed_VSL</div>
+<div class="text-[11px] text-google-text-subtle">Campanha Social Retarget • ID: 490192</div>
+</td>
+<td class="py-3 px-3">
+<span class="font-mono text-[11px] bg-gray-100 px-1.5 py-0.5 rounded border border-google-border-light">
+                  ad_carousel_comparativo
+                </span>
+<div class="text-[10px] text-google-text-subtle mt-0.5">Destino: /lp/calculadora-roi</div>
+</td>
+<td class="py-3 px-3">
+<span class="px-2 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-google-amber border border-amber-200">
+                  MQL Quente
+                </span>
+</td>
+<td class="py-3 px-3 text-right">
+<div class="font-mono font-medium">R$ 32.500,00</div>
+<div class="text-[10px] text-google-text-subtle">Setup + Mensal</div>
+</td>
+<td class="py-3 px-3 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-50 text-google-blue border border-blue-200 font-mono font-medium text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-google-blue"></span>
+                  88
+                </span>
+</td>
+<td class="py-3 px-3 text-right">
+<div class="flex items-center justify-end gap-1 text-google-text-medium">
+<button class="p-1 hover:bg-gray-100 rounded text-google-blue" title="Ver jornada de conversão">
+<span class="material-symbols-outlined text-base">route</span>
+</button>
+<button class="p-1 hover:bg-gray-100 rounded text-google-text-dark" title="Abrir no CRM">
+<span class="material-symbols-outlined text-base">open_in_new</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Lead 4: Beatriz Lima -->
+<tr class="hover:bg-blue-50/40 transition-colors group">
+<td class="py-3 px-3 text-center">
+<input class="rounded border-google-border text-google-blue focus:ring-0 w-3.5 h-3.5" type="checkbox"/>
+</td>
+<td class="py-3 px-3 font-mono text-[11px] text-google-text-medium">
+                CV-90238-BR
+              </td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-gray-600 text-white font-medium text-[11px] flex items-center justify-center shrink-0">
+                    BL
+                  </div>
+<div>
+<div class="font-medium text-google-blue hover:underline cursor-pointer">Beatriz Lima</div>
+<div class="text-[11px] text-google-text-subtle">CPO - Omnichannel Soluções</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-3">
+<div class="font-mono text-[11px] text-google-text-medium flex items-center gap-1">
+<span>EAIaIQobChMI...32f</span>
+<button class="text-google-text-subtle hover:text-google-blue" title="Copiar GCLID">
+<span class="material-symbols-outlined text-xs">content_copy</span>
+</button>
+</div>
+<div class="text-[10px] text-google-green">Verificado pelo Google Ads CAPI</div>
+</td>
+<td class="py-3 px-3">
+<div class="font-medium">BR_Search_Brand_IntencaoAlta</div>
+<div class="text-[11px] text-google-text-subtle">Rede de Pesquisa • ID: 310940</div>
+</td>
+<td class="py-3 px-3">
+<span class="font-mono text-[11px] bg-gray-100 px-1.5 py-0.5 rounded border border-google-border-light">
+                  +nexacorp +inteligencia +crm
+                </span>
+<div class="text-[10px] text-google-text-subtle mt-0.5">Criativo: an_busca_rsa_texto_v1</div>
+</td>
+<td class="py-3 px-3">
+<span class="px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 text-google-text-medium border border-google-border">
+                  Qualificação IA em Andamento
+                </span>
+</td>
+<td class="py-3 px-3 text-right">
+<div class="font-mono font-medium">R$ 18.000,00</div>
+<div class="text-[10px] text-google-text-subtle">Plano Anual Pro</div>
+</td>
+<td class="py-3 px-3 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-50 text-google-blue border border-blue-200 font-mono font-medium text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-google-blue"></span>
+                  82
+                </span>
+</td>
+<td class="py-3 px-3 text-right">
+<div class="flex items-center justify-end gap-1 text-google-text-medium">
+<button class="p-1 hover:bg-gray-100 rounded text-google-blue" title="Ver jornada de conversão">
+<span class="material-symbols-outlined text-base">route</span>
+</button>
+<button class="p-1 hover:bg-gray-100 rounded text-google-text-dark" title="Abrir no CRM">
+<span class="material-symbols-outlined text-base">open_in_new</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Google Ads Pagination -->
+<div class="px-4 py-3 bg-white border-t border-google-border flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-google-text-medium">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<span>Linhas por página:</span>
+<select class="bg-transparent border-0 text-google-text-dark font-medium py-0 pl-1 pr-6 focus:ring-0 text-xs">
+<option>10</option>
+<option selected="">25</option>
+<option>50</option>
+<option>100</option>
+</select>
+</div>
+<span class="text-google-border">|</span>
+<span>1–4 de 4.890 conversões registradas</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1 rounded hover:bg-gray-100 text-google-text-subtle disabled:opacity-40" disabled="" title="Página anterior">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<span class="text-google-text-dark font-medium">1 / 196</span>
+<button class="p-1 rounded hover:bg-gray-100 text-google-text-dark" title="Próxima página">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+<!-- CALLOUT DE DIAGNÓSTICO DO GOOGLE ADS (Attribution Diagnostic Card) -->
+<div class="p-4 rounded-lg bg-white border border-google-border flex items-start gap-3">
+<span class="material-symbols-outlined text-google-blue text-xl shrink-0 mt-0.5">tips_and_updates</span>
+<div class="space-y-1 text-xs">
+<div class="font-medium text-google-text-dark">Recomendação de Otimização de Lances Offline</div>
+<p class="text-google-text-medium leading-relaxed">
+          Com a correspondência de 99.8% do GCLID via Enhanced Conversions for Leads, a estratégia de lances de <strong>ROAS desejado (tROAS)</strong> na campanha <em>BR_Search_Institucional_MaxConv</em> pode ser elevada em 15% para maximizar o fechamento de oportunidades acima de R$ 40.000,00.
+        </p>
+<div class="pt-1 flex items-center gap-3">
+<button class="text-google-blue font-medium hover:underline flex items-center gap-0.5">
+<span>Aplicar recomendação de lance</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<button class="text-google-text-medium hover:underline">Ver detalhes da simulação</button>
+</div>
+</div>
+</div>
+</main>
+<!-- GOOGLE FOOTER -->
+<footer class="bg-white border-t border-google-border py-3 px-6 mt-auto text-[11px] text-google-text-medium flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-4">
+<span>Google Ads v16.1 • Atribuição &amp; Conversões Offline</span>
+<span>•</span>
+<a class="hover:underline text-google-blue" href="#">Privacidade</a>
+<a class="hover:underline text-google-blue" href="#">Termos</a>
+<a class="hover:underline text-google-blue" href="#">Ajuda sobre Conversões</a>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-google-green"></span>
+<span>Todos os serviços de medição e APIs estão operando normalmente</span>
+</div>
+</footer>
+</body></html>

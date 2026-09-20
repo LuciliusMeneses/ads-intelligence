@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Google Ads - Gestão de Campanhas IA</title>
+<!-- Google Roboto Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&amp;family=Google+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          google: {
+            blue: "#1A73E8",
+            blueDark: "#1557B0",
+            blueHover: "#185ABC",
+            blueLight: "#E8F0FE",
+            grayBg: "#F8F9FA",
+            cardBg: "#FFFFFF",
+            border: "#DADCE0",
+            borderLight: "#E0E0E0",
+            textPrimary: "#202124",
+            textSecondary: "#5F6368",
+            textTertiary: "#80868B",
+            green: "#137333",
+            greenBg: "#E6F4EA",
+            yellow: "#F29900",
+            yellowBg: "#FEF7E0",
+            red: "#D93025",
+            redBg: "#FCE8E6"
+          }
+        },
+        fontFamily: {
+          sans: ["Roboto", "sans-serif"],
+          display: ["Google Sans", "sans-serif"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+  }
+  .material-symbols-outlined.fill {
+    font-variation-settings: 'FILL' 1;
+  }
+  body {
+    font-family: 'Roboto', sans-serif;
+    color: #202124;
+    background-color: #F8F9FA;
+  }
+  /* Google Ads subtle scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f3f4;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #dadce0;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #bdc1c6;
+  }
+</style>
+</head>
+<body class="min-h-screen flex flex-col bg-google-grayBg text-google-textPrimary antialiased">
+<!-- 1. GOOGLE ADS GLOBAL TOPBAR -->
+<header class="bg-white border-b border-google-border sticky top-0 z-50 flex items-center justify-between px-4 h-14 select-none">
+<!-- Left: Logo & Account Switcher -->
+<div class="flex items-center gap-4">
+<button class="p-1.5 hover:bg-gray-100 rounded-full text-google-textSecondary" title="Menu principal">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+<div class="flex items-center gap-2">
+<!-- Google Ads Emblem -->
+<svg class="w-6 h-6" fill="none" viewbox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+<path d="M125.1 27.6c-13.4-7.7-30.6-3.2-38.3 10.2L42.6 114.7c-7.7 13.4-3.2 30.6 10.2 38.3 13.4 7.7 30.6 3.2 38.3-10.2l44.2-76.9c7.7-13.4 3.2-30.6-10.2-38.3z" fill="#FBBC04"></path>
+<path d="M42.4 153c7.7 4.5 17.6 1.8 22.1-5.9l20.4-35.4c-7.7-4.5-17.6-1.8-22.1 5.9l-20.4 35.4z" fill="#4285F4"></path>
+<circle cx="149.6" cy="132.8" fill="#34A853" r="20.4"></circle>
+</svg>
+<span class="font-display font-medium text-lg text-google-textSecondary">Google <span class="font-bold text-google-textPrimary">Ads</span></span>
+</div>
+<!-- Account Details Dropdown Pill -->
+<div class="hidden md:flex items-center gap-2 px-3 py-1 bg-gray-50 hover:bg-gray-100 border border-google-border rounded-full cursor-pointer transition-colors text-sm">
+<span class="font-medium text-google-textPrimary">GrowthOps AI • Conta Principal</span>
+<span class="text-xs text-google-textSecondary font-mono">782-940-1283</span>
+<span class="material-symbols-outlined text-base text-google-textSecondary">arrow_drop_down</span>
+</div>
+</div>
+<!-- Center: Omnibox Search -->
+<div class="hidden lg:flex items-center flex-1 max-w-xl mx-8">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-google-textSecondary text-xl">search</span>
+<input class="w-full bg-google-grayBg hover:bg-gray-100 focus:bg-white border border-transparent focus:border-google-blue rounded-lg pl-10 pr-12 py-2 text-sm text-google-textPrimary placeholder:text-google-textSecondary transition-all outline-none" placeholder="Pesquisar campanhas, ferramentas, relatórios ou termos (Ctrl+/)" type="text"/>
+<kbd class="absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-mono text-google-textSecondary bg-white border border-google-border px-1.5 py-0.5 rounded">⌘K</kbd>
+</div>
+</div>
+<!-- Right Actions -->
+<div class="flex items-center gap-1">
+<!-- Copilot Badge -->
+<div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-google-blueLight text-google-blue rounded-full text-xs font-medium mr-2 border border-google-blue/20">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+<span>Smart Bidding IA Ativo</span>
+</div>
+<button class="p-2 hover:bg-gray-100 rounded-full text-google-textSecondary" title="Relatórios e Painéis">
+<span class="material-symbols-outlined text-xl">bar_chart</span>
+</button>
+<button class="p-2 hover:bg-gray-100 rounded-full text-google-textSecondary" title="Ferramentas e configurações">
+<span class="material-symbols-outlined text-xl">build</span>
+</button>
+<button class="p-2 hover:bg-gray-100 rounded-full text-google-textSecondary relative" title="Notificações">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-google-red rounded-full"></span>
+</button>
+<button class="p-2 hover:bg-gray-100 rounded-full text-google-textSecondary" title="Ajuda">
+<span class="material-symbols-outlined text-xl">help</span>
+</button>
+<!-- User Profile Avatar -->
+<div class="ml-2 pl-2 border-l border-google-border flex items-center">
+<img alt="Foto de Perfil Guilherme Salles" class="w-8 h-8 rounded-full border border-google-border object-cover ring-1 ring-google-blue/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC02EvSL73oNtcXzqDs88QEtYgjGs42xM26mOpzQOwc_9VeJyHyWfjMw0kOq96lS0wrXm1tGkcEapUkXM1AB_HZpzohMEmRMo8u1_Ubc1280vAt3NAUOfeXoBf_KtDbQO9KkTw9qlobFELctwGnBVbzVoRt_kTO3lZI2ZZbT80vke4ENXUR8Ipok_oe9RVU0XM_k5UVYivXhnl0rImARJv95JNXwxGf4tfhjRYwAgX74PnXgBF6xZry"/>
+</div>
+</div>
+</header>
+<!-- 2. SECONDARY GOOGLE ADS SUB-NAV / CONTEXT BAR -->
+<div class="bg-white border-b border-google-border px-6 pt-3 pb-0 flex flex-col md:flex-row md:items-end justify-between gap-3 select-none">
+<!-- Left: Page Title & Navigation Tabs -->
+<div>
+<div class="flex items-center gap-2 mb-2 text-xs text-google-textSecondary">
+<span>Todas as campanhas</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="font-medium text-google-textPrimary">Campanhas IA</span>
+</div>
+<div class="flex items-center gap-3">
+<h1 class="text-2xl font-display font-medium text-google-textPrimary">Campanhas</h1>
+<span class="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-google-textSecondary border border-google-border">28 campanhas ativas</span>
+</div>
+<!-- Google Ads Clean Underlined Tabs -->
+<nav aria-label="Abas de Campanhas" class="flex items-center gap-6 mt-3 text-sm overflow-x-auto">
+<button class="pb-2.5 border-b-[3px] border-google-blue text-google-blue font-medium whitespace-nowrap flex items-center gap-1.5">
+<span>Todas as campanhas</span>
+<span class="text-xs bg-google-blueLight text-google-blue px-1.5 py-0.2 rounded-full">28</span>
+</button>
+<button class="pb-2.5 border-b-[3px] border-transparent text-google-textSecondary hover:text-google-textPrimary font-medium whitespace-nowrap flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-base text-purple-600">auto_awesome</span>
+<span>Performance Max (IA)</span>
+<span class="text-xs bg-gray-100 text-google-textSecondary px-1.5 rounded-full">8</span>
+</button>
+<button class="pb-2.5 border-b-[3px] border-transparent text-google-textSecondary hover:text-google-textPrimary font-medium whitespace-nowrap flex items-center gap-1.5 transition-colors">
+<span>Pesquisa (Search)</span>
+<span class="text-xs bg-gray-100 text-google-textSecondary px-1.5 rounded-full">12</span>
+</button>
+<button class="pb-2.5 border-b-[3px] border-transparent text-google-textSecondary hover:text-google-textPrimary font-medium whitespace-nowrap flex items-center gap-1.5 transition-colors">
+<span>Meta Ads Integrado</span>
+<span class="text-xs bg-gray-100 text-google-textSecondary px-1.5 rounded-full">5</span>
+</button>
+<button class="pb-2.5 border-b-[3px] border-transparent text-google-textSecondary hover:text-google-textPrimary font-medium whitespace-nowrap flex items-center gap-1.5 transition-colors">
+<span>Remarketing Dinâmico</span>
+<span class="text-xs bg-gray-100 text-google-textSecondary px-1.5 rounded-full">3</span>
+</button>
+</nav>
+</div>
+<!-- Right: Date Range Selector Google Style -->
+<div class="flex items-center gap-2 pb-2.5">
+<button class="flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-gray-50 border border-google-border rounded text-sm text-google-textPrimary shadow-sm transition-colors">
+<span class="material-symbols-outlined text-base text-google-textSecondary">calendar_today</span>
+<span class="font-medium">Últimos 30 dias (10 fev - 11 mar de 2025)</span>
+<span class="material-symbols-outlined text-base text-google-textSecondary">arrow_drop_down</span>
+</button>
+<button class="p-1.5 border border-google-border hover:bg-gray-50 rounded text-google-textSecondary shadow-sm" title="Mais opções de período">
+<span class="material-symbols-outlined text-base">more_vert</span>
+</button>
+</div>
+</div>
+<!-- 3. MAIN PAGE CONTAINER -->
+<main class="flex-1 px-6 py-4 space-y-4 max-w-[1720px] w-full mx-auto">
+<!-- NOTIFICATION / AUTOPILOT SMART BIDDING CARD -->
+<section class="bg-white border border-google-border rounded-lg p-4 shadow-sm">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+<!-- Left: Google Ads Smart Bidding status banner -->
+<div class="flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-full bg-google-blueLight flex items-center justify-center text-google-blue shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-2xl">auto_mode</span>
+</div>
+<div>
+<div class="flex items-center gap-2 flex-wrap">
+<h2 class="font-display font-medium text-base text-google-textPrimary">Estratégia de Lances Inteligentes com IA Ativa</h2>
+<span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-google-greenBg text-google-green border border-green-200 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-google-green"></span>
+              Maximizar conversões com tROAS alvo (4.5x)
+            </span>
+</div>
+<p class="text-sm text-google-textSecondary mt-1">
+            O algoritmo de leilão em tempo real da IA está ajustando automaticamente os lances a cada busca nas redes de Pesquisa, Display, PMax e canais sincronizados.
+          </p>
+<div class="flex items-center gap-4 mt-2 text-xs text-google-textSecondary">
+<span class="flex items-center gap-1 text-google-green font-medium">
+<span class="material-symbols-outlined text-sm">verified</span>
+              Meta Ads + Google Ads + TikTok sincronizados
+            </span>
+<span>•</span>
+<span class="font-mono">Latência de ajuste: 120ms</span>
+<span>•</span>
+<span class="text-google-blue font-medium cursor-pointer hover:underline">Ver relatório da estratégia de lances</span>
+</div>
+</div>
+</div>
+<!-- Right: Metric & Autopilot toggle -->
+<div class="flex items-center gap-6 self-end lg:self-center border-t lg:border-t-0 lg:border-l border-google-borderLight pt-3 lg:pt-0 lg:pl-6 shrink-0">
+<!-- AI Cost Savings Metric -->
+<div class="text-right">
+<span class="text-xs text-google-textSecondary block uppercase font-medium tracking-wide">Economia Gerada pela IA</span>
+<div class="flex items-baseline gap-1.5 justify-end">
+<span class="text-2xl font-display font-bold text-google-textPrimary">R$ 18.450</span>
+<span class="text-xs font-semibold text-google-green bg-google-greenBg px-1.5 py-0.5 rounded flex items-center">
+<span class="material-symbols-outlined text-xs">trending_up</span> +16,8%
+            </span>
+</div>
+<span class="text-[11px] text-google-textSecondary">poupados em lances em tempo real</span>
+</div>
+<!-- Pilot Switch Google Style -->
+<div class="flex flex-col items-center gap-1 pl-4 border-l border-google-borderLight">
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-google-blue"></div>
+</label>
+<span class="text-[11px] font-medium text-google-textSecondary">Piloto Automático</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. GOOGLE ADS CAMPAIGN TOOLBAR (FILTERS, NEW CAMPAIGN BUTTON, SEARCH) -->
+<section class="bg-white border border-google-border rounded-t-lg p-3 flex flex-wrap items-center justify-between gap-3 select-none">
+<!-- Left: Iconic + Nova Campanha Button & Filters -->
+<div class="flex items-center flex-wrap gap-2.5">
+<!-- Iconic Google Ads '+ Nova Campanha' Button -->
+<button class="h-9 px-4 rounded-full bg-google-blue hover:bg-google-blueHover text-white font-medium text-sm flex items-center gap-1.5 shadow transition-all active:scale-98">
+<span class="material-symbols-outlined text-lg">add</span>
+<span>Nova campanha</span>
+</button>
+<div class="h-6 w-px bg-google-border mx-1"></div>
+<!-- Filter Dropdown Button Google Style -->
+<div class="flex items-center gap-1 bg-google-grayBg border border-google-border rounded-full px-3 py-1.5 text-xs text-google-textPrimary cursor-pointer hover:bg-gray-100 transition-colors">
+<span class="material-symbols-outlined text-base text-google-textSecondary">filter_list</span>
+<span class="font-medium">Adicionar filtro</span>
+</div>
+<!-- Quick Status Filter Pills -->
+<div class="flex items-center gap-1.5">
+<button class="px-3 py-1 rounded-full text-xs font-medium bg-google-blueLight text-google-blue border border-google-blue/30 flex items-center gap-1">
+<span>Todas as ativadas (22)</span>
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+<button class="px-3 py-1 rounded-full text-xs font-medium bg-white text-google-textSecondary border border-google-border hover:bg-gray-50 flex items-center gap-1">
+<span>Pausadas (6)</span>
+</button>
+<button class="px-3 py-1 rounded-full text-xs font-medium bg-white text-google-textSecondary border border-google-border hover:bg-gray-50 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-google-blue">psychology</span>
+<span>Estratégia Smart Bidding</span>
+</button>
+</div>
+</div>
+<!-- Right: Table Utilities (Search, Columns, Segment, Download) -->
+<div class="flex items-center gap-1">
+<div class="relative">
+<input class="h-8 pl-7 pr-3 bg-white border border-google-border rounded text-xs text-google-textPrimary placeholder:text-google-textSecondary focus:border-google-blue focus:ring-1 focus:ring-google-blue outline-none w-44 lg:w-56" placeholder="Filtrar nesta tabela..." type="text"/>
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-sm text-google-textSecondary">search</span>
+</div>
+<div class="h-5 w-px bg-google-border mx-1"></div>
+<button class="p-1.5 hover:bg-gray-100 rounded text-google-textSecondary" title="Segmentar por tempo, dispositivo ou rede">
+<span class="material-symbols-outlined text-lg">stacked_line_chart</span>
+</button>
+<button class="p-1.5 hover:bg-gray-100 rounded text-google-textSecondary" title="Modificar colunas">
+<span class="material-symbols-outlined text-lg">view_column</span>
+</button>
+<button class="p-1.5 hover:bg-gray-100 rounded text-google-textSecondary" title="Fazer o download (CSV, Planilhas Google)">
+<span class="material-symbols-outlined text-lg">download</span>
+</button>
+<button class="p-1.5 hover:bg-gray-100 rounded text-google-textSecondary" title="Expandir tabela">
+<span class="material-symbols-outlined text-lg">fullscreen</span>
+</button>
+</div>
+</section>
+<!-- 5. MAIN CONTENT SPLIT: DENSE GOOGLE ADS TABLE (8 cols) + ASSET DIAGNOSTICS FLYOUT (4 cols) -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-4 items-start">
+<!-- DATA TABLE SECTION (Col 8) -->
+<div class="xl:col-span-8 bg-white border border-google-border rounded-b-lg overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs border-collapse">
+<!-- Table Header Google Ads Style -->
+<thead>
+<tr class="bg-gray-50 border-b border-google-border text-google-textSecondary uppercase font-medium tracking-wider select-none text-[11px]">
+<th class="py-2.5 px-3 w-8">
+<input class="rounded border-gray-300 text-google-blue focus:ring-0 w-3.5 h-3.5" type="checkbox"/>
+</th>
+<th class="py-2.5 px-2 w-12 text-center">Status</th>
+<th class="py-2.5 px-3 min-w-[220px]">Campanha</th>
+<th class="py-2.5 px-2">Tipo</th>
+<th class="py-2.5 px-3">Orçamento diário</th>
+<th class="py-2.5 px-3 min-w-[150px]">Status da Estratégia de Lances</th>
+<th class="py-2.5 px-2 text-right">Cliques</th>
+<th class="py-2.5 px-2 text-right">Impr.</th>
+<th class="py-2.5 px-2 text-right">CTR</th>
+<th class="py-2.5 px-2 text-right">CPC Médio</th>
+<th class="py-2.5 px-3 text-right">Custo Total</th>
+<th class="py-2.5 px-2 text-right">Conv.</th>
+<th class="py-2.5 px-3 text-right">Custo / Conv.</th>
+<th class="py-2.5 px-3 text-right">ROAS Real</th>
+<th class="py-2.5 px-2 text-center w-8"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-google-borderLight">
+<!-- ROW 1: Google Search Termos Alta Intenção CRM -->
+<tr class="hover:bg-blue-50/40 transition-colors group">
+<td class="py-3 px-3">
+<input class="rounded border-gray-300 text-google-blue focus:ring-0 w-3.5 h-3.5" type="checkbox"/>
+</td>
+<td class="py-3 px-2 text-center">
+<!-- Green Active Dot / Switch -->
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-google-green" title="Ativada"></span>
+</td>
+<td class="py-3 px-3">
+<div class="flex flex-col">
+<a class="font-medium text-google-blue hover:underline text-sm line-clamp-1" href="#">
+                    Google Search - Termos Alta Intenção CRM
+                  </a>
+<div class="flex items-center gap-1.5 text-[11px] text-google-textSecondary mt-0.5">
+<span class="font-mono">ID: 4412</span>
+<span>•</span>
+<span class="text-google-green font-medium flex items-center gap-0.5">
+<span class="material-symbols-outlined text-xs">trending_up</span> +15% orçamento
+                    </span>
+<span>•</span>
+<span>44 Palavras Exatas</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-2">
+<span class="px-2 py-0.5 rounded text-[11px] bg-gray-100 text-google-textSecondary border border-google-border">
+                  Pesquisa
+                </span>
+</td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-1 group/budget">
+<span class="font-medium text-google-textPrimary">R$ 1.730,00</span>
+<button class="opacity-0 group-hover/budget:opacity-100 text-google-textSecondary hover:text-google-blue" title="Editar orçamento inline">
+<span class="material-symbols-outlined text-xs">edit</span>
+</button>
+</div>
+<span class="text-[10px] text-google-textSecondary">Diário</span>
+</td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-google-green"></span>
+<span class="text-google-textPrimary font-medium">Qualificada</span>
+</div>
+<span class="text-[10px] text-google-green block">Aprendizado concluído (IA)</span>
+</td>
+<td class="py-3 px-2 text-right font-mono">1.240</td>
+<td class="py-3 px-2 text-right font-mono">13.932</td>
+<td class="py-3 px-2 text-right font-mono font-medium">8,9%</td>
+<td class="py-3 px-2 text-right font-mono text-google-textSecondary">R$ 42,01</td>
+<td class="py-3 px-3 text-right font-mono font-medium text-google-textPrimary">R$ 52.100</td>
+<td class="py-3 px-2 text-right font-mono font-bold text-google-green">585,0</td>
+<td class="py-3 px-3 text-right font-mono text-google-textPrimary">R$ 89,05</td>
+<td class="py-3 px-3 text-right font-mono font-bold text-google-green">
+                4.6x
+              </td>
+<td class="py-3 px-2 text-center">
+<button class="text-google-textSecondary hover:text-google-textPrimary" title="Mais opções">
+<span class="material-symbols-outlined text-base">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- ROW 2: Meta VIP Lookalike (PMax Multi-canal integrado) -->
+<tr class="hover:bg-blue-50/40 transition-colors group">
+<td class="py-3 px-3">
+<input class="rounded border-gray-300 text-google-blue focus:ring-0 w-3.5 h-3.5" type="checkbox"/>
+</td>
+<td class="py-3 px-2 text-center">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-google-green" title="Ativada"></span>
+</td>
+<td class="py-3 px-3">
+<div class="flex flex-col">
+<a class="font-medium text-google-blue hover:underline text-sm line-clamp-1" href="#">
+                    Topo de Funil - Lookalike VIP 1% B2B
+                  </a>
+<div class="flex items-center gap-1.5 text-[11px] text-google-textSecondary mt-0.5">
+<span class="font-mono">ID: 8921</span>
+<span>•</span>
+<span class="text-google-blue font-medium flex items-center gap-0.5">
+<span class="material-symbols-outlined text-xs">auto_awesome</span> Score IA: 96
+                    </span>
+<span>•</span>
+<span>6 criativos dinâmicos</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-2">
+<span class="px-2 py-0.5 rounded text-[11px] bg-purple-50 text-purple-700 border border-purple-200">
+                  Perf. Max
+                </span>
+</td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-1 group/budget">
+<span class="font-medium text-google-textPrimary">R$ 1.280,00</span>
+<button class="opacity-0 group-hover/budget:opacity-100 text-google-textSecondary hover:text-google-blue" title="Editar orçamento inline">
+<span class="material-symbols-outlined text-xs">edit</span>
+</button>
+</div>
+<span class="text-[10px] text-google-textSecondary">Diário</span>
+</td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-google-green"></span>
+<span class="text-google-textPrimary font-medium">Qualificada</span>
+</div>
+<span class="text-[10px] text-google-textSecondary block">Otimizando tROAS (4.5x)</span>
+</td>
+<td class="py-3 px-2 text-right font-mono">2.285</td>
+<td class="py-3 px-2 text-right font-mono">39.400</td>
+<td class="py-3 px-2 text-right font-mono font-medium">5,8%</td>
+<td class="py-3 px-2 text-right font-mono text-google-textSecondary">R$ 16,80</td>
+<td class="py-3 px-3 text-right font-mono font-medium text-google-textPrimary">R$ 38.400</td>
+<td class="py-3 px-2 text-right font-mono font-bold text-google-green">482,0</td>
+<td class="py-3 px-3 text-right font-mono text-google-textPrimary">R$ 79,66</td>
+<td class="py-3 px-3 text-right font-mono font-bold text-google-green">
+                5.4x
+              </td>
+<td class="py-3 px-2 text-center">
+<button class="text-google-textSecondary hover:text-google-textPrimary" title="Mais opções">
+<span class="material-symbols-outlined text-base">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- ROW 3: Remarketing Dinâmico - Catálogo (CRITICAL ATTENTION) -->
+<tr class="bg-red-50/30 hover:bg-red-50/60 transition-colors group">
+<td class="py-3 px-3">
+<input class="rounded border-gray-300 text-google-blue focus:ring-0 w-3.5 h-3.5" type="checkbox"/>
+</td>
+<td class="py-3 px-2 text-center">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-google-yellow" title="Atenção - Fadiga Criativa"></span>
+</td>
+<td class="py-3 px-3">
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<a class="font-medium text-google-blue hover:underline text-sm line-clamp-1" href="#">
+                      Remarketing Dinâmico - Catálogo SaaS &amp; B2B
+                    </a>
+</div>
+<div class="flex items-center gap-1.5 text-[11px] text-google-red mt-0.5 font-medium">
+<span class="material-symbols-outlined text-xs">warning</span>
+<span>Fadiga Criativa Detectada (Freq. 6.1x)</span>
+<span class="text-google-textSecondary font-normal">• ID: 1099</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-2">
+<span class="px-2 py-0.5 rounded text-[11px] bg-gray-100 text-google-textSecondary border border-google-border">
+                  Display
+                </span>
+</td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-1 group/budget">
+<span class="font-medium text-google-textPrimary">R$ 820,00</span>
+<button class="opacity-0 group-hover/budget:opacity-100 text-google-textSecondary hover:text-google-blue" title="Editar orçamento inline">
+<span class="material-symbols-outlined text-xs">edit</span>
+</button>
+</div>
+<span class="text-[10px] text-google-textSecondary">Diário</span>
+</td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-google-yellow"></span>
+<span class="text-google-textPrimary font-medium">Limitada</span>
+</div>
+<span class="text-[10px] text-google-red block">Queda de CTR (-28% em 72h)</span>
+</td>
+<td class="py-3 px-2 text-right font-mono">1.042</td>
+<td class="py-3 px-2 text-right font-mono">127.000</td>
+<td class="py-3 px-2 text-right font-mono text-google-red font-medium">0,82%</td>
+<td class="py-3 px-2 text-right font-mono text-google-textSecondary">R$ 23,80</td>
+<td class="py-3 px-3 text-right font-mono font-medium text-google-textPrimary">R$ 24.800</td>
+<td class="py-3 px-2 text-right font-mono text-google-textSecondary">142,0</td>
+<td class="py-3 px-3 text-right font-mono text-google-red font-medium">R$ 174,64</td>
+<td class="py-3 px-3 text-right font-mono text-google-yellow font-medium">
+                3.2x
+              </td>
+<td class="py-3 px-2 text-center">
+<button class="text-google-textSecondary hover:text-google-textPrimary" title="Mais opções">
+<span class="material-symbols-outlined text-base">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- ROW 4: Brand Protection - Palavras da Marca -->
+<tr class="hover:bg-blue-50/40 transition-colors group">
+<td class="py-3 px-3">
+<input class="rounded border-gray-300 text-google-blue focus:ring-0 w-3.5 h-3.5" type="checkbox"/>
+</td>
+<td class="py-3 px-2 text-center">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-google-green" title="Ativada"></span>
+</td>
+<td class="py-3 px-3">
+<div class="flex flex-col">
+<a class="font-medium text-google-blue hover:underline text-sm line-clamp-1" href="#">
+                    Institucional &amp; Proteção de Marca GrowthOps
+                  </a>
+<div class="flex items-center gap-1.5 text-[11px] text-google-textSecondary mt-0.5">
+<span class="font-mono">ID: 3004</span>
+<span>•</span>
+<span>Parcela de Impressões: 98,2%</span>
+</div>
+</div>
+</td>
+<td class="py-3 px-2">
+<span class="px-2 py-0.5 rounded text-[11px] bg-gray-100 text-google-textSecondary border border-google-border">
+                  Pesquisa
+                </span>
+</td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-1 group/budget">
+<span class="font-medium text-google-textPrimary">R$ 350,00</span>
+<button class="opacity-0 group-hover/budget:opacity-100 text-google-textSecondary hover:text-google-blue" title="Editar orçamento inline">
+<span class="material-symbols-outlined text-xs">edit</span>
+</button>
+</div>
+<span class="text-[10px] text-google-textSecondary">Diário</span>
+</td>
+<td class="py-3 px-3">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-google-green"></span>
+<span class="text-google-textPrimary font-medium">Qualificada</span>
+</div>
+<span class="text-[10px] text-google-green block">Maximizar cliques (tCPA)</span>
+</td>
+<td class="py-3 px-2 text-right font-mono">3.410</td>
+<td class="py-3 px-2 text-right font-mono">14.120</td>
+<td class="py-3 px-2 text-right font-mono font-medium">24,1%</td>
+<td class="py-3 px-2 text-right font-mono text-google-textSecondary">R$ 2,15</td>
+<td class="py-3 px-3 text-right font-mono font-medium text-google-textPrimary">R$ 7.330</td>
+<td class="py-3 px-2 text-right font-mono font-bold text-google-green">380,0</td>
+<td class="py-3 px-3 text-right font-mono text-google-textPrimary">R$ 19,28</td>
+<td class="py-3 px-3 text-right font-mono font-bold text-google-green">
+                8.2x
+              </td>
+<td class="py-3 px-2 text-center">
+<button class="text-google-textSecondary hover:text-google-textPrimary" title="Mais opções">
+<span class="material-symbols-outlined text-base">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+<!-- Table Footer Total Summary -->
+<tfoot>
+<tr class="bg-gray-100 font-medium text-google-textPrimary border-t-2 border-google-border text-xs">
+<td class="py-3 px-3"></td>
+<td class="py-3 px-2 text-center font-bold">Total</td>
+<td class="py-3 px-3 font-bold">Total: Campanhas Selecionadas (4)</td>
+<td class="py-3 px-2">—</td>
+<td class="py-3 px-3 font-bold">R$ 4.180,00/dia</td>
+<td class="py-3 px-3">—</td>
+<td class="py-3 px-2 text-right font-mono font-bold">7.977</td>
+<td class="py-3 px-2 text-right font-mono font-bold">194.452</td>
+<td class="py-3 px-2 text-right font-mono font-bold">4,1%</td>
+<td class="py-3 px-2 text-right font-mono font-bold">R$ 15,37</td>
+<td class="py-3 px-3 text-right font-mono font-bold">R$ 122.630</td>
+<td class="py-3 px-2 text-right font-mono font-bold">1.589,0</td>
+<td class="py-3 px-3 text-right font-mono font-bold">R$ 77,17</td>
+<td class="py-3 px-3 text-right font-mono font-bold text-google-green">5.1x</td>
+<td class="py-3 px-2"></td>
+</tr>
+</tfoot>
+</table>
+</div>
+<!-- Table Pagination Bar Google Style -->
+<div class="px-4 py-2.5 bg-white border-t border-google-border flex items-center justify-between text-xs text-google-textSecondary">
+<div class="flex items-center gap-2">
+<span>Linhas por página:</span>
+<select class="border border-google-border rounded px-1.5 py-0.5 text-xs text-google-textPrimary bg-white focus:outline-none">
+<option>10</option>
+<option selected="">20</option>
+<option>50</option>
+</select>
+</div>
+<div class="flex items-center gap-4">
+<span>1 - 4 de 28 campanhas</span>
+<div class="flex items-center gap-1">
+<button class="p-1 hover:bg-gray-100 rounded disabled:opacity-40" disabled="">
+<span class="material-symbols-outlined text-base">chevron_left</span>
+</button>
+<button class="p-1 hover:bg-gray-100 rounded">
+<span class="material-symbols-outlined text-base">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- LATERAL FLYOUT: ASSET DIAGNOSTICS & CREATIVE HEALTH (Col 4) -->
+<aside class="xl:col-span-4 bg-white border border-google-border rounded-lg p-4 shadow-sm space-y-4">
+<!-- Panel Header Google Ads Style -->
+<div class="flex items-start justify-between border-b border-google-border pb-3">
+<div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-google-blue text-xl">verified_user</span>
+<h3 class="font-display font-medium text-base text-google-textPrimary">Integridade dos Ativos do Anúncio</h3>
+</div>
+<p class="text-xs text-google-textSecondary mt-0.5">Diagnóstico IA para "Remarketing Dinâmico - Catálogo"</p>
+</div>
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-google-redBg text-google-red border border-red-200">
+          Ação Recomendada
+        </span>
+</div>
+<!-- Overall Quality Gauge -->
+<div class="bg-google-grayBg rounded-lg p-3.5 border border-google-border">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-medium text-google-textSecondary">Qualidade Geral do Anúncio</span>
+<span class="text-xs font-bold text-google-yellow flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">warning</span> Média (Precisa de novos títulos)
+          </span>
+</div>
+<!-- Progress Bars for Assets Google Ads style -->
+<div class="grid grid-cols-4 gap-1.5 h-2">
+<div class="bg-google-green rounded-full" title="Títulos: Bom"></div>
+<div class="bg-google-green rounded-full" title="Imagens: Bom"></div>
+<div class="bg-google-yellow rounded-full" title="Descrições: Médio"></div>
+<div class="bg-gray-200 rounded-full" title="Vídeos: Ausente"></div>
+</div>
+<div class="flex justify-between text-[10px] text-google-textSecondary mt-1.5">
+<span>Ruim</span>
+<span>Médio</span>
+<span class="font-medium text-google-green">Bom</span>
+<span>Excelente</span>
+</div>
+</div>
+<!-- Fatigue Alert Banner with Creative Thumbnails -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium text-google-textPrimary">Ativos em Fadiga vs. Sugeridos pela IA</span>
+<span class="text-[11px] text-google-blue hover:underline cursor-pointer">Ver todos os 18</span>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<!-- Fatigued Asset Thumbnail -->
+<div class="border border-google-border rounded-lg overflow-hidden bg-white hover:border-red-300 transition-all">
+<div class="relative h-24 w-full bg-gray-100">
+<img alt="Banner Atual com Fadiga" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbBqp__BnMGMivqgL90PQVVz9yM1l-iBhd6Id-ipPnE6Q7NVlfELmCzZM9D1ehmdnC9jc3nQV6C7vdKsAFyb3HVK6mXjWclDlIWa47lAxnVXAS1i7CIqufGMo4CMVzpUD7drtGkxEnwVNQ75zvmtfwp8ro1EjtdM1Gg_uZj3kn9ou3-LRmganp8CHMrBS-kKs0587oCcfxFHzWqkR-2JdZa5l9CHmPTnh3I_qDWxbaa0SikqSQBlIu"/>
+<span class="absolute top-1.5 left-1.5 bg-google-red text-white text-[10px] font-semibold px-1.5 py-0.2 rounded shadow">
+                Fadiga 91%
+              </span>
+</div>
+<div class="p-2 text-left">
+<span class="text-[11px] font-medium text-google-textPrimary block truncate">Banner_V1_Dashboard.png</span>
+<span class="text-[10px] text-google-red font-mono font-medium">CTR Atual: 0,61%</span>
+</div>
+</div>
+<!-- Suggested Asset Replacement -->
+<div class="border-2 border-google-green/40 rounded-lg overflow-hidden bg-white hover:border-google-green transition-all relative">
+<div class="relative h-24 w-full bg-gray-100">
+<img alt="Novo Ativo Sugerido pela IA" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBXXhwsa3GK0k9jyV5qlEj8oS-Er0bDTHtu-j8JtG7r8gFWL4mxSKdeynJ2yUQz4kefZ5d0aIa2BwfRYyuNFk85RPhTGGBt_jVWbhIp6sfys5Mjxp9E0fsNYhI9lrlnwQFp2mB-XhChbOpn9Rob3Ky_5_yCQDCDExWCXUqkFCs2LCkTN1D9mg2f6eqEClej46WVy6eD2sBYahJwmQpdiWmI_znxttU8-0demLCL6Ez603FVffrraG5"/>
+<span class="absolute top-1.5 left-1.5 bg-google-green text-white text-[10px] font-semibold px-1.5 py-0.2 rounded shadow flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[10px]">auto_awesome</span> Sugerido IA
+              </span>
+</div>
+<div class="p-2 text-left">
+<span class="text-[11px] font-medium text-google-textPrimary block truncate">Neural_Engine_3D.png</span>
+<span class="text-[10px] text-google-green font-mono font-medium">CTR Estimado: 2,14%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Suggested Headlines & Descriptions (Google Ads Asset Table) -->
+<div class="space-y-2 pt-1 border-t border-google-border">
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium text-google-textPrimary">Sugestões de Textos Geradas por IA</span>
+<span class="text-[10px] text-google-green bg-google-greenBg px-1.5 py-0.2 rounded font-medium">+34% Previsão Conversão</span>
+</div>
+<div class="space-y-1.5">
+<!-- Text Asset Item 1 -->
+<div class="p-2 rounded border border-google-border hover:bg-gray-50 flex items-start justify-between gap-2 text-xs">
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-1 text-[10px] text-google-textSecondary mb-0.5">
+<span class="font-medium text-google-blue">Título (30 caracteres)</span>
+<span>•</span>
+<span class="text-google-green">Excelente</span>
+</div>
+<p class="text-google-textPrimary font-medium truncate">"Automatize Seus Lances com IA"</p>
+</div>
+<button class="px-2 py-1 bg-white hover:bg-google-blueLight text-google-blue border border-google-border rounded text-[11px] font-medium shrink-0 transition-colors">
+              + Aplicar
+            </button>
+</div>
+<!-- Text Asset Item 2 -->
+<div class="p-2 rounded border border-google-border hover:bg-gray-50 flex items-start justify-between gap-2 text-xs">
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-1 text-[10px] text-google-textSecondary mb-0.5">
+<span class="font-medium text-google-blue">Descrição (90 caracteres)</span>
+<span>•</span>
+<span class="text-google-green">Excelente</span>
+</div>
+<p class="text-google-textPrimary font-medium text-[11px] line-clamp-2">"Reduza até 30% do CPA médio usando o copiloto de campanhas preditivo. Comece hoje."</p>
+</div>
+<button class="px-2 py-1 bg-white hover:bg-google-blueLight text-google-blue border border-google-border rounded text-[11px] font-medium shrink-0 transition-colors">
+              + Aplicar
+            </button>
+</div>
+</div>
+</div>
+<!-- Bottom Action Button Google Style -->
+<div class="pt-2">
+<button class="w-full py-2 px-3 bg-google-blue hover:bg-google-blueHover text-white rounded font-medium text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all">
+<span class="material-symbols-outlined text-base">check_circle</span>
+<span>Aprovar Substituição de Ativos (1 Clique)</span>
+</button>
+<p class="text-[10px] text-center text-google-textSecondary mt-1.5">
+          A IA aplicará as alterações e fará teste A/B automático durante 7 dias.
+        </p>
+</div>
+</aside>
+</div>
+</main>
+</body></html>

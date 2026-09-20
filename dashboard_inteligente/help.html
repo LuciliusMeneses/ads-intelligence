@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GrowthOps AI - Centro de Ajuda, Manual & Configuração</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-dim": "#0f131d",
+            "surface-container-highest": "#313540",
+            "tertiary": "#4cd7f6",
+            "surface-container": "#1c1f2a",
+            "surface": "#0f131d",
+            "surface-tint": "#c0c1ff",
+            "surface-container-high": "#262a35",
+            "on-surface": "#dfe2f1",
+            "surface-container-low": "#171b26",
+            "primary": "#c0c1ff",
+            "secondary": "#d0bcff",
+            "background": "#0f131d"
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen">
+  <!-- SIDE NAVIGATION -->
+  <aside class="w-64 fixed h-screen z-40 bg-surface-container-low border-r border-slate-800 shadow-2xl flex flex-col justify-between p-4 select-none">
+    <div class="flex flex-col gap-6">
+      <div class="px-2 pt-2">
+        <div class="text-headline-sm font-bold text-on-surface flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-md">
+            <span class="material-symbols-outlined" data-icon="auto_mode">auto_mode</span>
+          </div>
+          <div>
+            <span class="tracking-tight text-on-surface">GrowthOps AI</span>
+            <span class="block text-xs font-normal text-primary">Autonomous Ad Engine</span>
+          </div>
+        </div>
+      </div>
+      <nav class="flex flex-col gap-1.5 text-sm">
+        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition" href="/">
+          <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span><span>Visão Geral</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition" href="/campaigns">
+          <span class="material-symbols-outlined" data-icon="auto_mode">auto_mode</span><span>Campanhas IA</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition" href="/crm">
+          <span class="material-symbols-outlined" data-icon="account_tree">account_tree</span><span>CRM &amp; Pipeline</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition" href="/competitors">
+          <span class="material-symbols-outlined" data-icon="radar">radar</span><span>Radar de Concorrentes</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition" href="/finance">
+          <span class="material-symbols-outlined" data-icon="account_balance_wallet">wallet</span><span>Área Financeira</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-600/20 text-indigo-300 font-semibold border-l-2 border-indigo-500" href="/help">
+          <span class="material-symbols-outlined text-indigo-400" data-icon="help_center">help</span><span>Ajuda &amp; Manual</span>
+        </a>
+      </nav>
+    </div>
+    <div class="pt-3 border-t border-slate-800 text-xs text-slate-400">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Gateway 9Router: Ativo</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN HELP CANVAS -->
+  <div class="pl-64 flex flex-col flex-1 w-full min-w-0">
+    <header class="bg-surface-container/80 backdrop-blur-md sticky top-0 z-30 border-b border-slate-800 px-8 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-indigo-400 text-2xl" data-icon="menu_book">menu_book</span>
+        <h1 class="text-xl font-bold text-white">Centro de Ajuda, Guia de Funções &amp; Manual do Sistema</h1>
+      </div>
+      <a href="/" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-lg transition">Voltar ao Cockpit</a>
+    </header>
+
+    <main class="p-8 max-w-6xl mx-auto space-y-8">
+      <!-- Intro Section -->
+      <div class="bg-surface-container border border-slate-800 rounded-2xl p-6 space-y-3">
+        <span class="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold rounded-full uppercase tracking-wider">Manual Executivo do ADS INTELLIGENCE</span>
+        <h2 class="text-2xl font-bold text-white">Arquitetura de Inteligência Híbrida & Governança</h2>
+        <p class="text-slate-300 text-sm leading-relaxed">
+          O ADS INTELLIGENCE combina <strong>regras determinísticas matemáticas</strong> (cálculo de margem, ROAS, CPA e break-even), <strong>persistência relacional real (Supabase PostgreSQL com RLS e idempotência)</strong> e <strong>raciocínio de IA via gateway 9Router</strong>. A IA atua como equipa de consultores especializados e nunca decide publicar campanhas ou alterar preços sem aprovação humana direta no <strong>Human Approval Gate</strong>.
+        </p>
+      </div>
+
+      <!-- Quick Nav Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <a href="#swarm" class="p-4 bg-surface-container-low border border-slate-800 rounded-xl hover:border-indigo-500/50 transition">
+          <span class="material-symbols-outlined text-indigo-400 text-2xl mb-2" data-icon="groups">groups</span>
+          <h3 class="font-bold text-white text-sm">1. Os 7 Especialistas</h3>
+          <p class="text-xs text-slate-400 mt-1">Conheça as regras de cada agente do Swarm.</p>
+        </a>
+        <a href="#engines" class="p-4 bg-surface-container-low border border-slate-800 rounded-xl hover:border-indigo-500/50 transition">
+          <span class="material-symbols-outlined text-emerald-400 text-2xl mb-2" data-icon="verified_user">verified_user</span>
+          <h3 class="font-bold text-white text-sm">2. Governança</h3>
+          <p class="text-xs text-slate-400 mt-1">Confidence Engine V2, Auditor e Approval Gate.</p>
+        </a>
+        <a href="#finance" class="p-4 bg-surface-container-low border border-slate-800 rounded-xl hover:border-emerald-500/50 transition">
+          <span class="material-symbols-outlined text-emerald-400 text-2xl mb-2" data-icon="shield">shield</span>
+          <h3 class="font-bold text-white text-sm">3. Segurança Financeira</h3>
+          <p class="text-xs text-slate-400 mt-1">Circuit Breaker e teto de gastos diários.</p>
+        </a>
+        <a href="#config" class="p-4 bg-surface-container-low border border-slate-800 rounded-xl hover:border-sky-500/50 transition">
+          <span class="material-symbols-outlined text-sky-400 text-2xl mb-2" data-icon="settings">settings</span>
+          <h3 class="font-bold text-white text-sm">4. Configuração</h3>
+          <p class="text-xs text-slate-400 mt-1">Variáveis .env, 9Router e Supabase.</p>
+        </a>
+      </div>
+
+      <!-- Section 1: The 7 Specialists -->
+      <section id="swarm" class="space-y-4 pt-4 border-t border-slate-800">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <span class="material-symbols-outlined text-indigo-400" data-icon="psychology">psychology</span>
+          <span>1. A Equipa Virtual dos 7 Especialistas IA (Swarm V2)</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="p-4 bg-surface-container border border-slate-800 rounded-xl space-y-2">
+            <h4 class="font-bold text-sky-400 text-sm">1. Market Intelligence</h4>
+            <p class="text-slate-300">Analisa pesquisas externas existentes no Supabase (Meta Ads Library, Google Trends, SimilarWeb) sem inventar referências ou alucinar pesquisas autônomas.</p>
+          </div>
+          <div class="p-4 bg-surface-container border border-slate-800 rounded-xl space-y-2">
+            <h4 class="font-bold text-sky-400 text-sm">2. Audience Strategist</h4>
+            <p class="text-slate-300">Formula hipóteses de segmentação (Broad, Lookalike, Remarketing) baseadas na demografia real e dados do histórico da marca.</p>
+          </div>
+          <div class="p-4 bg-surface-container border border-slate-800 rounded-xl space-y-2">
+            <h4 class="font-bold text-sky-400 text-sm">3. Media Strategist</h4>
+            <p class="text-slate-300">Estrutura o plano de distribuição orçamentária no funil (padrão 70% Aquisição / 30% Remarketing) conforme as restrições de orçamento.</p>
+          </div>
+          <div class="p-4 bg-surface-container border border-slate-800 rounded-xl space-y-2">
+            <h4 class="font-bold text-sky-400 text-sm">4. Performance Analyst</h4>
+            <p class="text-slate-300">Interpreta o histórico paramétrico de ROAS, CPA, CTR e CVR. Dispara gatilhos de escala e alerta sobre saturação de frequência.</p>
+          </div>
+          <div class="p-4 bg-surface-container border border-slate-800 rounded-xl space-y-2">
+            <h4 class="font-bold text-sky-400 text-sm">5. Offer Strategist</h4>
+            <p class="text-slate-300">Analisa preço atual, preço de mercado e margem de contribuição. Protege o break-even point e o teto de CAC aceitável.</p>
+          </div>
+          <div class="p-4 bg-surface-container border border-slate-800 rounded-xl space-y-2">
+            <h4 class="font-bold text-sky-400 text-sm">6. Creative Strategist (Regra Crítica)</h4>
+            <p class="text-slate-300"><strong class="text-amber-400">REGRA ABSOLUTA:</strong> Atua estritamente como Creative Direction Engine. <strong>NUNCA gera ou edita ficheiros finais de imagem ou vídeo.</strong> Fornece apenas briefings (formato 9:16, conceitos, ganchos e CTA).</p>
+          </div>
+          <div class="p-4 bg-surface-container border border-slate-800 rounded-xl space-y-2 md:col-span-2">
+            <h4 class="font-bold text-indigo-400 text-sm">7. Ads Orchestrator</h4>
+            <p class="text-slate-300">Consolida os relatórios dos 6 especialistas, conduz revisão adversarial (desafia riscos financeiros e premissas) e deteta contradições antes de submeter ao Approval Gate.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Financial Guard -->
+      <section id="finance" class="space-y-4 pt-4 border-t border-slate-800">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <span class="material-symbols-outlined text-emerald-400" data-icon="shield">shield</span>
+          <span>2. Segurança de Investimento & Financial Guard</span>
+        </h2>
+        <div class="p-4 bg-surface-container border border-slate-800 rounded-xl space-y-2 text-xs">
+          <h4 class="font-bold text-emerald-400 text-sm">Circuit Breaker & Proteção de Gastos</h4>
+          <p class="text-slate-300">A Área Financeira monitora em tempo real os leilões de anúncios e impede aumentos abusivos de orçamento diário. Qualquer proposta de orçamento acima do teto estipulado é sumariamente bloqueada com o erro <code>Financial Guard Violation</code>.</p>
+        </div>
+      </section>
+
+      <!-- Section 3: Configuration Guide -->
+      <section id="config" class="space-y-4 pt-4 border-t border-slate-800">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <span class="material-symbols-outlined text-sky-400" data-icon="terminal">terminal</span>
+          <span>3. Guia de Configuração &amp; Variáveis de Ambiente (.env)</span>
+        </h2>
+        <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl font-mono text-xs text-sky-300 space-y-2 overflow-x-auto">
+          <p class="text-slate-400"># Ficheiro C:\dev\crm_ads\.env</p>
+          <p>SUPABASE_URL=https://sua-instancia.supabase.co</p>
+          <p>SUPABASE_SERVICE_ROLE_KEY=sua-chave-service-role</p>
+          <p>NINEROUTER_BASE_URL=https://api.9router.com/v1</p>
+          <p>NINEROUTER_API_KEY=sua-chave-api-9router</p>
+          <p>NINEROUTER_DEFAULT_MODEL=gpt-4o</p>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

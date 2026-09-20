@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>GrowthOps AI - Área Financeira & Segurança de Investimento</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/google-ads-theme.js"></script>
+  <script>
+    tailwind.config = window.googleAdsTailwindConfig;
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body class="bg-google-bg text-google-text font-sans antialiased min-h-screen">
+  <!-- SIDE NAVIGATION (GOOGLE ADS STYLE) -->
+  <aside class="w-64 fixed h-screen z-40 bg-google-card border-r border-google-outline flex flex-col p-4 shadow-sm">
+    <div class="px-2 pt-2 mb-8">
+      <div class="text-lg font-bold text-google-text flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-google-primary flex items-center justify-center text-white">
+          <span class="material-symbols-outlined">account_balance_wallet</span>
+        </div>
+        <span>GrowthOps AI</span>
+      </div>
+    </div>
+    <nav class="flex flex-col gap-1">
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/">
+        <span class="material-symbols-outlined">dashboard</span><span>Visão Geral</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/campaigns">
+        <span class="material-symbols-outlined">auto_mode</span><span>Campanhas IA</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/crm">
+        <span class="material-symbols-outlined">account_tree</span><span>CRM & Pipeline</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/competitors">
+        <span class="material-symbols-outlined">radar</span><span>Radar de Concorrentes</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full bg-google-primary/10 text-google-primary font-bold border-l-4 border-google-primary" href="/finance">
+        <span class="material-symbols-outlined">account_balance_wallet</span><span>Área Financeira</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/help">
+        <span class="material-symbols-outlined">help</span><span>Ajuda & Manual</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT WRAPPER -->
+  <div class="pl-64 flex flex-col min-h-screen bg-google-bg">
+    <!-- TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-30 bg-white border-b border-google-outline flex items-center justify-between px-8 py-3 w-full">
+      <div class="flex items-center gap-4">
+        <div class="text-google-textSecondary text-sm font-medium">Área Financeira</div>
+      </div>
+      <div class="flex items-center gap-4">
+        <button onclick="openBudgetModal()" class="px-4 py-2 bg-google-primary hover:bg-google-primaryHover text-white font-semibold text-xs rounded-full transition">Configurar Limites de Segurança</button>
+      </div>
+    </header>
+
+    <main class="p-6 lg:p-8 flex flex-col gap-6 max-w-[1600px] w-full mx-auto">
+      <!-- Top Financial Metrics -->
+      <section class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-google-card border border-google-outline rounded-xl p-6 hover:shadow-md transition">
+          <p class="text-xs text-google-textSecondary font-bold uppercase tracking-wider">Investimento Acumulado (Mês)</p>
+          <h3 class="text-2xl font-bold text-google-text mt-3" id="finSpend">R$ 0,00</h3>
+        </div>
+        <div class="bg-google-card border border-google-outline rounded-xl p-6 hover:shadow-md transition">
+          <p class="text-xs text-google-textSecondary font-bold uppercase tracking-wider">Receita Atribuída</p>
+          <h3 class="text-2xl font-bold text-google-success mt-3" id="finRevenue">R$ 0,00</h3>
+        </div>
+        <div class="bg-google-card border border-google-outline rounded-xl p-6 hover:shadow-md transition">
+          <p class="text-xs text-google-textSecondary font-bold uppercase tracking-wider">Circuit Breaker (Teto Diário)</p>
+          <h3 class="text-2xl font-bold text-google-primary mt-3" id="finMaxSpike">R$ 0,00</h3>
+        </div>
+        <div class="bg-google-card border border-google-outline rounded-xl p-6 hover:shadow-md transition">
+          <p class="text-xs text-google-textSecondary font-bold uppercase tracking-wider">Estado de Segurança</p>
+          <h3 class="text-2xl font-bold text-google-success mt-3">PROTEGIDO</h3>
+        </div>
+      </section>
+
+      <!-- Financial Guard Controls -->
+      <section class="bg-google-card border border-google-outline rounded-xl p-6 lg:p-8 flex flex-col gap-6 shadow-sm">
+        <div class="flex items-center justify-between border-b border-google-outline pb-4">
+          <h3 class="text-lg font-bold text-google-text flex items-center gap-2">
+            <span class="material-symbols-outlined text-google-primary">lock</span>
+            <span>Mecanismos de Segurança de Investimento (Financial Guard V2)</span>
+          </h3>
+          <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800 border border-green-200">Ativo & Operacional</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+          <div class="p-4 bg-google-bg rounded-xl border border-google-outline space-y-2">
+            <h4 class="font-bold text-google-primary text-sm">1. Circuit Breaker Automático</h4>
+            <p class="text-xs text-google-textSecondary">Interrompe automaticamente qualquer proposta de escala de orçamento que ultrapasse o limite diário seguro configurado.</p>
+          </div>
+          <div class="p-4 bg-google-bg rounded-xl border border-google-outline space-y-2">
+            <h4 class="font-bold text-google-primary text-sm">2. Teto de CAC e Margem</h4>
+            <p class="text-xs text-google-textSecondary">O Offer Strategist valida permanentemente se o custo de aquisição está abaixo do teto sustentável de 65%.</p>
+          </div>
+          <div class="p-4 bg-google-bg rounded-xl border border-google-outline space-y-2">
+            <h4 class="font-bold text-google-primary text-sm">3. Auditoria Imutável (Ledger)</h4>
+            <p class="text-xs text-google-textSecondary">Cada transação é registrada num livro-razão com assinatura temporal, garantindo auditoria financeira em tempo real.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ledger Table -->
+      <section class="bg-google-card border border-google-outline rounded-xl p-6 lg:p-8 flex flex-col gap-6 shadow-sm">
+        <h3 class="text-lg font-bold text-google-text">Livro-Razão Financeiro</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-google-outline text-google-textSecondary text-xs uppercase font-medium">
+                <th class="py-3 px-4">Timestamp</th><th class="py-3 px-4">Tipo</th><th class="py-3 px-4">Canal</th><th class="py-3 px-4">Montante</th><th class="py-3 px-4">ROAS</th><th class="py-3 px-4">Status</th>
+              </tr>
+            </thead>
+            <tbody id="ledgerTableBody" class="divide-y divide-google-outline/50 text-sm"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal de Configuração Financeira -->
+  <div id="budgetModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+    <div class="bg-google-card border border-google-outline rounded-xl p-6 w-full max-w-md space-y-4 shadow-xl">
+      <h3 class="font-bold text-google-text text-lg">Configurar Limites do Financial Guard</h3>
+      <div>
+        <label class="text-xs font-semibold text-google-textSecondary block mb-1">Teto Máximo de Pico Diário (R$)</label>
+        <input type="number" id="inputMaxSpike" class="w-full bg-google-bg border border-google-outline rounded-lg px-3 py-2 text-sm text-google-text focus:outline-none focus:border-google-primary" />
+      </div>
+      <div class="flex items-center justify-end space-x-3 pt-3">
+        <button onclick="closeBudgetModal()" class="px-4 py-2 rounded-full text-xs font-semibold text-google-textSecondary hover:bg-google-bg">Cancelar</button>
+        <button onclick="saveBudgetLimits()" class="px-5 py-2 bg-google-primary hover:bg-google-primaryHover text-white rounded-full text-xs font-bold">Salvar Limites</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function loadFinanceData() {
+      try {
+        const res = await fetch('/api/state');
+        const data = await res.json();
+        const currency = window.AdsCurrency || { format: (v) => 'R$ ' + v.toLocaleString('pt-BR') };
+
+        document.getElementById('finSpend').innerText = currency.format(data.systemState.performanceMetrics.spend);
+        document.getElementById('finRevenue').innerText = currency.format(data.systemState.performanceMetrics.revenue);
+        document.getElementById('finMaxSpike').innerText = currency.format(data.systemState.budgetConstraints.maxAllowableDailySpike);
+
+        const ledgerRes = await fetch('/api/finance/ledger');
+        const ledger = await ledgerRes.json();
+        document.getElementById('ledgerTableBody').innerHTML = ledger.map(t => `
+          <tr class="hover:bg-google-bg/50">
+            <td class="py-3 px-4 font-mono text-google-textSecondary">${t.timestamp}</td>
+            <td class="py-3 px-4"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${t.type === 'SPEND' ? 'bg-amber-100 text-amber-800' : 'bg-green-100 text-green-800'}">${t.type}</span></td>
+            <td class="py-3 px-4 font-medium text-google-text">${t.channel}</td>
+            <td class="py-3 px-4 font-mono font-bold text-google-text">${currency.format(t.amount)}</td>
+            <td class="py-3 px-4 font-mono text-google-primary">${t.roas > 0 ? t.roas + 'x' : '—'}</td>
+            <td class="py-3 px-4 text-google-textSecondary text-[10px] font-semibold">${t.status}</td>
+          </tr>
+        `).join('');
+      } catch(e) {
+        console.error(e);
+      }
+    }
+
+    function openBudgetModal() {
+      document.getElementById('budgetModal').classList.remove('hidden');
+    }
+    function closeBudgetModal() {
+      document.getElementById('budgetModal').classList.add('hidden');
+    }
+
+    async function saveBudgetLimits() {
+      const maxSpike = document.getElementById('inputMaxSpike').value;
+      try {
+        const res = await fetch('/api/finance/guard', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ maxAllowableDailySpike: maxSpike })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert("✅ Limite de segurança financeira atualizado com sucesso!");
+          closeBudgetModal();
+          loadFinanceData();
+        } else {
+          alert("Erro: " + data.error);
+        }
+      } catch(e) {
+        alert("Erro ao salvar: " + e.message);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', loadFinanceData);
+    window.addEventListener('currency-loaded', loadFinanceData);
+  </script>
+</body>
+</html>

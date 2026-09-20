@@ -1,0 +1,734 @@
+<!doctype html>
+<!-- LEGACY / PROTOTYPE — DO NOT EXTEND (Reference UI prototype for future React/Next.js implementation) -->
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ads Intelligence Command Center</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
+<style>
+  :root {
+    --bg-primary: #070B19;
+    --bg-secondary: #0B132B;
+    --bg-card: #141D38;
+    --bg-card-hover: #1C284E;
+    --border-color: #233158;
+    --text-main: #F1FAEE;
+    --text-muted: #8D99AE;
+    --accent: #00F5D4;
+    --accent-glow: rgba(0, 245, 212, 0.15);
+    --warning: #FFB703;
+    --danger: #EF476F;
+    --success: #4CC9F0;
+    --badge-bg: #1D2D50;
+    --font-heading: 'Plus Jakarta Sans', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Origin Classification Badges */
+    --badge-fact: #3A86FF;
+    --badge-calc: #8338EC;
+    --badge-ext: #FF006E;
+    --badge-infer: #FB5607;
+    --badge-rec: #00F5D4;
+  }
+
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+  }
+
+  :root[data-theme="light"] {
+    --bg-primary: #F8F9FA;
+    --bg-secondary: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-card-hover: #F1F3F5;
+    --border-color: #E2E8F0;
+    --text-main: #1E293B;
+    --text-muted: #64748B;
+    --accent: #0D9488;
+    --accent-glow: rgba(13, 148, 136, 0.1);
+    --warning: #D97706;
+    --danger: #DC2626;
+    --success: #059669;
+    --badge-bg: #F1F5F9;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding-block: env(safe-area-inset-top, 0px) env(safe-area-inset-bottom, 0px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 100;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .brand-logo {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, var(--accent), #4361EE);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    color: #070B19;
+    font-size: 1.15rem;
+  }
+
+  .brand-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .mock-tag {
+    background: #EF476F;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    margin-left: 0.5rem;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--accent);
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #070B19;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
+
+  main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 2rem;
+  }
+
+  @media (max-width: 1024px) {
+    main {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Sidebar - Swarm & Approval Gate */
+  aside {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .card-title {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Approval Gate Pipeline */
+  .pipeline-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .pipeline-step {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    background: var(--bg-secondary);
+    border: 1px solid transparent;
+  }
+
+  .pipeline-step.active {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .pipeline-step.completed {
+    opacity: 0.75;
+  }
+
+  .step-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-muted);
+  }
+
+  .pipeline-step.active .step-dot {
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  .pipeline-step.completed .step-dot {
+    background: var(--success);
+  }
+
+  /* Specialists Swarm List */
+  .swarm-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .swarm-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 0.75rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+  }
+
+  .expert-info h4 {
+    font-size: 0.85rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+  }
+
+  .expert-info p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  .status-badge {
+    font-size: 0.6875rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    background: var(--badge-bg);
+  }
+
+  .status-badge.active { color: var(--accent); background: var(--accent-glow); }
+  .status-badge.ready { color: var(--success); }
+
+  /* Classification Badges */
+  .origin-badge {
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    display: inline-block;
+    letter-spacing: 0.05em;
+  }
+  .origin-fact { background: rgba(58, 134, 255, 0.2); color: #3A86FF; border: 1px solid #3A86FF; }
+  .origin-calc { background: rgba(131, 56, 236, 0.2); color: #B5179E; border: 1px solid #8338EC; }
+  .origin-ext { background: rgba(255, 0, 110, 0.2); color: #FF006E; border: 1px solid #FF006E; }
+  .origin-infer { background: rgba(251, 86, 7, 0.2); color: #FB5607; border: 1px solid #FB5607; }
+  .origin-rec { background: rgba(0, 245, 212, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+
+  /* Content Area */
+  .content-area {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 1200px) {
+    .dashboard-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .metric-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+
+  .metric-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .metric-value {
+    font-size: 1.75rem;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    margin-bottom: 0.25rem;
+  }
+
+  .metric-sub {
+    font-size: 0.75rem;
+    color: var(--success);
+  }
+
+  /* Recommendation Card with Why & Evidence */
+  .rec-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .rec-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .rec-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .rec-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    margin: 0.75rem 0;
+    background: var(--bg-card);
+    padding: 0.75rem;
+    border-radius: 6px;
+  }
+
+  .rec-override-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .btn-sm {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .btn-accept { background: rgba(0, 245, 212, 0.2); color: var(--accent); border-color: var(--accent); }
+  .btn-modify { background: rgba(255, 183, 3, 0.2); color: var(--warning); border-color: var(--warning); }
+  .btn-reject { background: rgba(239, 71, 111, 0.2); color: var(--danger); border-color: var(--danger); }
+
+  /* Contradiction Box */
+  .contra-box {
+    background: rgba(239, 71, 111, 0.1);
+    border: 1px solid var(--danger);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+
+  .contra-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--danger);
+    margin-bottom: 0.5rem;
+  }
+
+  /* Table */
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 1rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    text-align: left;
+  }
+
+  th, td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  th {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    background: var(--bg-secondary);
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    font-family: var(--font-mono);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-logo">AI</div>
+    <div>
+      <div class="brand-title">ADS INTELLIGENCE <span class="mock-tag">DEMO MODE</span></div>
+      <div class="brand-subtitle">Intelligence & Recommendation Engine — Multi-Agent Audit</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="btn" onclick="toggleTheme()">🌓 Alternar Tema</button>
+    <button class="btn btn-primary" onclick="alertApproval()">🔒 Approval Gate: Revisão Humana</button>
+  </div>
+</header>
+
+<main>
+  <!-- Sidebar: Swarm & Approval Gate -->
+  <aside>
+    <!-- Approval Gate Pipeline -->
+    <div class="card">
+      <div class="card-title">
+        <span>Approval Gate Pipeline</span>
+        <span class="status-badge active" id="current-state-badge">READY_FOR_REVIEW</span>
+      </div>
+      <div class="pipeline-steps">
+        <div class="pipeline-step completed"><div class="step-dot"></div><span>1. DRAFT</span></div>
+        <div class="pipeline-step completed"><div class="step-dot"></div><span>2. ANALYZING</span></div>
+        <div class="pipeline-step completed"><div class="step-dot"></div><span>3. RECOMMENDED</span></div>
+        <div class="pipeline-step completed"><div class="step-dot"></div><span>4. WAITING_CREATIVE</span></div>
+        <div class="pipeline-step active"><div class="step-dot"></div><span>5. READY_FOR_REVIEW</span></div>
+        <div class="pipeline-step"><div class="step-dot"></div><span>6. CHANGES_REQUESTED</span></div>
+        <div class="pipeline-step"><div class="step-dot"></div><span>7. APPROVED</span></div>
+        <div class="pipeline-step"><div class="step-dot"></div><span>8. REJECTED</span></div>
+        <div class="pipeline-step"><div class="step-dot"></div><span>9. PUBLISHED</span></div>
+        <div class="pipeline-step"><div class="step-dot"></div><span>10. PAUSED</span></div>
+        <div class="pipeline-step"><div class="step-dot"></div><span>11. COMPLETED</span></div>
+      </div>
+    </div>
+
+    <!-- Data Quality Assessment -->
+    <div class="card">
+      <div class="card-title">
+        <span>Data Quality Engine</span>
+        <span class="status-badge ready">EXCELLENT</span>
+      </div>
+      <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+        <div><strong>Dados Disponíveis:</strong> 9/9 parâmetros essenciais</div>
+        <div><strong>Pesquisa de Mercado:</strong> 5/5 referências recentes</div>
+        <div><strong>Dados Ausentes:</strong> Nenhum crítico</div>
+      </div>
+    </div>
+
+    <!-- Virtual Specialists Swarm -->
+    <div class="card">
+      <div class="card-title">
+        <span>Swarm de Especialistas IA</span>
+        <span class="status-badge ready">7 Conectados</span>
+      </div>
+      <div class="swarm-list">
+        <div class="swarm-item">
+          <div class="expert-info">
+            <h4>Ads Orchestrator</h4>
+            <p>Contradições & Síntese</p>
+          </div>
+          <span class="status-badge active">Auditoria OK</span>
+        </div>
+        <div class="swarm-item">
+          <div class="expert-info">
+            <h4>Market Intelligence</h4>
+            <p>5 Referências Recentes</p>
+          </div>
+          <span class="status-badge ready">Verificado</span>
+        </div>
+        <div class="swarm-item">
+          <div class="expert-info">
+            <h4>Audience Strategist</h4>
+            <p>Broad & Lookalike 3%</p>
+          </div>
+          <span class="status-badge ready">Otimizado</span>
+        </div>
+        <div class="swarm-item">
+          <div class="expert-info">
+            <h4>Media Strategist</h4>
+            <p>Meta Ads Conversão</p>
+          </div>
+          <span class="status-badge ready">Pronto</span>
+        </div>
+        <div class="swarm-item">
+          <div class="expert-info">
+            <h4>Performance Analyst</h4>
+            <p>Métricas & Frequência</p>
+          </div>
+          <span class="status-badge active">Em Alerta</span>
+        </div>
+        <div class="swarm-item">
+          <div class="expert-info">
+            <h4>Offer Strategist</h4>
+            <p>CURRENT vs AI_SUGGESTED</p>
+          </div>
+          <span class="status-badge ready">Preço Auditado</span>
+        </div>
+        <div class="swarm-item">
+          <div class="expert-info">
+            <h4>Creative Strategist</h4>
+            <p>Vídeo 9:16 (Sem Autogeração)</p>
+          </div>
+          <span class="status-badge ready">Spec Pronta</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="content-area">
+    <!-- Top Metrics Overview with Origin Classification -->
+    <div class="dashboard-grid">
+      <div class="metric-card">
+        <div class="metric-label">
+          <span>ROAS Projetado</span>
+          <span class="origin-badge origin-infer">AI INFERENCE</span>
+        </div>
+        <div class="metric-value" style="color: var(--accent);">4.82x</div>
+        <div class="metric-sub">+18% vs. campanha anterior</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">
+          <span>Preço Atual vs Sugerido</span>
+          <span class="origin-badge origin-fact">FACT</span>
+        </div>
+        <div class="metric-value">R$ 197 <span style="font-size: 1rem; color: var(--accent);">→ R$ 247</span></div>
+        <div class="metric-sub">Margem Alvo: 65% | Break-even: R$ 86,45</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">
+          <span>Orçamento Diário Meta</span>
+          <span class="origin-badge origin-rec">AI RECOMMENDATION</span>
+        </div>
+        <div class="metric-value">R$ 600,00</div>
+        <div class="metric-sub">70% Aquisição / 30% Remarketing</div>
+      </div>
+    </div>
+
+    <!-- Contradiction Engine Alert -->
+    <div class="contra-box">
+      <div class="contra-header">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <span>Contradição Detetada pelo Orchestrator — Resolução: ESCALATE_TO_HUMAN</span>
+      </div>
+      <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-main);">
+        <strong>Especialistas Envolvidos:</strong> Offer Strategist vs Performance Analyst.<br>
+        <strong>Conflito:</strong> Offer Strategist sugeriu desconto temporário para alavancar volume, enquanto Performance Analyst constatou que a taxa de conversão (CVR) atual está saudável em 2.4% (o problema não reside no preço).<br>
+        <strong>Impacto:</strong> Risco de erosão inútil de margem líquida. Decisão transferida para o gestor humano no Approval Gate.
+      </p>
+    </div>
+
+    <!-- Recommendations Feed with Human Override -->
+    <div class="card">
+      <div class="card-title">
+        <span>Recomendações Estruturadas & Human Override</span>
+        <span class="status-badge active">Preservação de Decisão</span>
+      </div>
+
+      <!-- Rec 1 -->
+      <div class="rec-card">
+        <div class="rec-header">
+          <div>
+            <span class="origin-badge origin-rec">AI RECOMMENDATION</span>
+            <span class="rec-title" style="margin-left: 0.5rem;">Adotar Estratégia Híbrida: Broad + Lookalike 3%</span>
+          </div>
+          <span class="status-badge ready">Prioridade: ALTA</span>
+        </div>
+        <div class="rec-details-grid">
+          <div><strong>WHY? (Porquê):</strong> Algoritmo do Meta Ads entrega CPA 22% menor em bases amplas com otimização para compras.</div>
+          <div><strong>EVIDENCE:</strong> Histórico de conversão dos últimos 90 dias e benchmark setorial.</div>
+          <div><strong>SPECIALIST:</strong> Audience Strategist (Confiança: 80%)</div>
+          <div><strong>RISK:</strong> Fase de aprendizado inicial mais lenta nas primeiras 48h.</div>
+        </div>
+        <div class="rec-override-actions">
+          <button class="btn btn-sm btn-accept" onclick="handleOverride('rec_aud_1', 'ACCEPT')">✓ Aceitar Decisão</button>
+          <button class="btn btn-sm btn-modify" onclick="handleOverride('rec_aud_1', 'MODIFY')">✎ Modificar Segmentação</button>
+          <button class="btn btn-sm btn-reject" onclick="handleOverride('rec_aud_1', 'REJECT')">✕ Rejeitar</button>
+        </div>
+      </div>
+
+      <!-- Rec 2 -->
+      <div class="rec-card">
+        <div class="rec-header">
+          <div>
+            <span class="origin-badge origin-rec">AI RECOMMENDATION</span>
+            <span class="rec-title" style="margin-left: 0.5rem;">Briefing de Vídeo 9:16 (3 Variações de Hook para Teste A/B)</span>
+          </div>
+          <span class="status-badge ready">Prioridade: ALTA</span>
+        </div>
+        <div class="rec-details-grid">
+          <div><strong>WHY? (Porquê):</strong> Vídeos curtos verticais (15-25s) com pergunta no início retêm 40% mais espectadores.</div>
+          <div><strong>EVIDENCE:</strong> Meta Ads Library — 12 criativos de concorrentes escalados neste formato.</div>
+          <div><strong>SPECIALIST:</strong> Creative Strategist (Confiança: 85%)</div>
+          <div><strong>RISK:</strong> Atraso na produção externa das peças pelo designer/videomaker.</div>
+        </div>
+        <div class="rec-override-actions">
+          <button class="btn btn-sm btn-accept" onclick="handleOverride('rec_cre_1', 'ACCEPT')">✓ Aceitar Decisão</button>
+          <button class="btn btn-sm btn-modify" onclick="handleOverride('rec_cre_1', 'MODIFY')">✎ Ajustar Hook/Copy</button>
+          <button class="btn btn-sm btn-reject" onclick="handleOverride('rec_cre_1', 'REJECT')">✕ Rejeitar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Campaign Proposal Full Details (Section 11) -->
+    <div class="card">
+      <div class="card-title">
+        <span>Campaign Proposal Consolidada (Auditoria: PASS)</span>
+        <span class="status-badge ready">AUDIT APPROVED</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; font-size: 0.85rem; margin-top: 1rem;">
+        <div>
+          <p><strong>Plataforma:</strong> Meta Ads (Conversões / Vendas)</p>
+          <p><strong>Orçamento Diário:</strong> R$ 600,00 (Total: R$ 18.000 / 30 dias)</p>
+          <p><strong>Público:</strong> Broad + Lookalike 3% (Exclusão: Clientes 90 dias)</p>
+          <p><strong>Geografia:</strong> Brasil (SP, RJ, MG priorizados)</p>
+          <p><strong>Destino:</strong> https://example.com/oferta-especial</p>
+        </div>
+        <div>
+          <p><strong>CURRENT_PRICE:</strong> R$ 197,00 <span class="origin-badge origin-fact">FACT</span></p>
+          <p><strong>MARKET_PRICE:</strong> R$ 297,00 <span class="origin-badge origin-ext">MARKET</span></p>
+          <p><strong>AI_SUGGESTED_PRICE:</strong> R$ 247,00 <span class="origin-badge origin-rec">AI SUGGESTION</span></p>
+          <p><strong>Break-even:</strong> R$ 86,45 | <strong>Target CAC:</strong> R$ 45,00</p>
+          <p><strong>CTA Recomendado:</strong> COMPRAR AGORA COM DESCONTO</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 1.5rem; background: var(--bg-secondary); padding: 1rem; border-radius: 8px;">
+        <h5 style="font-family: var(--font-heading); margin-bottom: 0.5rem; font-size: 0.9rem;">Copy Publicitária Proposta (Editável por Humano):</h5>
+        <div style="font-size: 0.85rem; line-height: 1.5;">
+          <p><strong>Texto Principal:</strong> Chega de perder tempo com métodos ultrapassados. Conheça a solução que acelera seus resultados em até 3x com garantia total de 30 dias.</p>
+          <p><strong>Título:</strong> Aumente Seus Resultados em Menos de 30 Dias</p>
+          <p><strong>Descrição:</strong> Condição especial de lançamento por tempo limitado.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  ADS INTELLIGENCE &bull; Intelligence & Recommendation Engine &bull; Todos os direitos reservados 2026
+</footer>
+
+<script>
+  function toggleTheme() {
+    const root = document.documentElement;
+    const currentTheme = root.getAttribute('data-theme');
+    if (currentTheme === 'light') {
+      root.removeAttribute('data-theme');
+    } else {
+      root.setAttribute('data-theme', 'light');
+    }
+  }
+
+  function handleOverride(recId, decision) {
+    alert(`Decisão Humana Registada: ${decision} para a recomendação ${recId}.\nA recomendação original foi preservada intacta no histórico de auditoria e aprendizagem.`);
+  }
+
+  function alertApproval() {
+    alert('🔒 Approval Gate Ativo:\nA campanha encontra-se em READY_FOR_REVIEW.\nNenhuma campanha é publicada automaticamente sem aprovação humana expressa.');
+  }
+
+  window.claude?.hot?.snapshot?.(() => ({}));
+</script>
+</body>
+</html>

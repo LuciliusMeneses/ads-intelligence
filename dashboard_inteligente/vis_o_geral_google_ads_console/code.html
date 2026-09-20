@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GrowthOps AI Ads - Visão Geral da Conta</title>
+<!-- Google Fonts: Roboto Flex & Roboto (Authentic Google Ads style) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;family=Roboto+Flex:wght@400;500;600;700&amp;family=Google+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "google-blue": "#1A73E8",
+            "google-blue-hover": "#1557D4",
+            "google-blue-bg": "#E8F0FE",
+            "google-text-primary": "#202124",
+            "google-text-secondary": "#5F6368",
+            "google-border": "#DADCE0",
+            "google-border-light": "#E8EAED",
+            "google-bg": "#F8F9FA",
+            "google-green": "#1E8E3E",
+            "google-green-bg": "#E6F4EA",
+            "google-red": "#D93025",
+            "google-red-bg": "#FCE8E6",
+            "google-amber": "#F9AB00"
+          },
+          fontFamily: {
+            sans: ['Roboto', 'Roboto Flex', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+            display: ['"Google Sans"', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 20px;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1;
+    }
+    /* Google Ads table cell text clamp */
+    .table-cell-dense {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9FA] text-[#202124] font-sans antialiased text-sm overflow-x-hidden min-h-screen flex flex-col">
+<!-- ==================== TOP NAVIGATION BAR (GOOGLE ADS HEADER) ==================== -->
+<header class="sticky top-0 z-50 bg-white border-b border-[#DADCE0] h-14 flex items-center justify-between px-4 select-none">
+<!-- Left: Menu, Logo & Account Switcher -->
+<div class="flex items-center gap-3">
+<button class="p-2 text-[#5F6368] hover:bg-[#F1F3F4] rounded-full transition-colors" title="Menu principal">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Google Ads Style Logo -->
+<div class="flex items-center gap-2 pr-4 border-r border-[#DADCE0]">
+<div class="flex items-center">
+<svg class="w-6 h-6" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M43.6 20.3L27.7 4.4C26.1 2.8 23.5 2.8 21.9 4.4L4.4 21.9C2.8 23.5 2.8 26.1 4.4 27.7L20.3 43.6C21.9 45.2 24.5 45.2 26.1 43.6L43.6 26.1C45.2 24.5 45.2 21.9 43.6 20.3Z" fill="#FABB05"></path>
+<path d="M43.6 20.3L27.7 4.4C26.1 2.8 23.5 2.8 21.9 4.4L13.1 13.2L29 29.1L43.6 20.3Z" fill="#4285F4"></path>
+<circle cx="12" cy="36" fill="#34A853" r="6"></circle>
+</svg>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-display font-medium text-[17px] text-[#5F6368]">GrowthOps AI</span>
+<span class="font-display font-medium text-[17px] text-[#1A73E8]">Ads</span>
+</div>
+</div>
+<!-- Account Switcher Pill -->
+<button class="hidden md:flex items-center gap-2 px-2.5 py-1 text-left rounded-md hover:bg-[#F1F3F4] transition-colors border border-transparent hover:border-[#DADCE0]">
+<span class="w-2.5 h-2.5 rounded-full bg-[#1E8E3E]"></span>
+<div class="flex flex-col">
+<span class="text-xs font-medium text-[#202124] leading-tight">GrowthOps Enterprise (Produção)</span>
+<span class="text-[11px] text-[#5F6368] leading-tight">ID: 782-940-1283 • BRL (R$)</span>
+</div>
+<span class="material-symbols-outlined text-[#5F6368] text-base ml-1">arrow_drop_down</span>
+</button>
+</div>
+<!-- Center: Global Search Bar -->
+<div class="flex-1 max-w-xl mx-4 hidden lg:block">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-[#5F6368]" style="font-size: 19px;">search</span>
+<input class="w-full bg-[#F1F3F4] border-transparent focus:border-[#1A73E8] focus:bg-white focus:ring-1 focus:ring-[#1A73E8] rounded-lg pl-10 pr-10 py-2 text-xs text-[#202124] placeholder-[#5F6368] transition-all" placeholder="Pesquisar campanhas, criativos, palavras-chave ou ferramentas (pressione '/' para buscar)" type="text"/>
+<span class="absolute right-3 px-1.5 py-0.5 rounded border border-[#DADCE0] text-[10px] text-[#5F6368] font-mono bg-white">/</span>
+</div>
+</div>
+<!-- Right: Tool Icons, Help & Avatar -->
+<div class="flex items-center gap-1">
+<button class="p-2 text-[#5F6368] hover:bg-[#F1F3F4] rounded-full transition-colors" title="Ajuda e Suporte">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<button class="p-2 text-[#5F6368] hover:bg-[#F1F3F4] rounded-full transition-colors relative" title="Notificações">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#D93025]"></span>
+</button>
+<button class="p-2 text-[#5F6368] hover:bg-[#F1F3F4] rounded-full transition-colors" title="Ferramentas e Configurações">
+<span class="material-symbols-outlined">build</span>
+</button>
+<button class="p-2 text-[#5F6368] hover:bg-[#F1F3F4] rounded-full transition-colors" title="Faturamento">
+<span class="material-symbols-outlined">credit_card</span>
+</button>
+<!-- User profile avatar Google style -->
+<div class="pl-2 flex items-center">
+<img alt="Avatar do usuário Guilherme Salles" class="w-8 h-8 rounded-full border border-[#DADCE0] object-cover ring-1 ring-offset-1 ring-transparent hover:ring-[#1A73E8] cursor-pointer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgJIYPCodwQ-txbjMxn_Mwgpjx5h2s94k-gfNkBMCn9YaU7mKCsI6LXE0pyAIeZ36C9WSXdUAZAnJ1R9gTkeNBAVmtB0fmBYVPEZUT-DrplxFo3e8LdSXUErWNWjNsCKwj4H-nRWucgH_Vp5aLHek4M_N3xxYMIepRZ24RAAeHjm-M4VcdTydeWodl4-vJE9oJvJFNNydU5_cuiFYKDlI3B4Mgh1dPsT3r2KtXZiE7zI5G1anJnbHW"/>
+</div>
+</div>
+</header>
+<!-- ==================== SUB-BAR / CONTEXT CONTROLS ==================== -->
+<div class="bg-white border-b border-[#DADCE0] px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-[0_1px_2px_rgba(0,0,0,0.03)] select-none">
+<!-- Breadcrumb / Status -->
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5 text-xs text-[#5F6368]">
+<span>Todas as campanhas</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-[#202124] font-medium">Visão geral</span>
+</div>
+<span class="inline-flex items-center gap-1 ml-3 px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#E6F4EA] text-[#1E8E3E] border border-[#CEEAD6]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#1E8E3E] animate-pulse"></span>
+        IA Autônoma: 98,4% de eficácia
+      </span>
+</div>
+<!-- Date selector & Primary Actions -->
+<div class="flex items-center gap-2.5">
+<!-- Date Picker Range -->
+<button class="flex items-center gap-2 px-3 py-1.5 bg-white border border-[#DADCE0] hover:bg-[#F8F9FA] rounded text-xs font-medium text-[#202124] transition-colors">
+<span class="material-symbols-outlined text-[#5F6368] text-base">calendar_today</span>
+<span>Últimos 30 dias: 1 de mai. - 30 de mai. de 2024</span>
+<span class="material-symbols-outlined text-[#5F6368] text-sm">arrow_drop_down</span>
+</button>
+<!-- Reports / Export -->
+<button class="flex items-center gap-1 px-3 py-1.5 bg-white border border-[#DADCE0] hover:bg-[#F8F9FA] rounded text-xs font-medium text-[#5F6368] hover:text-[#202124] transition-colors">
+<span class="material-symbols-outlined text-base">download</span>
+<span>Exportar</span>
+</button>
+<!-- Google Ads primary pill button "+ Nova campanha" -->
+<button class="flex items-center gap-1.5 px-4 py-1.5 bg-[#1A73E8] hover:bg-[#1557D4] active:bg-[#174EA6] text-white rounded-full text-xs font-medium shadow-sm transition-all">
+<span class="material-symbols-outlined text-base font-bold">add</span>
+<span>Nova campanha</span>
+</button>
+</div>
+</div>
+<!-- ==================== BODY WITH NAVIGATION RAIL & MAIN CONTENT ==================== -->
+<div class="flex flex-1">
+<!-- Google Ads Navigation Rail / Sidebar -->
+<aside class="w-56 bg-white border-r border-[#DADCE0] flex flex-col justify-between py-2 shrink-0 select-none">
+<nav class="flex flex-col gap-0.5">
+<!-- Item: Visão geral (Active) -->
+<a class="flex items-center gap-3 px-4 py-2.5 text-xs font-medium bg-[#E8F0FE] text-[#1A73E8] relative" href="#overview">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-[#1A73E8] rounded-r"></div>
+<span class="material-symbols-outlined fill-icon text-[19px]">dashboard</span>
+<span>Visão geral</span>
+</a>
+<!-- Item: Recomendações IA with Badge -->
+<a class="flex items-center justify-between px-4 py-2.5 text-xs font-medium text-[#5F6368] hover:bg-[#F8F9FA] hover:text-[#202124] transition-colors" href="#recommendations">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[19px]">auto_awesome</span>
+<span>Recomendações IA</span>
+</div>
+<span class="px-1.5 py-0.2 rounded-full text-[10px] bg-[#1A73E8] text-white font-medium font-mono">94.8%</span>
+</a>
+<!-- Item: Campanhas -->
+<a class="flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-[#5F6368] hover:bg-[#F8F9FA] hover:text-[#202124] transition-colors" href="#campaigns">
+<span class="material-symbols-outlined text-[19px]">campaign</span>
+<span>Campanhas</span>
+</a>
+<!-- Item: Grupos de anúncios -->
+<a class="flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-[#5F6368] hover:bg-[#F8F9FA] hover:text-[#202124] transition-colors" href="#adgroups">
+<span class="material-symbols-outlined text-[19px]">layers</span>
+<span>Grupos de anúncios</span>
+</a>
+<!-- Item: Criativos e recursos -->
+<a class="flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-[#5F6368] hover:bg-[#F8F9FA] hover:text-[#202124] transition-colors" href="#assets">
+<span class="material-symbols-outlined text-[19px]">perm_media</span>
+<span>Criativos e recursos</span>
+</a>
+<!-- Item: Palavras-chave & Audiências -->
+<a class="flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-[#5F6368] hover:bg-[#F8F9FA] hover:text-[#202124] transition-colors" href="#audiences">
+<span class="material-symbols-outlined text-[19px]">group</span>
+<span>Públicos-alvo</span>
+</a>
+<!-- Item: CRM & Conversões -->
+<a class="flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-[#5F6368] hover:bg-[#F8F9FA] hover:text-[#202124] transition-colors" href="#crm">
+<span class="material-symbols-outlined text-[19px]">track_changes</span>
+<span>CRM &amp; Conversões</span>
+</a>
+<!-- Item: Insights de concorrentes -->
+<a class="flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-[#5F6368] hover:bg-[#F8F9FA] hover:text-[#202124] transition-colors" href="#competitors">
+<span class="material-symbols-outlined text-[19px]">insights</span>
+<span>Insights de leilão</span>
+</a>
+<!-- Item: Automações & Regras -->
+<a class="flex items-center gap-3 px-4 py-2.5 text-xs font-medium text-[#5F6368] hover:bg-[#F8F9FA] hover:text-[#202124] transition-colors" href="#rules">
+<span class="material-symbols-outlined text-[19px]">smart_toy</span>
+<span>Regras automáticas</span>
+</a>
+</nav>
+<!-- Bottom Nav Settings & Feedback -->
+<div class="px-3 pt-3 border-t border-[#DADCE0] flex flex-col gap-1 text-[11px] text-[#5F6368]">
+<div class="px-2 py-1 flex items-center justify-between text-[#5F6368]">
+<span>Sincronização API</span>
+<span class="font-mono text-[#1E8E3E] font-medium">24ms OK</span>
+</div>
+<a class="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-[#F1F3F4] text-[#5F6368] transition-colors" href="#settings">
+<span class="material-symbols-outlined text-base">settings</span>
+<span>Configurações</span>
+</a>
+</div>
+</aside>
+<!-- Main Workspace Content -->
+<main class="flex-1 p-5 max-w-[1600px] w-full mx-auto flex flex-col gap-5">
+<!-- ==================== 1. GOOGLE ADS OPTIMIZATION SCORE BANNER ==================== -->
+<div class="bg-white border border-[#DADCE0] rounded-lg p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+<div class="flex items-center gap-4">
+<!-- Circular Progress Ring (Google Ads style) -->
+<div class="relative w-14 h-14 flex items-center justify-center shrink-0">
+<svg class="w-14 h-14 -rotate-90 transform" viewbox="0 0 36 36">
+<path class="text-[#E8EAED]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+<path class="text-[#1A73E8]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="94.8, 100" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+<span class="absolute font-display font-bold text-xs text-[#202124]">94,8%</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h2 class="text-sm font-medium text-[#202124]">Pontuação de otimização da IA do Google Ads</h2>
+<span class="px-2 py-0.5 rounded text-[11px] font-medium bg-[#E8F0FE] text-[#1A73E8]">Excelente</span>
+</div>
+<p class="text-xs text-[#5F6368] mt-0.5">
+              Aplicar 3 recomendações calculadas pode aumentar seu volume de conversões em até <strong class="text-[#1E8E3E] font-medium">+5,2%</strong> com o mesmo investimento.
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<button class="px-3 py-1.5 border border-[#DADCE0] hover:bg-[#F8F9FA] rounded text-xs font-medium text-[#1A73E8] transition-colors">
+            Ver 3 recomendações
+          </button>
+<button class="px-4 py-1.5 bg-[#1A73E8] hover:bg-[#1557D4] active:bg-[#174EA6] text-white rounded text-xs font-medium shadow-sm transition-all flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">auto_fix_high</span>
+<span>Aplicar todas (+5,2%)</span>
+</button>
+</div>
+</div>
+<!-- ==================== 2. METRIC SELECTOR CARDS & INTERACTIVE COMPARISON CHART ==================== -->
+<div class="bg-white border border-[#DADCE0] rounded-lg shadow-sm overflow-hidden flex flex-col">
+<!-- 4 Classic Google Ads Scorecards (Tab buttons) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-b border-[#DADCE0]">
+<!-- Metric Card 1: Custo total (ACTIVE - Blue border top) -->
+<div class="p-4 border-b-2 sm:border-b-0 sm:border-r border-[#DADCE0] bg-white cursor-pointer relative hover:bg-[#FAFAFA] transition-colors">
+<div class="absolute top-0 left-0 right-0 h-1 bg-[#1A73E8]"></div>
+<div class="flex items-center justify-between text-xs text-[#5F6368] mb-1">
+<span class="font-medium">Custo total</span>
+<span class="material-symbols-outlined text-xs text-[#1A73E8]">check_box</span>
+</div>
+<div class="font-display font-medium text-2xl text-[#202124] tracking-tight">R$ 148.920,00</div>
+<div class="flex items-center gap-1.5 text-xs mt-1.5">
+<span class="inline-flex items-center text-[#1E8E3E] font-medium">
+<span class="material-symbols-outlined text-sm">arrow_upward</span> 14,2%
+              </span>
+<span class="text-[#5F6368]">vs. mês anterior</span>
+</div>
+</div>
+<!-- Metric Card 2: Conversões (ACTIVE - Red/Orange line indicator) -->
+<div class="p-4 border-b-2 sm:border-b-0 sm:border-r border-[#DADCE0] bg-white cursor-pointer relative hover:bg-[#FAFAFA] transition-colors">
+<div class="absolute top-0 left-0 right-0 h-1 bg-[#D93025]"></div>
+<div class="flex items-center justify-between text-xs text-[#5F6368] mb-1">
+<span class="font-medium">Conversões (Leads CRM)</span>
+<span class="material-symbols-outlined text-xs text-[#D93025]">check_box</span>
+</div>
+<div class="font-display font-medium text-2xl text-[#202124] tracking-tight">4.890</div>
+<div class="flex items-center gap-1.5 text-xs mt-1.5">
+<span class="inline-flex items-center text-[#1E8E3E] font-medium">
+<span class="material-symbols-outlined text-sm">arrow_upward</span> 18,5%
+              </span>
+<span class="text-[#5F6368]">vs. mês anterior</span>
+</div>
+</div>
+<!-- Metric Card 3: Custo / conv. (CPA) -->
+<div class="p-4 border-b-2 sm:border-b-0 sm:border-r border-[#DADCE0] bg-[#FAFAFA] cursor-pointer relative hover:bg-white transition-colors">
+<div class="flex items-center justify-between text-xs text-[#5F6368] mb-1">
+<span class="font-medium">Custo / conv. (CPA médio)</span>
+<span class="material-symbols-outlined text-xs text-[#5F6368]">check_box_outline_blank</span>
+</div>
+<div class="font-display font-medium text-2xl text-[#202124] tracking-tight">R$ 30,45</div>
+<div class="flex items-center gap-1.5 text-xs mt-1.5">
+<span class="inline-flex items-center text-[#1E8E3E] font-medium">
+<span class="material-symbols-outlined text-sm">arrow_downward</span> 12,4%
+              </span>
+<span class="text-[#5F6368]">redução de custo</span>
+</div>
+</div>
+<!-- Metric Card 4: ROAS / Valor da conversão -->
+<div class="p-4 bg-[#FAFAFA] cursor-pointer relative hover:bg-white transition-colors">
+<div class="flex items-center justify-between text-xs text-[#5F6368] mb-1">
+<span class="font-medium">ROAS / Valor da conversão</span>
+<span class="material-symbols-outlined text-xs text-[#5F6368]">check_box_outline_blank</span>
+</div>
+<div class="font-display font-medium text-2xl text-[#202124] tracking-tight">4,92x</div>
+<div class="flex items-center gap-1.5 text-xs mt-1.5">
+<span class="text-[#1E8E3E] font-medium">+0,82x</span>
+<span class="text-[#5F6368]">Meta: 4,10x</span>
+</div>
+</div>
+</div>
+<!-- Google Ads Line Chart (Clean 2-metric comparison) -->
+<div class="p-4">
+<div class="flex items-center justify-between pb-2 text-xs text-[#5F6368]">
+<div class="flex items-center gap-5">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-0.5 bg-[#1A73E8]"></span>
+<span class="font-medium text-[#202124]">Custo (R$)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-0.5 bg-[#D93025]"></span>
+<span class="font-medium text-[#202124]">Conversões</span>
+</div>
+</div>
+<div class="flex items-center gap-1 text-xs">
+<button class="px-2 py-0.5 rounded text-[#1A73E8] bg-[#E8F0FE] font-medium">Dia</button>
+<button class="px-2 py-0.5 rounded text-[#5F6368] hover:bg-[#F1F3F4]">Semana</button>
+<button class="px-2 py-0.5 rounded text-[#5F6368] hover:bg-[#F1F3F4]">Mês</button>
+</div>
+</div>
+<!-- SVG Chart Canvas with Google Ads styling -->
+<div class="relative w-full h-56 pt-2">
+<!-- Gridlines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-40">
+<div class="border-b border-[#DADCE0] w-full"></div>
+<div class="border-b border-[#DADCE0] w-full"></div>
+<div class="border-b border-[#DADCE0] w-full"></div>
+<div class="border-b border-[#DADCE0] w-full"></div>
+</div>
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 900 200">
+<!-- Grid line markers & data series -->
+<!-- Line 1: Custo (#1A73E8 - Blue) -->
+<path d="M 0,140 C 90,130 180,110 270,115 C 360,120 450,70 540,65 C 630,60 720,35 810,40 L 900,25" fill="none" stroke="#1A73E8" stroke-width="2.5"></path>
+<!-- Dots for Blue line -->
+<circle cx="270" cy="115" fill="#1A73E8" r="3.5" stroke="#FFFFFF" stroke-width="2"></circle>
+<circle cx="540" cy="65" fill="#1A73E8" r="3.5" stroke="#FFFFFF" stroke-width="2"></circle>
+<circle cx="810" cy="40" fill="#1A73E8" r="3.5" stroke="#FFFFFF" stroke-width="2"></circle>
+<!-- Line 2: Conversões (#D93025 - Red) -->
+<path d="M 0,165 C 90,150 180,140 270,125 C 360,110 450,95 540,80 C 630,75 720,50 810,45 L 900,35" fill="none" stroke="#D93025" stroke-dasharray="0" stroke-width="2"></path>
+<!-- Dots for Red line -->
+<circle cx="270" cy="125" fill="#D93025" r="3" stroke="#FFFFFF" stroke-width="2"></circle>
+<circle cx="540" cy="80" fill="#D93025" r="3" stroke="#FFFFFF" stroke-width="2"></circle>
+<circle cx="810" cy="45" fill="#D93025" r="3" stroke="#FFFFFF" stroke-width="2"></circle>
+</svg>
+<!-- Interactive Tooltip Overlay Example at day 21 -->
+<div class="absolute left-[60%] top-[20%] -translate-x-1/2 bg-white border border-[#DADCE0] shadow-md rounded p-2.5 text-xs pointer-events-none hidden md:block">
+<div class="font-medium text-[#202124] pb-1 border-b border-[#E8EAED]">21 de mai. de 2024</div>
+<div class="flex items-center justify-between gap-4 mt-1.5">
+<span class="text-[#1A73E8] flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-[#1A73E8]"></span> Custo:
+                </span>
+<span class="font-medium text-[#202124]">R$ 5.480,00</span>
+</div>
+<div class="flex items-center justify-between gap-4 mt-1">
+<span class="text-[#D93025] flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-[#D93025]"></span> Conversões:
+                </span>
+<span class="font-medium text-[#202124]">194 leads</span>
+</div>
+</div>
+</div>
+<!-- X-Axis Labels -->
+<div class="flex items-center justify-between text-[11px] text-[#5F6368] pt-2 border-t border-[#E8EAED] mt-2">
+<span>1 de mai.</span>
+<span>6 de mai.</span>
+<span>11 de mai.</span>
+<span>16 de mai.</span>
+<span>21 de mai.</span>
+<span>26 de mai.</span>
+<span>30 de mai.</span>
+</div>
+</div>
+</div>
+<!-- ==================== 3. TWO COLUMNS: DETAILED RECOMMENDATIONS + CAMPAIGN INSIGHTS ==================== -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+<!-- Left 2 Cols: AI Recommendations Cards (Google Ads layout) -->
+<div class="lg:col-span-2 bg-white border border-[#DADCE0] rounded-lg p-4 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between pb-3 border-b border-[#DADCE0]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#1A73E8]">lightbulb</span>
+<h3 class="text-sm font-medium text-[#202124]">Recomendações prioritárias da IA</h3>
+</div>
+<a class="text-xs text-[#1A73E8] hover:underline font-medium" href="#all-recommendations">Ver todas as recomendações (3)</a>
+</div>
+<!-- Recommendation Item 1 -->
+<div class="py-3.5 border-b border-[#E8EAED] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+<div class="flex items-start gap-3">
+<div class="p-2 rounded bg-[#E8F0FE] text-[#1A73E8] mt-0.5">
+<span class="material-symbols-outlined text-lg">currency_exchange</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="text-xs font-semibold text-[#202124]">Alocar R$ 850/dia para Google Search Topo de Funil</h4>
+<span class="px-1.5 py-0.5 text-[10px] font-medium bg-[#E6F4EA] text-[#1E8E3E] rounded">+R$ 14.200 em valor</span>
+</div>
+<p class="text-xs text-[#5F6368] mt-1 leading-relaxed">
+                  A campanha atingiu o limite de orçamento com alta intenção de busca. Realocar verba do conjunto saturado no Meta Ads pode render +42 leads qualificados.
+                </p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+<button class="px-3 py-1.5 bg-[#1A73E8] hover:bg-[#1557D4] text-white rounded text-xs font-medium transition-colors">
+                Aplicar
+              </button>
+<button class="p-1.5 text-[#5F6368] hover:bg-[#F1F3F4] rounded" title="Dispensar">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+</div>
+<!-- Recommendation Item 2 -->
+<div class="py-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+<div class="flex items-start gap-3">
+<div class="p-2 rounded bg-[#FEF7E0] text-[#B06000] mt-0.5">
+<span class="material-symbols-outlined text-lg">tune</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="text-xs font-semibold text-[#202124]">Ajustar meta de CPA (tCPA) na campanha Performance Max</h4>
+<span class="px-1.5 py-0.5 text-[10px] font-medium bg-[#E8F0FE] text-[#1A73E8] rounded">+0,35x no ROAS</span>
+</div>
+<p class="text-xs text-[#5F6368] mt-1 leading-relaxed">
+                  Reduzir a meta de R$ 32,00 para R$ 28,50 com base no histórico de conversão e ticket médio sincronizados via CRM HubSpot.
+                </p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+<button class="px-3 py-1.5 bg-[#1A73E8] hover:bg-[#1557D4] text-white rounded text-xs font-medium transition-colors">
+                Aplicar
+              </button>
+<button class="p-1.5 text-[#5F6368] hover:bg-[#F1F3F4] rounded" title="Dispensar">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right 1 Col: Search & Network Distribution -->
+<div class="bg-white border border-[#DADCE0] rounded-lg p-4 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-[#DADCE0]">
+<h3 class="text-sm font-medium text-[#202124]">Distribuição por Rede</h3>
+<span class="text-xs text-[#5F6368]">Últimos 30 dias</span>
+</div>
+<!-- Distribution Bars -->
+<div class="flex flex-col gap-3 mt-3">
+<div>
+<div class="flex items-center justify-between text-xs mb-1">
+<span class="font-medium text-[#202124] flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-[#1A73E8]"></span> Google Ads (PMax + Search)
+                  </span>
+<span class="font-medium text-[#202124]">R$ 90.840 <span class="text-[#5F6368] font-normal">(61%)</span></span>
+</div>
+<div class="w-full h-2 bg-[#E8EAED] rounded-full overflow-hidden">
+<div class="bg-[#1A73E8] h-full rounded-full" style="width: 61%"></div>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between text-xs mb-1">
+<span class="font-medium text-[#202124] flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-[#4285F4]"></span> Meta Ads (Instagram/FB)
+                  </span>
+<span class="font-medium text-[#202124]">R$ 44.676 <span class="text-[#5F6368] font-normal">(30%)</span></span>
+</div>
+<div class="w-full h-2 bg-[#E8EAED] rounded-full overflow-hidden">
+<div class="bg-[#4285F4] h-full rounded-full" style="width: 30%"></div>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between text-xs mb-1">
+<span class="font-medium text-[#202124] flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-[#34A853]"></span> TikTok &amp; Outros
+                  </span>
+<span class="font-medium text-[#202124]">R$ 13.404 <span class="text-[#5F6368] font-normal">(9%)</span></span>
+</div>
+<div class="w-full h-2 bg-[#E8EAED] rounded-full overflow-hidden">
+<div class="bg-[#34A853] h-full rounded-full" style="width: 9%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Insight pill footer -->
+<div class="pt-3 border-t border-[#E8EAED] mt-4 flex items-center gap-2 text-xs text-[#5F6368]">
+<span class="material-symbols-outlined text-sm text-[#1E8E3E]">verified</span>
+<span>Atribuição ponderada baseada em dados (DDA) ativa.</span>
+</div>
+</div>
+</div>
+<!-- ==================== 4. HIGH-DENSITY GOOGLE ADS CAMPAIGNS TABLE ==================== -->
+<div class="bg-white border border-[#DADCE0] rounded-lg shadow-sm flex flex-col overflow-hidden">
+<!-- Table Action Header / Filter Toolbar -->
+<div class="p-3 border-b border-[#DADCE0] flex flex-wrap items-center justify-between gap-3 bg-white">
+<div class="flex items-center gap-3">
+<h2 class="text-sm font-medium text-[#202124]">Campanhas ativas</h2>
+<div class="h-4 w-px bg-[#DADCE0]"></div>
+<!-- Quick Filter Bar -->
+<div class="flex items-center gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[#5F6368] text-base">filter_list</span>
+<input class="bg-[#F1F3F4] hover:bg-[#E8EAED] focus:bg-white border-transparent focus:border-[#1A73E8] focus:ring-1 focus:ring-[#1A73E8] rounded text-xs pl-8 pr-3 py-1 text-[#202124] placeholder-[#5F6368] w-48 transition-colors" placeholder="Adicionar filtro..." type="text"/>
+</div>
+<!-- Filter Pills -->
+<span class="inline-flex items-center gap-1 px-2 py-1 rounded bg-[#F1F3F4] text-xs text-[#202124] border border-[#DADCE0]">
+                Status da campanha: <strong>Ativada</strong>
+<button class="hover:text-[#D93025] ml-0.5"><span class="material-symbols-outlined text-xs">close</span></button>
+</span>
+</div>
+</div>
+<!-- Table Actions (Segment, Columns, Expand) -->
+<div class="flex items-center gap-2 text-xs text-[#5F6368]">
+<button class="flex items-center gap-1 px-2.5 py-1 rounded hover:bg-[#F1F3F4] text-[#202124] border border-transparent hover:border-[#DADCE0] transition-colors">
+<span class="material-symbols-outlined text-base">view_column</span>
+<span>Colunas</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1 rounded hover:bg-[#F1F3F4] text-[#202124] border border-transparent hover:border-[#DADCE0] transition-colors">
+<span class="material-symbols-outlined text-base">segment</span>
+<span>Segmentar</span>
+</button>
+<button class="p-1 rounded hover:bg-[#F1F3F4] text-[#5F6368]" title="Expandir tabela">
+<span class="material-symbols-outlined text-base">fullscreen</span>
+</button>
+</div>
+</div>
+<!-- High-density Google Ads Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse text-xs">
+<thead>
+<tr class="bg-[#F8F9FA] text-[#5F6368] border-b border-[#DADCE0] font-medium select-none">
+<th class="table-cell-dense w-8 text-center">
+<input class="rounded border-[#DADCE0] text-[#1A73E8] focus:ring-[#1A73E8]" type="checkbox"/>
+</th>
+<th class="table-cell-dense w-12 text-center">Status</th>
+<th class="table-cell-dense min-w-[240px]">Campanha</th>
+<th class="table-cell-dense min-w-[130px]">Estratégia de lances</th>
+<th class="table-cell-dense text-right">Orçamento diário</th>
+<th class="table-cell-dense text-right">Cliques</th>
+<th class="table-cell-dense text-right">Impressões</th>
+<th class="table-cell-dense text-right">CTR</th>
+<th class="table-cell-dense text-right">CPC médio</th>
+<th class="table-cell-dense text-right font-medium text-[#202124]">Custo total</th>
+<th class="table-cell-dense text-right font-medium text-[#202124]">Conversões</th>
+<th class="table-cell-dense text-right">Custo / conv.</th>
+<th class="table-cell-dense text-right">ROAS pred.</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#E8EAED] text-[#202124]">
+<!-- Row 1: Google PMax -->
+<tr class="hover:bg-[#F8F9FA] transition-colors">
+<td class="table-cell-dense text-center">
+<input class="rounded border-[#DADCE0] text-[#1A73E8] focus:ring-[#1A73E8]" type="checkbox"/>
+</td>
+<td class="table-cell-dense text-center">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-[#1E8E3E]" title="Ativada (Qualificada)"></span>
+</td>
+<td class="table-cell-dense">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#1A73E8] text-base" title="Performance Max">auto_awesome</span>
+<a class="font-medium text-[#1A73E8] hover:underline" href="#campaign-1">
+                      [Scale] Performance Max - B2B SaaS Enterprise
+                    </a>
+</div>
+</td>
+<td class="table-cell-dense text-[#5F6368]">Maximizar conversões (tCPA)</td>
+<td class="table-cell-dense text-right font-mono">R$ 1.800,00</td>
+<td class="table-cell-dense text-right font-mono">18.420</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">479.680</td>
+<td class="table-cell-dense text-right font-mono">3,84%</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">R$ 2,94</td>
+<td class="table-cell-dense text-right font-mono font-medium">R$ 54.200,00</td>
+<td class="table-cell-dense text-right font-mono font-semibold text-[#1E8E3E]">1.928</td>
+<td class="table-cell-dense text-right font-mono">R$ 28,11</td>
+<td class="table-cell-dense text-right font-mono font-medium text-[#1E8E3E]">5,80x</td>
+</tr>
+<!-- Row 2: Google Search -->
+<tr class="hover:bg-[#F8F9FA] transition-colors">
+<td class="table-cell-dense text-center">
+<input class="rounded border-[#DADCE0] text-[#1A73E8] focus:ring-[#1A73E8]" type="checkbox"/>
+</td>
+<td class="table-cell-dense text-center">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-[#1E8E3E]" title="Ativada (Qualificada)"></span>
+</td>
+<td class="table-cell-dense">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#1A73E8] text-base" title="Rede de Pesquisa">search</span>
+<a class="font-medium text-[#1A73E8] hover:underline" href="#campaign-2">
+                      [Search] Palavras-chave Institucionais &amp; Competidores
+                    </a>
+</div>
+</td>
+<td class="table-cell-dense text-[#5F6368]">tROAS (Alvo: 420%)</td>
+<td class="table-cell-dense text-right font-mono">R$ 1.200,00</td>
+<td class="table-cell-dense text-right font-mono">11.890</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">142.100</td>
+<td class="table-cell-dense text-right font-mono">8,36%</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">R$ 3,08</td>
+<td class="table-cell-dense text-right font-mono font-medium">R$ 36.640,00</td>
+<td class="table-cell-dense text-right font-mono font-semibold text-[#1E8E3E]">1.180</td>
+<td class="table-cell-dense text-right font-mono">R$ 31,05</td>
+<td class="table-cell-dense text-right font-mono font-medium text-[#1E8E3E]">5,10x</td>
+</tr>
+<!-- Row 3: Meta Ads -->
+<tr class="hover:bg-[#F8F9FA] transition-colors">
+<td class="table-cell-dense text-center">
+<input class="rounded border-[#DADCE0] text-[#1A73E8] focus:ring-[#1A73E8]" type="checkbox"/>
+</td>
+<td class="table-cell-dense text-center">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-[#1E8E3E]" title="Ativada (IA Tuning)"></span>
+</td>
+<td class="table-cell-dense">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#1877F2] text-base" title="Meta Ads Feed &amp; Reels">public</span>
+<a class="font-medium text-[#1A73E8] hover:underline" href="#campaign-3">
+                      [Retargeting] VSL &amp; Casos de Sucesso CRM (Meta)
+                    </a>
+</div>
+</td>
+<td class="table-cell-dense text-[#5F6368]">Menor custo com limite</td>
+<td class="table-cell-dense text-right font-mono">R$ 1.350,00</td>
+<td class="table-cell-dense text-right font-mono">14.120</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">582.400</td>
+<td class="table-cell-dense text-right font-mono">2,42%</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">R$ 2,92</td>
+<td class="table-cell-dense text-right font-mono font-medium">R$ 41.350,00</td>
+<td class="table-cell-dense text-right font-mono font-semibold text-[#1E8E3E]">1.260</td>
+<td class="table-cell-dense text-right font-mono">R$ 32,81</td>
+<td class="table-cell-dense text-right font-mono font-medium text-[#1A73E8]">4,65x</td>
+</tr>
+<!-- Row 4: TikTok / Top Funnel (Paused) -->
+<tr class="hover:bg-[#F8F9FA] transition-colors bg-[#FAFAFA]/70">
+<td class="table-cell-dense text-center">
+<input class="rounded border-[#DADCE0] text-[#1A73E8] focus:ring-[#1A73E8]" type="checkbox"/>
+</td>
+<td class="table-cell-dense text-center">
+<span class="inline-block w-2.5 h-2.5 rounded-full bg-[#9AA0A6]" title="Pausada"></span>
+</td>
+<td class="table-cell-dense">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#5F6368] text-base" title="Vídeo / Social">play_circle</span>
+<a class="font-medium text-[#5F6368] hover:underline" href="#campaign-4">
+                      [Topo] Vídeos Curtos - Reels &amp; TikTok Discovery
+                    </a>
+</div>
+</td>
+<td class="table-cell-dense text-[#5F6368]">Custo mais baixo</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">R$ 600,00</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">7.250</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">630.000</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">1,15%</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">R$ 2,51</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">R$ 16.730,00</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">522</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">R$ 32,04</td>
+<td class="table-cell-dense text-right font-mono text-[#5F6368]">2,80x</td>
+</tr>
+</tbody>
+<!-- Table Total / Summary Row (Google Ads classic footer summary) -->
+<tfoot>
+<tr class="bg-[#F1F3F4] text-[#202124] font-semibold border-t-2 border-[#DADCE0]">
+<td class="table-cell-dense text-center"></td>
+<td class="table-cell-dense text-center"></td>
+<td class="table-cell-dense">Total: 4 campanhas</td>
+<td class="table-cell-dense text-[#5F6368] font-normal">—</td>
+<td class="table-cell-dense text-right font-mono font-semibold">R$ 4.950,00</td>
+<td class="table-cell-dense text-right font-mono font-semibold">51.680</td>
+<td class="table-cell-dense text-right font-mono font-semibold text-[#5F6368]">1.834.180</td>
+<td class="table-cell-dense text-right font-mono font-semibold">2,81%</td>
+<td class="table-cell-dense text-right font-mono font-semibold">R$ 2,88</td>
+<td class="table-cell-dense text-right font-mono font-bold text-[#1A73E8]">R$ 148.920,00</td>
+<td class="table-cell-dense text-right font-mono font-bold text-[#1E8E3E]">4.890</td>
+<td class="table-cell-dense text-right font-mono font-semibold">R$ 30,45</td>
+<td class="table-cell-dense text-right font-mono font-bold text-[#1E8E3E]">4,92x</td>
+</tr>
+</tfoot>
+</table>
+</div>
+<!-- Google Ads Pagination and Rows per page footer -->
+<div class="px-4 py-2 border-t border-[#DADCE0] bg-white flex items-center justify-between text-xs text-[#5F6368]">
+<div class="flex items-center gap-2">
+<span>Linhas por página:</span>
+<select class="text-xs bg-white border border-[#DADCE0] rounded px-1 py-0.5 text-[#202124] focus:ring-[#1A73E8] focus:border-[#1A73E8]">
+<option>10</option>
+<option selected="">25</option>
+<option>50</option>
+</select>
+</div>
+<div class="flex items-center gap-4">
+<span>1–4 de 4</span>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded hover:bg-[#F1F3F4] text-[#9AA0A6] cursor-not-allowed" disabled="">
+<span class="material-symbols-outlined text-base">chevron_left</span>
+</button>
+<button class="p-1 rounded hover:bg-[#F1F3F4] text-[#9AA0A6] cursor-not-allowed" disabled="">
+<span class="material-symbols-outlined text-base">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

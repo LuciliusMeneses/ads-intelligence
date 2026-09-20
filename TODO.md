@@ -1,0 +1,4 @@
+- [ ] Update Tailwind config in server.js with Google Ads palette
+- [ ] Refactor HTML templates (overview, campaigns, CRM, radar, finance, help)
+- [ ] Implement Chart.js and chart-helper.js
+- [ ] Visual QA and functional testing

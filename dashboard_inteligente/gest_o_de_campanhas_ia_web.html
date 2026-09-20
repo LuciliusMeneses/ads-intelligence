@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>GrowthOps AI - Gestão de Campanhas IA</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/google-ads-theme.js"></script>
+  <script>
+    tailwind.config = window.googleAdsTailwindConfig;
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/chart-helper.js"></script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body class="bg-google-bg text-google-text font-sans antialiased min-h-screen">
+  <!-- SIDE NAVIGATION (GOOGLE ADS STYLE) -->
+  <aside class="w-64 fixed h-screen z-40 bg-google-card border-r border-google-outline flex flex-col p-4 shadow-sm">
+    <div class="px-2 pt-2 mb-8">
+      <div class="text-lg font-bold text-google-text flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-google-primary flex items-center justify-center text-white">
+          <span class="material-symbols-outlined">auto_mode</span>
+        </div>
+        <span>GrowthOps AI</span>
+      </div>
+    </div>
+    <nav class="flex flex-col gap-1">
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/">
+        <span class="material-symbols-outlined">dashboard</span><span>Visão Geral</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full bg-google-primary/10 text-google-primary font-bold border-l-4 border-google-primary" href="/campaigns">
+        <span class="material-symbols-outlined">auto_mode</span><span>Campanhas IA</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/crm">
+        <span class="material-symbols-outlined">account_tree</span><span>CRM & Pipeline</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/competitors">
+        <span class="material-symbols-outlined">radar</span><span>Radar de Concorrentes</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/finance">
+        <span class="material-symbols-outlined">account_balance_wallet</span><span>Área Financeira</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2 rounded-full text-google-text hover:bg-google-bg transition" href="/help">
+        <span class="material-symbols-outlined">help</span><span>Ajuda & Manual</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT WRAPPER -->
+  <div class="pl-64 flex flex-col min-h-screen bg-google-bg">
+    <!-- TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-30 bg-white border-b border-google-outline flex items-center justify-between px-8 py-3 w-full">
+      <div class="flex items-center gap-4">
+        <div class="text-google-textSecondary text-sm font-medium">Conta: 782-940-1283</div>
+      </div>
+      <div class="flex items-center gap-4">
+        <button class="px-4 py-2 bg-google-primary hover:bg-google-primaryHover text-white font-semibold text-xs rounded-full transition">+ Nova Campanha</button>
+      </div>
+    </header>
+
+    <main class="p-6 lg:p-8 flex flex-col gap-6 max-w-[1600px] w-full mx-auto">
+        <!-- Content will be migrated in sections -->
+        <h1 class="text-2xl font-bold text-google-text">Gestão de Campanhas IA</h1>
+        <p class="text-google-textSecondary">Funcionalidade de Campanhas em migração para o Google Ads Design...</p>
+    </main>
+  </div>
+</body>
+</html>
