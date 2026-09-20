@@ -98,4 +98,16 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+---
+
+## 5. Development Workflow
+
+O desenvolvimento do projeto segue um fluxo rigoroso orientado por tarefas e validação de contexto:
+
+1. **Task ID**: Todas as operações são vinculadas a um identificador de tarefa autoritativo.
+2. **Contexto Autoritativo**: O agente recebe um estado validado que define o que pode ser alterado (scope locking).
+3. **Validação de Integridade**: Verificação obrigatória de SHA para garantir que a base de código não divergiu.
+4. **Plano de Execução**: Seguimento estrito dos passos (steps) aprovados no plano de ação.
+5. **Approval Gate**: Toda alteração de código exige revisão humana obrigatória antes de ser integrada.
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
