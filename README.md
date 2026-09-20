@@ -79,7 +79,19 @@ Não gera criativos. Especifica: formato, duração, proporção, conceito, hook
 
 ---
 
-## 4. Estrutura do Repositório
+## 4. Development Workflow
+
+Para garantir a integridade do sistema e a qualidade das intervenções, siga estas diretrizes:
+
+1. **Branching**: Nunca efetue alterações diretamente na `main`. Utilize branches descritivas (`feature/`, `fix/`, `chore/`).
+2. **Pull Requests**: Toda alteração requer revisão humana antes da integração. O fluxo de validação é obrigatório.
+3. **Testes**: Certifique-se de que alterações na máquina de estados ou lógica dos especialistas não quebrem o `approval-gate.ts`.
+4. **Documentação**: Atualize os tipos no arquivo `ads-intelligence.ts` sempre que uma nova capacidade ou estado for adicionado aos agentes.
+5. **Auditabilidade**: Qualquer alteração na lógica de decisão dos agentes deve manter o rastro de evidências e auditoria exigido pelo `orchestrator.ts`.
+
+---
+
+## 5. Estrutura do Repositório
 
 ```
 ads-intelligence/
