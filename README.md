@@ -98,4 +98,13 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+## 5. Development Workflow
+
+O desenvolvimento do ADS INTELLIGENCE segue um ciclo rigoroso orientado a agentes:
+
+1. **Proposta de Funcionalidade**: Toda alteração deve ser mapeada na state machine ou no contexto do Ads Orchestrator.
+2. **Validação de Tipos**: Alterações que impactem a estrutura de dados devem ser refletidas em `src/types/ads-intelligence.ts` antes da implementação da lógica.
+3. **Testes de Agentes**: Cada novo comportamento ou lógica de especialista deve ser testado isoladamente para garantir que não viole as regras de autoridade ou a necessidade de evidências (no caso do *Market Intelligence*).
+4. **Code Review Humano**: Nenhuma implementação de automação de decisão pode ser integrada sem revisão humana sobre o impacto na auditoria e no *Approval Gate*.
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
