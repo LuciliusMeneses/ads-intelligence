@@ -98,4 +98,6 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+Nota: Utilize o padrão de branch `ai/task-dev-123` para novas implementações.
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
