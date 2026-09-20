@@ -98,4 +98,13 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+## 5. Development Workflow
+
+O desenvolvimento do ADS INTELLIGENCE segue diretrizes rigorosas para garantir a integridade da lógica de negócios:
+
+1. **Branching**: Toda alteração deve ocorrer numa branch específica (`feature/` ou `fix/`). Nunca realizar push direto na `main`.
+2. **Validação**: Alterações na `state-machine` exigem testes unitários para validar a transição entre estados.
+3. **Revisão**: O sistema é mantido via pull requests com revisão humana obrigatória.
+4. **Documentação**: Atualizações nas capacidades dos agentes devem ser refletidas nos comentários do código e na documentação técnica.
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
