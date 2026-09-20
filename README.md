@@ -79,7 +79,18 @@ Não gera criativos. Especifica: formato, duração, proporção, conceito, hook
 
 ---
 
-## 4. Estrutura do Repositório
+## 4. Development Workflow
+
+O desenvolvimento do ADS INTELLIGENCE segue diretrizes rigorosas para garantir a integridade da lógica de orquestração e da máquina de estados:
+
+* **Branching**: Todo novo desenvolvimento deve ocorrer em branches isoladas (ex: `feat/`, `fix/`). O merge para `main` requer aprovação humana e revisão de auditoria.
+* **Tipagem**: Alterações nos domínios de negócio devem refletir-se imediatamente nos tipos TypeScript em `src/types/`.
+* **Validação**: Qualquer modificação na `approval-gate.ts` deve ser validada contra o fluxo de estados definido.
+* **Testes**: A lógica dos especialistas deve ser testada de forma unitária, garantindo que a regra de 'exigência de evidências' e 'detecção de contradições' seja mantida.
+
+---
+
+## 5. Estrutura do Repositório
 
 ```
 ads-intelligence/
