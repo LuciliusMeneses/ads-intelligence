@@ -98,4 +98,13 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+## 5. Development Workflow
+
+O desenvolvimento do ADS INTELLIGENCE segue rigorosos padrões de integridade e segurança:
+
+* **Branching Strategy**: O código nunca é escrito diretamente na `main`. Deve-se utilizar `feature branches` baseadas em `TASK_ID`.
+* **Pull Requests**: Toda alteração requer revisão humana obrigatória. Nenhuma alteração é fundida sem validação do fluxo de estado e impacto nos agentes.
+* **Testes**: As alterações no core (`state-machine` ou `orchestrator`) devem garantir a conformidade com as Regras Críticas de cada especialista.
+* **Documentação**: Qualquer alteração na lógica de decisão dos especialistas deve ser refletida nos comentários do código e, se necessário, nesta documentação.
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
