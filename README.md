@@ -98,4 +98,8 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+## 5. Development Safety
+
+Todas as alterações ou commits gerados total ou parcialmente por ferramentas de Inteligência Artificial exigem revisão humana rigorosa antes de qualquer processo de merge. A responsabilidade pela integridade e segurança do código permanece sob supervisão humana.
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
