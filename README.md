@@ -98,4 +98,12 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+---
+
+## 5. Convenção de Branches
+
+Ao criar novas funcionalidades ou correções, utilize o prefixo ai/ seguido do identificador da tarefa. Exemplo: `ai/task-dev-123`.
+
+---
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
