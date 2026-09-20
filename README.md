@@ -98,4 +98,14 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+## 5. Development Workflow
+
+O fluxo de desenvolvimento no projeto ADS INTELLIGENCE segue critérios rigorosos para garantir a integridade da lógica multi-agente:
+
+1. **Branching**: As alterações devem ser desenvolvidas em branches específicas (ex: `feature/`, `fix/`) a partir da branch de desenvolvimento.
+2. **Validação de Tipos**: Qualquer alteração na lógica de especialistas ou estados deve atualizar os ficheiros de tipos em `src/types/`.
+3. **Testes de Integração**: Alterações na `state-machine` exigem simulação de ciclo completo (Draft para Approved) para garantir que o Approval Gate não é contornado.
+4. **Code Review**: Todo o código é sujeito a revisão humana obrigatória antes da fusão (merge).
+5. **Deployment**: Após aprovação, a CI/CD valida a integridade do Dashboard e a sintaxe dos agentes antes de qualquer deploy em ambiente de staging.
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
