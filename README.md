@@ -98,4 +98,8 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+## 5. Development Safety
+
+Todas as alterações geradas por IA exigem revisão humana obrigatória antes da integração na branch main. A supervisão humana é essencial para garantir a segurança, integridade e precisão do código antes de qualquer merge.
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
