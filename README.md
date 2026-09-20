@@ -98,4 +98,14 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+## 5. Development Workflow
+
+O desenvolvimento segue um fluxo baseado em Pull Requests com validação técnica e revisão humana:
+
+1. **Branching**: Criar uma branch feature seguindo a convenção `feature/DEV-XXX`.
+2. **Implementação**: Realizar alterações respeitando a estrutura de especialistas e a state machine definida.
+3. **Validação**: Garantir que as alterações não violam a arquitetura dos agentes.
+4. **Pull Request**: Submeter a alteração para review técnica.
+5. **Approval Gate**: Nenhuma alteração pode ser integrada sem confirmação de que os fluxos de aprovação humana continuam funcionais.
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
