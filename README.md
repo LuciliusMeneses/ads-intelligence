@@ -99,3 +99,5 @@ ads-intelligence/
 ```
 
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
+
+Para alterações, utilize a branch: `ai/task-dev-123`
