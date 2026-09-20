@@ -79,7 +79,17 @@ Não gera criativos. Especifica: formato, duração, proporção, conceito, hook
 
 ---
 
-## 4. Estrutura do Repositório
+## 4. Development Workflow
+
+Para garantir a estabilidade e a integridade das alterações, todo o desenvolvimento deve seguir um fluxo rigoroso de controlo de versões:
+
+1. **Branches de Desenvolvimento**: Todas as alterações devem ser realizadas em branches que comecem com o prefixo `ai/` (ex: `ai/feature-name` ou `ai/bugfix-name`).
+2. **Isolamento**: Não é permitido realizar commits diretamente na branch `main`.
+3. **Revisão Obrigatória**: Após a conclusão do trabalho na branch `ai/`, deve ser aberto um Pull Request para a branch `main`, exigindo revisão humana antes do merge.
+
+---
+
+## 5. Estrutura do Repositório
 
 ```
 ads-intelligence/
