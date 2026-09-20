@@ -4,6 +4,12 @@ Plataforma Profissional de Inteligência e Gestão de Publicidade Digital basead
 
 ---
 
+## Development Safety
+
+Todas as alterações ao código, configurações ou estratégias geradas por IA exigem uma revisão humana detalhada antes de qualquer processo de merge ou implementação em produção. A supervisão humana é mandatória para garantir a integridade, segurança e qualidade do sistema.
+
+---
+
 ## 1. Princípio Central
 
 O **ADS INTELLIGENCE** não é apenas um dashboard de anúncios. Funciona como uma **equipa virtual de especialistas em publicidade** que analisa dados, pesquisa informação relevante, confronta hipóteses e apresenta campanhas e recomendações estruturadas para aprovação humana.
