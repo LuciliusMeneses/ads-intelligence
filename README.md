@@ -48,7 +48,13 @@ Nenhuma campanha pode ser publicada automaticamente. O fluxo rigoroso garante su
 
 ---
 
-## 3. Arquitetura de Especialistas
+## 3. Development Safety
+
+Todas as alterações ao código geradas por ferramentas de IA devem ser submetidas a uma revisão humana rigorosa antes de qualquer merge. Esta prática garante a integridade, segurança e conformidade do sistema.
+
+---
+
+## 4. Arquitetura de Especialistas
 
 ### 1. Ads Orchestrator
 Coordenador geral. Recebe contexto, distribui tarefas entre especialistas, recolhe análises, **detecta contradições**, **exige evidências**, consolida recomendações e produz a proposta final de campanha. Nunca aceita cegamente a primeira hipótese.
@@ -79,7 +85,7 @@ Não gera criativos. Especifica: formato, duração, proporção, conceito, hook
 
 ---
 
-## 4. Estrutura do Repositório
+## 5. Estrutura do Repositório
 
 ```
 ads-intelligence/
