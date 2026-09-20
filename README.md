@@ -25,7 +25,13 @@ O **ADS INTELLIGENCE** não é apenas um dashboard de anúncios. Funciona como u
 
 ---
 
-## 2. Aprovação Humana Obrigatória (Approval Gate)
+## 2. Development Safety
+
+Todas as alterações ou contribuições ao código geradas por sistemas de IA exigem revisão humana obrigatória por parte de um engenheiro qualificado antes da integração (merge) no repositório.
+
+---
+
+## 3. Aprovação Humana Obrigatória (Approval Gate)
 
 Nenhuma campanha pode ser publicada automaticamente. O fluxo rigoroso garante supervisão humana em pontos críticos:
 
@@ -48,7 +54,7 @@ Nenhuma campanha pode ser publicada automaticamente. O fluxo rigoroso garante su
 
 ---
 
-## 3. Arquitetura de Especialistas
+## 4. Arquitetura de Especialistas
 
 ### 1. Ads Orchestrator
 Coordenador geral. Recebe contexto, distribui tarefas entre especialistas, recolhe análises, **detecta contradições**, **exige evidências**, consolida recomendações e produz a proposta final de campanha. Nunca aceita cegamente a primeira hipótese.
@@ -79,7 +85,7 @@ Não gera criativos. Especifica: formato, duração, proporção, conceito, hook
 
 ---
 
-## 4. Estrutura do Repositório
+## 5. Estrutura do Repositório
 
 ```
 ads-intelligence/
