@@ -98,4 +98,12 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+## 5. Development Workflow
+
+Para garantir a integridade do projeto, seguimos um modelo de governança rigoroso:
+
+1. **Branches**: Todas as novas funcionalidades ou correções devem ser desenvolvidas em branches separadas com o prefixo `ai/` (ex: `ai/feature-name` ou `ai/bug-fix`).
+2. **Pull Requests**: Nenhuma alteração é integrada diretamente na branch principal. É obrigatória a abertura de um Pull Request para revisão.
+3. **Governança**: O processo segue estritamente as diretrizes de qualidade do ADS INTELLIGENCE, sendo necessária a validação humana em todas as integrações de código.
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
