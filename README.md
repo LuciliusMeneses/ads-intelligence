@@ -69,7 +69,7 @@ Monitoriza métricas (CTR, CPM, CPC, CPA, CPL, CVR, ROAS, frequência, spend, re
 
 ### 6. Offer Strategist
 Gerencia preço, promoção, proposta de valor, ticket médio, margem, CAC máximo, break-even e posicionamento.
-* **REGRA CRÍTICA DE PREÇOS**: Distingue obrigatoriamente:
+* **REGRA CRÍTICA DE PREÇOS**:
   - `CURRENT_PRICE` (Preço Atual)
   - `MARKET_PRICE` (Preço de Mercado)
   - `AI_SUGGESTED_PRICE` (Preço Sugerido por IA com origem e justificativa)
@@ -97,5 +97,13 @@ ads-intelligence/
 │       └── offer-strategist.ts     # Gestor de preços (Current vs Market vs AI)
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
+
+---
+
+## 5. Development Safety
+
+Alterações geradas por IA exigem revisão humana antes do merge.
+
+---
 
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
