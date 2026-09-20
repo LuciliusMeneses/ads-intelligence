@@ -98,4 +98,12 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+## 5. Development Workflow
+
+O desenvolvimento segue um fluxo rigoroso de qualidade:
+1. **Branching**: Utilizar `feature/` para novas funcionalidades e `fix/` para correcções.
+2. **Pull Requests**: Toda alteração deve passar pelo `Approval Gate` do orquestrador antes do merge.
+3. **Testes**: Manter a consistência da `State Machine` validada nos testes unitários em `src/state-machine/`.
+4. **Documentação**: Qualquer alteração na lógica dos agentes deve ser refletida na secção de Arquitetura de Especialistas.
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
