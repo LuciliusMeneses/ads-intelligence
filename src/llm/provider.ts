@@ -155,12 +155,21 @@ export class FakeLLMProvider implements LLMProvider {
   public async generate(messages: LLMMessage[], options?: LLMGenerateOptions): Promise<LLMResponse> {
     return {
       content: this.customResponse || JSON.stringify({
+        specialist: 'MARKET_INTELLIGENCE',
         summary: 'Análise simulada para testes de unidade.',
         facts: ['Métrica factual de teste'],
         calculations: ['Calculado ROAS de 4.2x'],
         inferences: ['Projeção de escala sustentável'],
-        recommendations: [{ type: 'BUDGET', title: 'Ajustar verba', description: 'Recomenda-se teste' }],
-        evidenceIds: ['ref_1'],
+        recommendations: [{
+          type: 'BUDGET',
+          title: 'Ajustar verba',
+          description: 'Recomenda-se teste',
+          priority: 'HIGH',
+          expectedImpact: 'Aumento de 10% no ROAS',
+          risk: 'Baixo',
+          classification: 'AI_RECOMMENDATION'
+        }],
+        evidenceIds: [],
         missingData: [],
         risks: ['Risco de leilão'],
         confidenceRationale: 'Raciocínio simulado'
