@@ -98,4 +98,7 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+## Orchestrator V2 Max Correction Test
+FINAL_STATE_ALPHA FINAL_STATE_BETA
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
