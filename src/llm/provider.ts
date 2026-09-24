@@ -3,6 +3,8 @@
  * Provides LLMProvider interface, NineRouterLLMProvider (OpenAI-compatible), and FakeLLMProvider.
  */
 
+import { z } from 'zod';
+
 export interface LLMMessage {
   role: 'system' | 'user' | 'assistant';
   content: string;
@@ -33,38 +35,45 @@ export interface LLMProvider {
   listModels(): Promise<string[]>;
 }
 
+const NineRouterConfigSchema = z.object({
+  baseUrl: z.string().url().default('https://api.9router.com/v1'),
+  apiKey: z.string().min(1, 'API key missing'),
+  defaultModel: z.string().default('gpt-4o'),
+  timeoutMs: z.number().positive().default(30000)
+});
+
 export class NineRouterLLMProvider implements LLMProvider {
   public providerName = '9router';
-  private baseUrl: string;
-  private apiKey: string;
-  private defaultModel: string;
-  private defaultTimeoutMs: number;
+  private config: z.infer<typeof NineRouterConfigSchema>;
 
   constructor() {
-    this.baseUrl = process.env.NINEROUTER_BASE_URL || 'https://api.9router.com/v1';
-    this.apiKey = process.env.NINEROUTER_API_KEY || '';
-    this.defaultModel = process.env.NINEROUTER_DEFAULT_MODEL || 'gpt-4o';
-    this.defaultTimeoutMs = process.env.NINEROUTER_TIMEOUT_MS ? Number(process.env.NINEROUTER_TIMEOUT_MS) : 30000;
+    const parsed = NineRouterConfigSchema.safeParse({
+      baseUrl: process.env.NINEROUTER_BASE_URL,
+      apiKey: process.env.NINEROUTER_API_KEY,
+      defaultModel: process.env.NINEROUTER_DEFAULT_MODEL,
+      timeoutMs: process.env.NINEROUTER_TIMEOUT_MS ? Number(process.env.NINEROUTER_TIMEOUT_MS) : undefined
+    });
 
-    if (!this.apiKey && process.env.NODE_ENV !== 'test') {
-      console.warn('[9Router Warning] NINEROUTER_API_KEY não configurada no ambiente.');
+    if (!parsed.success) {
+      throw new Error(`[9Router Configuration Error] ${parsed.error.message}`);
     }
+    this.config = parsed.data;
   }
 
   public async generate(messages: LLMMessage[], options?: LLMGenerateOptions): Promise<LLMResponse> {
     const startTime = Date.now();
-    const model = options?.model || this.defaultModel;
-    const timeout = options?.timeoutMs || this.defaultTimeoutMs;
+    const model = options?.model || this.config.defaultModel;
+    const timeout = options?.timeoutMs || this.config.timeoutMs;
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeout);
 
     try {
-      const response = await fetch(`${this.baseUrl}/chat/completions`, {
+      const response = await fetch(`${this.config.baseUrl}/chat/completions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`
+          'Authorization': `Bearer ${this.config.apiKey}`
         },
         body: JSON.stringify({
           model,
@@ -79,29 +88,22 @@ export class NineRouterLLMProvider implements LLMProvider {
       clearTimeout(timer);
 
       if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`[9Router API Error ${response.status}] ${errText}`);
+        throw new Error(`[9Router API Error ${response.status}]`);
       }
 
       const json: any = await response.json();
       const latencyMs = Date.now() - startTime;
 
-      const choice = json.choices?.[0]?.message?.content || '';
-      const usage: any = json.usage || {};
-
       return {
-        content: choice,
+        content: json.choices?.[0]?.message?.content || '',
         modelUsed: json.model || model,
-        inputTokens: usage.prompt_tokens,
-        outputTokens: usage.completion_tokens,
-        totalTokens: usage.total_tokens,
+        inputTokens: json.usage?.prompt_tokens,
+        outputTokens: json.usage?.completion_tokens,
+        totalTokens: json.usage?.total_tokens,
         latencyMs
       };
     } catch (err: any) {
       clearTimeout(timer);
-      if (err.name === 'AbortError') {
-        throw new Error(`[9Router Timeout] Chamada LLM excedeu o limite de ${timeout}ms.`);
-      }
       throw err;
     }
   }
@@ -112,86 +114,49 @@ export class NineRouterLLMProvider implements LLMProvider {
     options?: LLMGenerateOptions
   ): Promise<{ data: T; rawResponse: LLMResponse }> {
     const rawResponse = await this.generate(messages, { ...options, responseFormat: 'json_object' });
-    let parsedJson: any;
-
-    try {
-      parsedJson = JSON.parse(rawResponse.content);
-    } catch (e: any) {
-      throw new Error(`[LLM JSON Parse Error] Resposta do LLM não é um JSON válido: ${rawResponse.content}`);
-    }
-
-    const validatedData = schemaValidator(parsedJson);
-    return { data: validatedData, rawResponse };
+    const parsedJson = JSON.parse(rawResponse.content);
+    return { data: schemaValidator(parsedJson), rawResponse };
   }
 
   public async healthCheck(): Promise<boolean> {
     try {
-      const models = await this.listModels();
-      return models.length >= 0;
-    } catch {
-      return false;
-    }
+      const res = await fetch(`${this.config.baseUrl}/models`, {
+        headers: { 'Authorization': `Bearer ${this.config.apiKey}` },
+        signal: AbortSignal.timeout(5000)
+      });
+      return res.ok;
+    } catch { return false; }
   }
 
   public async listModels(): Promise<string[]> {
-    try {
-      const res = await fetch(`${this.baseUrl}/models`, {
-        headers: { 'Authorization': `Bearer ${this.apiKey}` }
-      });
-      if (!res.ok) return [this.defaultModel];
-      const json: any = await res.json();
-      return (json.data || []).map((m: any) => m.id);
-    } catch {
-      return [this.defaultModel];
-    }
+    const res = await fetch(`${this.config.baseUrl}/models`, {
+      headers: { 'Authorization': `Bearer ${this.config.apiKey}` }
+    });
+    if (!res.ok) throw new Error('Failed to fetch models');
+    const json = await res.json();
+    return (json.data || []).map((m: any) => m.id);
   }
 }
 
 export class FakeLLMProvider implements LLMProvider {
   public providerName = 'fake_test_provider';
-
   constructor(private customResponse?: string) {}
 
-  public async generate(messages: LLMMessage[], options?: LLMGenerateOptions): Promise<LLMResponse> {
+  public async generate(messages: LLMMessage[]): Promise<LLMResponse> {
     return {
-      content: this.customResponse || JSON.stringify({
-        specialist: 'MARKET_INTELLIGENCE',
-        summary: 'Análise simulada para testes de unidade.',
-        facts: ['Métrica factual de teste'],
-        calculations: ['Calculado ROAS de 4.2x'],
-        inferences: ['Projeção de escala sustentável'],
-        recommendations: [{
-          type: 'BUDGET',
-          title: 'Ajustar verba',
-          description: 'Recomenda-se teste',
-          priority: 'HIGH',
-          expectedImpact: 'Aumento de 10% no ROAS',
-          risk: 'Baixo',
-          classification: 'AI_RECOMMENDATION'
-        }],
-        evidenceIds: [],
-        missingData: [],
-        risks: ['Risco de leilão'],
-        confidenceRationale: 'Raciocínio simulado'
-      }),
+      content: this.customResponse || '{}',
       modelUsed: 'fake-gpt-4o',
-      inputTokens: 100,
-      outputTokens: 150,
-      totalTokens: 250,
-      latencyMs: 15
+      latencyMs: 1
     };
   }
 
   public async generateStructured<T>(
-    messages: LLMMessage[],
-    schemaValidator: (json: any) => T,
-    options?: LLMGenerateOptions
+    _m: LLMMessage[],
+    schemaValidator: (json: any) => T
   ): Promise<{ data: T; rawResponse: LLMResponse }> {
-    const raw = await this.generate(messages, options);
-    const json = JSON.parse(raw.content);
-    return { data: schemaValidator(json), rawResponse: raw };
+    return { data: schemaValidator({}), rawResponse: await this.generate([]) };
   }
 
   public async healthCheck(): Promise<boolean> { return true; }
-  public async listModels(): Promise<string[]> { return ['fake-gpt-4o', 'fake-claude-3-5-sonnet']; }
+  public async listModels(): Promise<string[]> { return ['fake-gpt-4o']; }
 }
