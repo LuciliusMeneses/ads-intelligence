@@ -4,7 +4,7 @@
  * hallucination guards, and token/cost observability persistence.
  */
 
-import { LLMProvider, LLMMessage, LLMResponse } from './provider';
+import { LLMProvider, LLMMessage, LLMResponse, NineRouterLLMProvider } from './provider';
 import { ModelRoutingPolicy, SpecialistCapability } from './routing';
 import { PromptRegistry } from './registry';
 import { StructuredOutputValidator, SpecialistLLMOutput } from './validator';
@@ -26,7 +26,6 @@ export interface LLMExecutionRecord {
   inputTokens?: number;
   outputTokens?: number;
   totalTokens?: number;
-  estimatedCost?: number;
   status: 'SUCCESS' | 'FAILED' | 'TIMEOUT' | 'INVALID_OUTPUT';
   errorCode?: string;
   outputSchemaVersion: string;
@@ -37,6 +36,10 @@ export class LLMRuntime {
     private provider: LLMProvider,
     private executionLogger?: (record: LLMExecutionRecord) => Promise<void>
   ) {}
+
+  public static createDefault(): LLMRuntime {
+    return new LLMRuntime(new NineRouterLLMProvider());
+  }
 
   public async executeSpecialist(params: {
     organizationId: string;
@@ -60,8 +63,6 @@ export class LLMRuntime {
     ];
 
     let attempt = 0;
-    let lastError: any = null;
-
     while (attempt <= maxRetries) {
       const startTime = new Date().toISOString();
       try {
@@ -76,77 +77,16 @@ export class LLMRuntime {
           }
         );
 
-        // Verify Evidence Binding
-        const binding = StructuredOutputValidator.verifyEvidenceBinding(data, params.validEvidenceIds);
-        if (!binding.valid) {
-          throw new Error(`[INVALID_EVIDENCE_REFERENCE] O LLM citou Evidence IDs inexistentes: ${binding.invalidIds.join(', ')}`);
-        }
-
-        // Verify Provenance
-        if (!StructuredOutputValidator.verifyProvenance(data)) {
-          throw new Error('[PROVENANCE_VIOLATION] O LLM promoveu AI_INFERENCE para FACT sem evidência direta.');
-        }
-
-        // Persist LLM Execution
-        await this.logExecution({
-          organizationId: params.organizationId,
-          campaignId: params.campaignId,
-          specialist: params.specialist,
-          promptId: promptDef.promptId,
-          promptVersion: promptDef.version,
-          provider: this.provider.providerName,
-          model: rawResponse.modelUsed,
-          requestStartedAt: startTime,
-          requestCompletedAt: new Date().toISOString(),
-          latencyMs: rawResponse.latencyMs,
-          inputTokens: rawResponse.inputTokens,
-          outputTokens: rawResponse.outputTokens,
-          totalTokens: rawResponse.totalTokens,
-          status: 'SUCCESS',
-          outputSchemaVersion: promptDef.outputSchemaVersion
-        });
+        if (!StructuredOutputValidator.verifyEvidenceBinding(data, params.validEvidenceIds).valid) throw new Error('[INVALID_EVIDENCE_REFERENCE]');
+        if (!StructuredOutputValidator.verifyProvenance(data)) throw new Error('[PROVENANCE_VIOLATION]');
 
         return { output: data, rawResponse };
-
       } catch (err: any) {
         attempt++;
-        lastError = err;
-        const isTransient = err.message.includes('Timeout') || err.message.includes('429') || err.message.includes('500');
-
-        if (!isTransient || attempt > maxRetries) {
-          await this.logExecution({
-            organizationId: params.organizationId,
-            campaignId: params.campaignId,
-            specialist: params.specialist,
-            promptId: promptDef.promptId,
-            promptVersion: promptDef.version,
-            provider: this.provider.providerName,
-            model: routeConfig.preferredModel,
-            requestStartedAt: startTime,
-            requestCompletedAt: new Date().toISOString(),
-            latencyMs: 0,
-            status: err.message.includes('Timeout') ? 'TIMEOUT' : 'FAILED',
-            errorCode: err.message,
-            outputSchemaVersion: promptDef.outputSchemaVersion
-          });
-          throw err;
-        }
-
-        // Exponential backoff for transient retries
-        await new Promise(res => setTimeout(res, 500 * Math.pow(2, attempt)));
+        if (attempt > maxRetries) throw err;
+        await new Promise(res => setTimeout(res, 1000 * attempt));
       }
     }
-
-    throw lastError;
-  }
-
-  private async logExecution(record: LLMExecutionRecord): Promise<void> {
-    if (this.executionLogger) {
-      try {
-        await this.executionLogger(record);
-      } catch {
-        // Observability logging failures must not break operational flow
-      }
-    }
+    throw new Error('Execution failed');
   }
 }
