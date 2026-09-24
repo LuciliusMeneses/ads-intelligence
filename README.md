@@ -98,4 +98,7 @@ ads-intelligence/
 └── ads-intelligence-command-center.html # Dashboard interativo (Artifact)
 ```
 
+## Orchestrator V2 CI Max Polling Test
+Maximum CI polling limit validation.
+
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
