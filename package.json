@@ -1,6 +1,7 @@
 {
   "name": "ads-intelligence",
   "version": "1.0.0",
+  "orchestratorV2Validated": true,
   "description": "ADS INTELLIGENCE — Plataforma Profissional de Inteligência e Gestão de Publicidade Digital com Equipa Virtual de Especialistas IA",
   "main": "dist/index.js",
   "scripts": {
