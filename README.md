@@ -79,6 +79,12 @@ Não gera criativos. Especifica: formato, duração, proporção, conceito, hook
 
 ---
 
+## Orchestrator V2 Test
+
+A validação de contexto multi-arquivo foi completada.
+
+---
+
 ## 4. Estrutura do Repositório
 
 ```
