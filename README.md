@@ -99,3 +99,8 @@ ads-intelligence/
 ```
 
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
+
+## Orchestrator V2 Byte Integrity Test
+ASCII: ABC-123_xyz
+UTF-8: ação, coração, informação
+Symbols: []{}()<> / \ | = + - _
