@@ -37,23 +37,20 @@ export class NineRouterLLMProvider implements LLMProvider {
   public providerName = '9router';
   private baseUrl: string;
   private apiKey: string;
-  private defaultModel: string;
   private defaultTimeoutMs: number;
 
   constructor() {
     this.baseUrl = process.env.NINEROUTER_BASE_URL || 'https://api.9router.com/v1';
     this.apiKey = process.env.NINEROUTER_API_KEY || '';
-    this.defaultModel = process.env.NINEROUTER_DEFAULT_MODEL || 'gpt-4o';
     this.defaultTimeoutMs = process.env.NINEROUTER_TIMEOUT_MS ? Number(process.env.NINEROUTER_TIMEOUT_MS) : 30000;
 
     if (!this.apiKey && process.env.NODE_ENV !== 'test') {
-      console.warn('[9Router Warning] NINEROUTER_API_KEY não configurada no ambiente.');
+      throw new Error('[9Router Critical] NINEROUTER_API_KEY obrigatória para produção.');
     }
   }
 
   public async generate(messages: LLMMessage[], options?: LLMGenerateOptions): Promise<LLMResponse> {
     const startTime = Date.now();
-    const model = options?.model || this.defaultModel;
     const timeout = options?.timeoutMs || this.defaultTimeoutMs;
 
     const controller = new AbortController();
@@ -67,7 +64,7 @@ export class NineRouterLLMProvider implements LLMProvider {
           'Authorization': `Bearer ${this.apiKey}`
         },
         body: JSON.stringify({
-          model,
+          model: options?.model,
           messages,
           temperature: options?.temperature ?? 0.2,
           max_tokens: options?.maxTokens ?? 2000,
@@ -79,30 +76,23 @@ export class NineRouterLLMProvider implements LLMProvider {
       clearTimeout(timer);
 
       if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`[9Router API Error ${response.status}] ${errText}`);
+        throw new Error(`[9Router API Error ${response.status}]`);
       }
 
       const json: any = await response.json();
       const latencyMs = Date.now() - startTime;
 
-      const choice = json.choices?.[0]?.message?.content || '';
-      const usage: any = json.usage || {};
-
       return {
-        content: choice,
-        modelUsed: json.model || model,
-        inputTokens: usage.prompt_tokens,
-        outputTokens: usage.completion_tokens,
-        totalTokens: usage.total_tokens,
+        content: json.choices?.[0]?.message?.content || '',
+        modelUsed: json.model,
+        inputTokens: json.usage?.prompt_tokens,
+        outputTokens: json.usage?.completion_tokens,
+        totalTokens: json.usage?.total_tokens,
         latencyMs
       };
     } catch (err: any) {
       clearTimeout(timer);
-      if (err.name === 'AbortError') {
-        throw new Error(`[9Router Timeout] Chamada LLM excedeu o limite de ${timeout}ms.`);
-      }
-      throw err;
+      throw new Error(`[9Router Failure] ${err.message}`);
     }
   }
 
@@ -112,22 +102,18 @@ export class NineRouterLLMProvider implements LLMProvider {
     options?: LLMGenerateOptions
   ): Promise<{ data: T; rawResponse: LLMResponse }> {
     const rawResponse = await this.generate(messages, { ...options, responseFormat: 'json_object' });
-    let parsedJson: any;
-
     try {
-      parsedJson = JSON.parse(rawResponse.content);
+      const parsed = JSON.parse(rawResponse.content);
+      return { data: schemaValidator(parsed), rawResponse };
     } catch (e: any) {
-      throw new Error(`[LLM JSON Parse Error] Resposta do LLM não é um JSON válido: ${rawResponse.content}`);
+      throw new Error(`[LLM JSON Parse Error]: ${e.message}`);
     }
-
-    const validatedData = schemaValidator(parsedJson);
-    return { data: validatedData, rawResponse };
   }
 
   public async healthCheck(): Promise<boolean> {
     try {
-      const models = await this.listModels();
-      return models.length >= 0;
+      const res = await fetch(`${this.baseUrl}/models`, { headers: { 'Authorization': `Bearer ${this.apiKey}` } });
+      return res.ok;
     } catch {
       return false;
     }
@@ -135,63 +121,26 @@ export class NineRouterLLMProvider implements LLMProvider {
 
   public async listModels(): Promise<string[]> {
     try {
-      const res = await fetch(`${this.baseUrl}/models`, {
-        headers: { 'Authorization': `Bearer ${this.apiKey}` }
-      });
-      if (!res.ok) return [this.defaultModel];
-      const json: any = await res.json();
+      const res = await fetch(`${this.baseUrl}/models`, { headers: { 'Authorization': `Bearer ${this.apiKey}` } });
+      if (!res.ok) return [];
+      const json = await res.json();
       return (json.data || []).map((m: any) => m.id);
     } catch {
-      return [this.defaultModel];
+      return [];
     }
   }
 }
 
 export class FakeLLMProvider implements LLMProvider {
   public providerName = 'fake_test_provider';
-
   constructor(private customResponse?: string) {}
-
   public async generate(messages: LLMMessage[], options?: LLMGenerateOptions): Promise<LLMResponse> {
-    return {
-      content: this.customResponse || JSON.stringify({
-        specialist: 'MARKET_INTELLIGENCE',
-        summary: 'Análise simulada para testes de unidade.',
-        facts: ['Métrica factual de teste'],
-        calculations: ['Calculado ROAS de 4.2x'],
-        inferences: ['Projeção de escala sustentável'],
-        recommendations: [{
-          type: 'BUDGET',
-          title: 'Ajustar verba',
-          description: 'Recomenda-se teste',
-          priority: 'HIGH',
-          expectedImpact: 'Aumento de 10% no ROAS',
-          risk: 'Baixo',
-          classification: 'AI_RECOMMENDATION'
-        }],
-        evidenceIds: [],
-        missingData: [],
-        risks: ['Risco de leilão'],
-        confidenceRationale: 'Raciocínio simulado'
-      }),
-      modelUsed: 'fake-gpt-4o',
-      inputTokens: 100,
-      outputTokens: 150,
-      totalTokens: 250,
-      latencyMs: 15
-    };
+    return { content: this.customResponse || '{"specialist": "test"}', modelUsed: 'fake-gpt', latencyMs: 10 };
   }
-
-  public async generateStructured<T>(
-    messages: LLMMessage[],
-    schemaValidator: (json: any) => T,
-    options?: LLMGenerateOptions
-  ): Promise<{ data: T; rawResponse: LLMResponse }> {
-    const raw = await this.generate(messages, options);
-    const json = JSON.parse(raw.content);
-    return { data: schemaValidator(json), rawResponse: raw };
+  public async generateStructured<T>(messages: LLMMessage[], schemaValidator: (json: any) => T): Promise<{ data: T; rawResponse: LLMResponse }> {
+    const raw = await this.generate(messages);
+    return { data: schemaValidator(JSON.parse(raw.content)), rawResponse: raw };
   }
-
   public async healthCheck(): Promise<boolean> { return true; }
-  public async listModels(): Promise<string[]> { return ['fake-gpt-4o', 'fake-claude-3-5-sonnet']; }
+  public async listModels(): Promise<string[]> { return ['fake-model']; }
 }
