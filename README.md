@@ -99,6 +99,6 @@ ads-intelligence/
 ```
 
 ## Orchestrator V2 Max Correction Test
-FINAL_STATE_ALPHA FINAL_STATE_BETA
+FINAL_STATE_ALPHA​FINAL_STATE_BETA
 
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
