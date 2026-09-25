@@ -43,6 +43,29 @@ export class MarketIntelligenceSpecialist {
   }
 
   /**
+   * Calculates price gap between current price and market average based on references.
+   */
+  public calculatePriceGap(currentPrice: number): string {
+    if (this.references.length === 0) return 'Dados insuficientes para análise de gap de preço.';
+    
+    // Extract prices from foundInfo strings (simplistic extraction for intelligence execution)
+    const prices = this.references
+      .map(r => r.foundInfo.match(/R\$?\s?(\d+[.,]\d+)/))
+      .filter(Boolean)
+      .map(m => parseFloat(m![1].replace(',', '.')));
+
+    if (prices.length === 0) return 'Nenhum preço concorrente numérico detetado nas referências.';
+
+    const avgMarket = prices.reduce((a, b) => a + b, 0) / prices.length;
+    const diff = ((currentPrice - avgMarket) / avgMarket) * 100;
+
+    if (diff > 15) return `PREÇO_ALTO: O preço atual está ${diff.toFixed(1)}% acima da média de mercado (R$ ${avgMarket.toFixed(2)}).`;
+    if (diff < -15) return `PREÇO_BAIXO: O preço atual está ${Math.abs(diff).toFixed(1)}% abaixo da média de mercado (R$ ${avgMarket.toFixed(2)}).`;
+    
+    return `PREÇO_COMPETITIVO: Alinhado com a média de mercado (R$ ${avgMarket.toFixed(2)}).`;
+  }
+
+  /**
    * Summarizes competitor pricing and positioning.
    */
   public generateIntelligenceSummary(): {

@@ -36,8 +36,8 @@ export class OfferStrategistSpecialist {
       );
     }
 
-    if (params.currentPrice <= 0 || params.marketPrice <= 0 || params.aiSuggestedPrice <= 0) {
-      throw new Error('[OfferStrategist Violation] Valores de preço devem ser estritamente positivos.');
+    if (params.currentPrice < 0 || params.marketPrice < 0 || params.aiSuggestedPrice < 0) {
+      throw new Error('[OfferStrategist Violation] Valores de preço não podem ser negativos.');
     }
 
     const validatedCurrency = params.currency ? validateCurrencyCode(params.currency) : 'BRL';
@@ -56,6 +56,16 @@ export class OfferStrategistSpecialist {
   }
 
   /**
+   * Suggests an incentive strategy based on margin and competition.
+   */
+  public static suggestIncentive(margin: number, isHighPrice: boolean): string {
+    if (isHighPrice && margin > 50) return 'GIFT_WITH_PURCHASE: Adicionar bônus exclusivo para mitigar percepção de preço alto.';
+    if (margin > 40) return 'BUNDLE: Criar pacote com desconto progressivo para aumentar LTV.';
+    if (margin < 20) return 'SCARCITY: Focar em exclusividade e limite de estoque em vez de desconto.';
+    return 'DIRECT_DISCOUNT: Cupom de primeira compra para acelerar conversão.';
+  }
+
+  /**
    * Formats prices with clear labels for human presentation.
    */
   public static formatPriceComparison(pricing: OfferPricing): {
@@ -64,7 +74,8 @@ export class OfferStrategistSpecialist {
     aiSuggestedLabel: string;
     variancePercent: number;
   } {
-    const variance = ((pricing.aiSuggestedPrice - pricing.currentPrice) / pricing.currentPrice) * 100;
+    const current = pricing.currentPrice || 1;
+    const variance = ((pricing.aiSuggestedPrice - current) / current) * 100;
     return {
       currentLabel: `CURRENT_PRICE: ${pricing.currency} ${pricing.currentPrice.toFixed(2)}`,
       marketLabel: `MARKET_PRICE: ${pricing.currency} ${pricing.marketPrice.toFixed(2)}`,
