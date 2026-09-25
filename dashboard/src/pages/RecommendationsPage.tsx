@@ -1,19 +1,39 @@
 /**
  * ADS INTELLIGENCE Pages - RecommendationsPage
  */
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { ProvenanceBadge } from '../components/provenance/ProvenanceBadge';
 import { ConfidenceCircle } from '../components/confidence/ConfidenceIndicator';
+import { ComprehensiveCampaignProposal } from '../../src/types/intelligence';
 
 export const RecommendationsPage: React.FC = () => {
+  const [proposals] = useState<ComprehensiveCampaignProposal[]>([]);
+
   return (
     <div className="space-y-6">
       <div className="pb-6 border-b border-gray-200">
         <h1 className="text-2xl font-bold text-gray-900">Recomendações IA</h1>
-        <p className="text-gray-500 mt-1">Ações sugeridas pela inteligência artificial com base em dados e evidências.</p>
+        <p className="text-gray-500 mt-1">Ações e propostas sugeridas pela inteligência artificial.</p>
       </div>
+
+      {proposals.length > 0 && (
+        <section>
+          <h2 className="text-lg font-semibold mb-4">Propostas de Campanha</h2>
+          <div className="grid grid-cols-1 gap-4">
+            {proposals.map(p => (
+              <Card key={p.id}>
+                <CardContent className="p-4">
+                  <h3 className="font-bold text-lg">{p.name}</h3>
+                  <p className="text-sm text-gray-600">Objetivo: {p.objective}</p>
+                  <p className="text-sm text-gray-600">Confiança: {p.confidence.confidenceScore}%</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <RecommendationCard
