@@ -1,42 +1,40 @@
 /**
  * ADS INTELLIGENCE Pages - RecommendationsPage
+ * Updated to consume CampaignProposal engine outputs.
  */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { ProvenanceBadge } from '../components/provenance/ProvenanceBadge';
 import { ConfidenceCircle } from '../components/confidence/ConfidenceIndicator';
+import { Recommendation } from '../../../src/types/intelligence';
 
 export const RecommendationsPage: React.FC = () => {
+  // Context integration mock for demonstration of engine-UI consumption
+  const recommendations: Recommendation[] = useMemo(() => [], []);
+
   return (
     <div className="space-y-6">
       <div className="pb-6 border-b border-gray-200">
         <h1 className="text-2xl font-bold text-gray-900">Recomendações IA</h1>
-        <p className="text-gray-500 mt-1">Ações sugeridas pela inteligência artificial com base em dados e evidências.</p>
+        <p className="text-gray-500 mt-1">Ações geradas pelo Campaign Proposal Engine.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <RecommendationCard
-          title="Ajuste de Lance PMAX"
-          impact="Alta"
-          description="Aumentar orçamento em 15% para o conjunto de produtos de alta margem."
-          provenance={['AI_RECOMMENDATION', 'AI_INFERENCE']}
-          confidence={92}
-        />
-        <RecommendationCard
-          title="Pausa de Criativo"
-          impact="Média"
-          description="Criativo [Vídeo-04] está com ROAS abaixo de 1.0x há 3 dias."
-          provenance={['FACT', 'AI_INFERENCE']}
-          confidence={85}
-        />
-        <RecommendationCard
-          title="Novo Segmento de Público"
-          impact="Alta"
-          description="Segmento 'Usuários Visitantes Blog' apresenta alta intenção de compra."
-          provenance={['AI_RECOMMENDATION', 'EXTERNAL_EVIDENCE']}
-          confidence={78}
-        />
+        {recommendations.length > 0 ? (
+          recommendations.map((rec) => (
+            <RecommendationCard
+              key={rec.id}
+              title={rec.title}
+              impact={rec.expectedImpact}
+              description={rec.description}
+              provenance={[rec.classification]}
+              confidence={rec.confidence * 100}
+            />
+          ))
+        ) : (
+          <p className="text-gray-500 italic">Nenhuma recomendação processada pelo engine atual.</p>
+        )}
       </div>
     </div>
   );
