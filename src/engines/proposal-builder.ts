@@ -11,11 +11,12 @@ import {
   ConfidenceResult
 } from '../types/intelligence';
 import { CampaignAuditor } from './campaign-auditor';
+import { ExpertAnalysisReport } from '../types/ads-intelligence';
 
 export class CampaignProposalBuilder {
   public static build(
     context: SpecialistContext,
-    analyses: SpecialistAnalysis[],
+    reports: ExpertAnalysisReport[],
     overallConfidence: ConfidenceResult
   ): ComprehensiveCampaignProposal {
     const proposal: ComprehensiveCampaignProposal = {
@@ -57,8 +58,8 @@ export class CampaignProposalBuilder {
         humanDecision: 'ACCEPT'
       },
       testPlan: 'Testes A/B estruturados de hooks criativos e públicos com verba controlada.',
-      evidence: analyses.flatMap(a => a.evidence),
-      risks: analyses.flatMap(a => a.risks),
+      evidence: reports.flatMap(r => r.evidenceOrRisks),
+      risks: reports.flatMap(r => r.risks),
       confidence: overallConfidence,
       missingData: overallConfidence.confidenceReasons.filter(r => r.includes('Ausência') || r.includes('desconhecida')),
       auditResult: {
@@ -70,12 +71,11 @@ export class CampaignProposalBuilder {
       createdAt: new Date().toISOString()
     };
 
-    // If offer pricing context is present, map it without hardcoded magic numbers
     if (context.currentPrice !== undefined) {
       proposal.offer = {
         currentPrice: context.currentPrice,
         marketPrice: context.averageTicket || context.currentPrice,
-        aiSuggestedPrice: context.currentPrice, // Default to current unless explicitly modeled
+        aiSuggestedPrice: context.currentPrice,
         currency: 'BRL',
         originAndJustification: 'Derivado do contexto de preço informado pelo utilizador.',
         averageTicket: context.averageTicket || context.currentPrice,
@@ -85,7 +85,6 @@ export class CampaignProposalBuilder {
       };
     }
 
-    // Run audit
     proposal.auditResult = CampaignAuditor.audit(proposal);
 
     return proposal;
