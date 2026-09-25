@@ -13,12 +13,8 @@ import {
   MediaSpecification,
   CreativeRecommendation
 } from '../types/ads-intelligence';
-import { ApprovalGate } from '../state-machine/approval-gate';
 
 export class AdsOrchestrator {
-  /**
-   * Evaluates expert reports for contradictions and missing evidence.
-   */
   public static auditExpertReports(reports: ExpertAnalysisReport[]): {
     hasContradictions: boolean;
     contradictionNotes: string[];
@@ -28,20 +24,17 @@ export class AdsOrchestrator {
     const contradictionNotes: string[] = [];
     const evidenceNotes: string[] = [];
 
-    // Check if market intelligence has evidence
     const marketReport = reports.find(r => r.expert === 'MARKET_INTELLIGENCE');
     if (!marketReport || marketReport.evidenceOrRisks.length === 0) {
       evidenceNotes.push('Market Intelligence carece de evidências ou referências verificáveis.');
     }
 
-    // Check for contradictions between Offer Strategist and Performance Analyst
     const offerReport = reports.find(r => r.expert === 'OFFER_STRATEGIST');
     const perfReport = reports.find(r => r.expert === 'PERFORMANCE_ANALYST');
 
     if (offerReport && perfReport) {
-      // Example heuristic check
-      if (offerReport.recommendations.some(r => r.includes('aumentar preço')) &&
-          perfReport.recommendations.some(r => r.includes('queda de conversão'))) {
+      if (offerReport.recommendations.some(r => typeof r === 'string' && r.includes('aumentar preço')) &&
+          perfReport.recommendations.some(r => typeof r === 'string' && r.includes('queda de conversão'))) {
         contradictionNotes.push('Contradiction detected: Offer Strategist sugere aumento de preço enquanto Performance Analyst aponta queda de conversão.');
       }
     }
@@ -54,9 +47,6 @@ export class AdsOrchestrator {
     };
   }
 
-  /**
-   * Consolidates all expert analyses into a rigorous campaign proposal.
-   */
   public static createCampaignProposal(params: {
     id: string;
     name: string;
@@ -68,7 +58,6 @@ export class AdsOrchestrator {
     creatives: CreativeRecommendation[];
     expertReports: ExpertAnalysisReport[];
   }): CampaignProposal {
-    // Run orchestrator audit
     const audit = this.auditExpertReports(params.expertReports);
 
     if (audit.hasContradictions) {
