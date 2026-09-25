@@ -7,7 +7,8 @@ import { CampaignState } from '../types/ads-intelligence';
 
 export const VALID_TRANSITIONS: Record<CampaignState, CampaignState[]> = {
   DRAFT: ['ANALYZING', 'REJECTED'],
-  ANALYZING: ['RECOMMENDED', 'DRAFT', 'REJECTED'],
+  ANALYZING: ['RECOMMENDED', 'DRAFT', 'REJECTED', 'PENDING_AUDIT'],
+  PENDING_AUDIT: ['READY_FOR_REVIEW', 'CHANGES_REQUESTED', 'REJECTED'],
   RECOMMENDED: ['WAITING_CREATIVE', 'READY_FOR_REVIEW', 'CHANGES_REQUESTED', 'REJECTED'],
   WAITING_CREATIVE: ['READY_FOR_REVIEW', 'CHANGES_REQUESTED', 'REJECTED'],
   READY_FOR_REVIEW: ['APPROVED', 'CHANGES_REQUESTED', 'REJECTED'],
@@ -44,7 +45,7 @@ export class ApprovalGate {
    * Checks if a state requires human approval intervention.
    */
   public static requiresHumanReview(state: CampaignState): boolean {
-    return state === 'READY_FOR_REVIEW';
+    return state === 'READY_FOR_REVIEW' || state === 'PENDING_AUDIT';
   }
 
   /**
