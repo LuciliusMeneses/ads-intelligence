@@ -43,6 +43,19 @@ export class MarketIntelligenceSpecialist {
   }
 
   /**
+   * Validates if the references are recent enough (e.g., last 180 days).
+   */
+  public validateRecency(maxDays: number = 180): boolean {
+    const now = new Date().getTime();
+    const limit = maxDays * 24 * 60 * 60 * 1000;
+    
+    return this.references.every(ref => {
+      const refDate = new Date(ref.date).getTime();
+      return (now - refDate) <= limit;
+    });
+  }
+
+  /**
    * Summarizes competitor pricing and positioning.
    */
   public generateIntelligenceSummary(): {
@@ -60,7 +73,7 @@ export class MarketIntelligenceSpecialist {
       totalReferences: total,
       hasMinimumCoverage: this.hasMinimumReferences(),
       averageConfidence: Math.round(avgConfidence),
-      conclusions: this.references.map(r => `[${r.source}] ${r.conclusion}`)
+      conclusions: this.references.map(r => `[${r.source}] ${r.foundInfo} (${r.conclusion})`)
     };
   }
 }

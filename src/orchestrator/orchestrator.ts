@@ -5,21 +5,19 @@
  */
 
 import {
-  CampaignProposal,
-  ExpertAnalysisReport,
-  MarketReference,
-  OfferPricing,
-  AudienceSpecification,
-  MediaSpecification,
-  CreativeRecommendation
-} from '../types/ads-intelligence';
-import { ApprovalGate } from '../state-machine/approval-gate';
+  ComprehensiveCampaignProposal,
+  SpecialistAnalysis,
+  SpecialistContext,
+  ExpertRole
+} from '../types/intelligence';
+import { AdsOrchestratorAgent } from '../experts/specialists';
+import { CampaignProposalBuilder } from '../engines/proposal-builder';
 
 export class AdsOrchestrator {
   /**
-   * Evaluates expert reports for contradictions and missing evidence.
+   * Evaluates specialist analyses for contradictions and missing evidence.
    */
-  public static auditExpertReports(reports: ExpertAnalysisReport[]): {
+  public static auditSpecialistResults(analyses: SpecialistAnalysis[]): {
     hasContradictions: boolean;
     contradictionNotes: string[];
     missingEvidence: boolean;
@@ -29,20 +27,25 @@ export class AdsOrchestrator {
     const evidenceNotes: string[] = [];
 
     // Check if market intelligence has evidence
-    const marketReport = reports.find(r => r.expert === 'MARKET_INTELLIGENCE');
-    if (!marketReport || marketReport.evidenceOrRisks.length === 0) {
+    const marketAnalysis = analyses.find(a => a.specialist === 'MARKET_INTELLIGENCE');
+    if (!marketAnalysis || marketAnalysis.evidence.length === 0) {
       evidenceNotes.push('Market Intelligence carece de evidências ou referências verificáveis.');
     }
 
     // Check for contradictions between Offer Strategist and Performance Analyst
-    const offerReport = reports.find(r => r.expert === 'OFFER_STRATEGIST');
-    const perfReport = reports.find(r => r.expert === 'PERFORMANCE_ANALYST');
+    const offerAnalysis = analyses.find(a => a.specialist === 'OFFER_STRATEGIST');
+    const perfAnalysis = analyses.find(a => a.specialist === 'PERFORMANCE_ANALYST');
 
-    if (offerReport && perfReport) {
-      // Example heuristic check
-      if (offerReport.recommendations.some(r => r.includes('aumentar preço')) &&
-          perfReport.recommendations.some(r => r.includes('queda de conversão'))) {
-        contradictionNotes.push('Contradiction detected: Offer Strategist sugere aumento de preço enquanto Performance Analyst aponta queda de conversão.');
+    if (offerAnalysis && perfAnalysis) {
+      const offerSuggestsHigherPrice = offerAnalysis.recommendations.some(r => 
+        r.title.toLowerCase().includes('preço') || r.description.toLowerCase().includes('aumentar')
+      );
+      const perfReportsPoorConv = perfAnalysis.observations.some(o => 
+        o.toLowerCase().includes('queda') || o.toLowerCase().includes('conversão')
+      );
+
+      if (offerSuggestsHigherPrice && perfReportsPoorConv) {
+        contradictionNotes.push('Conflito: Sugestão de aumento de preço enquanto a performance indica queda de conversão.');
       }
     }
 
@@ -55,52 +58,30 @@ export class AdsOrchestrator {
   }
 
   /**
-   * Consolidates all expert analyses into a rigorous campaign proposal.
+   * Consolidates all specialist analyses into a rigorous campaign proposal.
    */
-  public static createCampaignProposal(params: {
-    id: string;
-    name: string;
-    advertiserId: string;
-    references: MarketReference[];
-    offer: OfferPricing;
-    audience: AudienceSpecification;
-    media: MediaSpecification;
-    creatives: CreativeRecommendation[];
-    expertReports: ExpertAnalysisReport[];
-  }): CampaignProposal {
-    // Run orchestrator audit
-    const audit = this.auditExpertReports(params.expertReports);
+  public static async synthesizeProposal(params: {
+    context: SpecialistContext;
+    specialistAnalyses: SpecialistAnalysis[];
+  }): Promise<ComprehensiveCampaignProposal> {
+    // Run orchestrator agent analysis for transversal synthesis
+    const orchestratorAgent = new AdsOrchestratorAgent();
+    const transversalAnalysis = orchestratorAgent.analyze(params.context, params.specialistAnalyses);
 
+    // Aggregate all analyses
+    const allAnalyses = [...params.specialistAnalyses, transversalAnalysis];
+
+    // Audit findings
+    const audit = this.auditSpecialistResults(allAnalyses);
     if (audit.hasContradictions) {
       console.warn('[AdsOrchestrator] Alerta de Contradição detectada entre especialistas:', audit.contradictionNotes);
     }
 
-    const proposal: CampaignProposal = {
-      id: params.id,
-      name: params.name,
-      advertiserId: params.advertiserId,
-      currentState: 'RECOMMENDED',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      marketIntelligence: {
-        references: params.references,
-        marketSummary: `Analisadas ${params.references.length} referências recentes de mercado.`
-      },
-      offer: params.offer,
-      audience: params.audience,
-      media: params.media,
-      creatives: params.creatives,
-      expertReports: params.expertReports,
-      auditLog: [
-        {
-          timestamp: new Date().toISOString(),
-          action: 'CAMPAIGN_RECOMMENDED',
-          actor: 'AdsOrchestrator',
-          details: `Proposta gerada com ${params.expertReports.length} relatórios de especialistas.`
-        }
-      ]
-    };
-
-    return proposal;
+    // Build final proposal
+    return CampaignProposalBuilder.build(
+      params.context,
+      allAnalyses,
+      transversalAnalysis.confidence
+    );
   }
 }

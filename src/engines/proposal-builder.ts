@@ -11,6 +11,7 @@ import {
   ConfidenceResult
 } from '../types/intelligence';
 import { CampaignAuditor } from './campaign-auditor';
+import { OfferStrategistSpecialist } from '../experts/offer-strategist';
 
 export class CampaignProposalBuilder {
   public static build(
@@ -70,22 +71,22 @@ export class CampaignProposalBuilder {
       createdAt: new Date().toISOString()
     };
 
-    // If offer pricing context is present, map it without hardcoded magic numbers
+    // If offer pricing context is present, map it using OfferStrategistSpecialist
     if (context.currentPrice !== undefined) {
-      proposal.offer = {
+      proposal.offer = OfferStrategistSpecialist.createOfferPricing({
         currentPrice: context.currentPrice,
         marketPrice: context.averageTicket || context.currentPrice,
-        aiSuggestedPrice: context.currentPrice, // Default to current unless explicitly modeled
+        aiSuggestedPrice: context.currentPrice,
         currency: 'BRL',
-        originAndJustification: 'Derivado do contexto de preço informado pelo utilizador.',
+        originAndJustification: 'Derivado do contexto de preço informado pelo usuário.',
         averageTicket: context.averageTicket || context.currentPrice,
         targetMarginPercent: context.margin || 50,
-        maxAllowableCac: context.targetCac || 0,
-        breakEvenPoint: context.currentPrice * 0.4
-      };
+        targetCac: context.targetCac || 0,
+        breakEvenPoint: context.currentPrice * (1 - ((context.margin || 50) / 100))
+      });
     }
 
-    // Run audit
+    // Run final audit
     proposal.auditResult = CampaignAuditor.audit(proposal);
 
     return proposal;
