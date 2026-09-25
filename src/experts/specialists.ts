@@ -31,7 +31,7 @@ export class BaseSpecialist {
     confidence: any;
   } {
     const dataQuality = DataQualityEngine.assess(context);
-    const confidence = ConfidenceEngine.calculateConfidence(context, false, supportCount, contraCount);
+    const confidence = ConfidenceEngine.calculateConfidence(context, contraCount > 0, supportCount, contraCount);
     return { dataQuality, confidence };
   }
 }
@@ -39,11 +39,10 @@ export class BaseSpecialist {
 export class AdsOrchestratorAgent extends BaseSpecialist {
   constructor() { super('ORCHESTRATOR'); }
   public analyze(context: SpecialistContext, subAnalyses: SpecialistAnalysis[]): SpecialistAnalysis {
-    // Detect contradictions across all specialist sub-analyses
     const contradictions = ContradictionEngine.detectContradictions(subAnalyses);
     const hasContra = contradictions.length > 0;
 
-    const { dataQuality, confidence } = this.baseAnalysis(context, 4, contradictions.length);
+    const { dataQuality, confidence } = this.baseAnalysis(context, subAnalyses.length, contradictions.length);
 
     const observations: string[] = [
       `Coordenação concluída: avaliados ${subAnalyses.length} relatórios de especialistas.`,
@@ -70,7 +69,7 @@ export class AdsOrchestratorAgent extends BaseSpecialist {
         description: hasContra ? 'Conflitos identificados requerem despacho humano ou refinamento de dados.' : 'Proposta aprovada pelo swarm para revisão humana (Approval Gate).',
         specialist: 'ORCHESTRATOR',
         priority: hasContra ? 'HIGH' : 'MEDIUM',
-        evidence: ['Análise transversal dos relatórios dos 6 especialistas de domínio.'],
+        evidence: ['Análise transversal dos relatórios dos especialistas de domínio.'],
         hypothesisIds: [hypotheses[0].id],
         confidence: confidence.confidenceScore,
         expectedImpact: 'Decisão auditada e segura contra contradições de agentes.',
@@ -101,17 +100,11 @@ export class MarketIntelligenceAgent extends BaseSpecialist {
   constructor() { super('MARKET_INTELLIGENCE'); }
   public analyze(context: SpecialistContext): SpecialistAnalysis {
     const refs = context.marketResearch || [];
-    const hasEnoughRefs = refs.length >= 5;
     const { dataQuality, confidence } = this.baseAnalysis(context, refs.length, 0);
-
-    const observations = [
-      `Analisadas ${refs.length} referências recentes de mercado.`,
-      hasEnoughRefs ? 'Suporte mínimo de 5 referências atendido com sucesso.' : 'Alerta: Abaixo do mínimo recomendado de 5 referências de mercado.'
-    ];
 
     return {
       specialist: 'MARKET_INTELLIGENCE',
-      observations,
+      observations: [`Analisadas ${refs.length} referências recentes de mercado.`],
       evidence: refs.map(r => `[${r.source}] ${r.foundInfo}`),
       hypotheses: [
         {
@@ -120,7 +113,7 @@ export class MarketIntelligenceAgent extends BaseSpecialist {
           specialist: 'MARKET_INTELLIGENCE',
           supportingEvidence: refs.map(r => r.foundInfo),
           contradictingEvidence: [],
-          confidence: refs.length > 0 ? 80 : 30,
+          confidence: confidence.confidenceScore,
           status: refs.length > 0 ? 'SUPPORTED' : 'INSUFFICIENT_DATA'
         }
       ],
@@ -134,7 +127,7 @@ export class MarketIntelligenceAgent extends BaseSpecialist {
           priority: 'MEDIUM',
           evidence: refs.map(r => r.conclusion),
           hypothesisIds: [],
-          confidence: 85,
+          confidence: confidence.confidenceScore,
           expectedImpact: 'Mitigação de surpresas competitivas',
           risk: 'Nenhum',
           status: 'PROPOSED',
@@ -160,9 +153,7 @@ export class AudienceStrategistAgent extends BaseSpecialist {
 
     return {
       specialist: 'AUDIENCE_STRATEGIST',
-      observations: [
-        hasAudiences ? `Audiências base fornecidas: ${context.audiences?.join(', ')}.` : 'Nenhuma audiência específica informada; recomendada estratégia Broad.'
-      ],
+      observations: [hasAudiences ? `Audiências base fornecidas: ${context.audiences?.join(', ')}.` : 'Nenhuma audiência específica informada.'],
       evidence: ['Públicos amplos combinados com criativos fortes apresentam melhor eficiência no leilão atual.'],
       hypotheses: [
         {
@@ -171,7 +162,7 @@ export class AudienceStrategistAgent extends BaseSpecialist {
           specialist: 'AUDIENCE_STRATEGIST',
           supportingEvidence: ['Eficiência de entrega do algoritmo em públicos abertos.'],
           contradictingEvidence: [],
-          confidence: 75,
+          confidence: confidence.confidenceScore,
           status: 'SUPPORTED'
         }
       ],
@@ -185,7 +176,7 @@ export class AudienceStrategistAgent extends BaseSpecialist {
           priority: 'HIGH',
           evidence: ['CPA historicamente inferior em bases amplas.'],
           hypothesisIds: [],
-          confidence: 80,
+          confidence: confidence.confidenceScore,
           expectedImpact: 'Redução do custo por aquisição (CPA)',
           risk: 'Fase de aprendizado inicial',
           status: 'PROPOSED',
@@ -211,9 +202,7 @@ export class MediaStrategistAgent extends BaseSpecialist {
 
     return {
       specialist: 'MEDIA_STRATEGIST',
-      observations: [
-        hasBudget ? `Orçamento diário máximo configurado: R$ ${context.budgetConstraints?.dailyMax}` : 'Orçamento diário não especificado no contexto.'
-      ],
+      observations: [hasBudget ? `Orçamento diário máximo: R$ ${context.budgetConstraints?.dailyMax}` : 'Orçamento diário não especificado.'],
       evidence: ['Meta Ads apresenta melhor retorno histórico para o objetivo de conversão.'],
       hypotheses: [
         {
@@ -222,7 +211,7 @@ export class MediaStrategistAgent extends BaseSpecialist {
           specialist: 'MEDIA_STRATEGIST',
           supportingEvidence: ['Equilíbrio entre captação de novos clientes e conversão de interessados.'],
           contradictingEvidence: [],
-          confidence: 82,
+          confidence: confidence.confidenceScore,
           status: 'SUPPORTED'
         }
       ],
@@ -236,7 +225,7 @@ export class MediaStrategistAgent extends BaseSpecialist {
           priority: 'HIGH',
           evidence: ['Taxa de conversão em remarketing tipicamente superior.'],
           hypothesisIds: [],
-          confidence: 85,
+          confidence: confidence.confidenceScore,
           expectedImpact: 'Maximização do ROAS global',
           risk: 'Leilão sazonal mais caro',
           status: 'PROPOSED',
@@ -263,18 +252,16 @@ export class PerformanceAnalystAgent extends BaseSpecialist {
 
     return {
       specialist: 'PERFORMANCE_ANALYST',
-      observations: [
-        hasMetrics ? `Métricas históricas detetadas (ROAS: ${metrics.roas || 'N/A'}, CVR: ${metrics.cvr || 'N/A'}%).` : 'Sem métricas históricas de performance no contexto.'
-      ],
-      evidence: ['Análise paramétrica baseada nos dados de spend e retorno informados.'],
+      observations: [hasMetrics ? `Métricas históricas detetadas (ROAS: ${metrics.roas || 'N/A'}).` : 'Sem métricas de performance.'],
+      evidence: ['Análise paramétrica baseada nos dados informados.'],
       hypotheses: [
         {
           id: `hyp_perf_${Date.now()}`,
           statement: 'Métricas atuais indicam estabilidade operacional para escala controlada.',
           specialist: 'PERFORMANCE_ANALYST',
-          supportingEvidence: ['Indicadores de CVR e ROAS dentro dos parâmetros esperados.'],
+          supportingEvidence: ['Indicadores dentro dos parâmetros esperados.'],
           contradictingEvidence: [],
-          confidence: hasMetrics ? 85 : 40,
+          confidence: confidence.confidenceScore,
           status: hasMetrics ? 'SUPPORTED' : 'INSUFFICIENT_DATA'
         }
       ],
@@ -283,12 +270,12 @@ export class PerformanceAnalystAgent extends BaseSpecialist {
           id: `rec_perf_${Date.now()}`,
           type: 'MONITOR',
           title: 'Monitorização Rigorosa de Frequência e CTR',
-          description: 'Acompanhar fadiga criativa através da queda de CTR ou aumento de frequência.',
+          description: 'Acompanhar fadiga criativa através da queda de CTR.',
           specialist: 'PERFORMANCE_ANALYST',
           priority: 'MEDIUM',
           evidence: ['Comportamento histórico de desgaste de anúncios.'],
           hypothesisIds: [],
-          confidence: 88,
+          confidence: confidence.confidenceScore,
           expectedImpact: 'Prevenção de desperdício de verba',
           risk: 'Nenhum',
           status: 'PROPOSED',
@@ -296,7 +283,7 @@ export class PerformanceAnalystAgent extends BaseSpecialist {
           classification: 'CALCULATION'
         }
       ],
-      risks: ['Fadiga criativa após 14 dias de veiculação.'],
+      risks: ['Fadiga criativa após 14 dias.'],
       contradictions: [],
       confidence,
       dataQuality,
@@ -314,19 +301,16 @@ export class OfferStrategistAgent extends BaseSpecialist {
 
     return {
       specialist: 'OFFER_STRATEGIST',
-      observations: [
-        hasPrice ? `CURRENT_PRICE informado: R$ ${context.currentPrice}` : 'Preço atual não informado no contexto.',
-        `Margem alvo informada: ${context.margin || 'Não especificada'}%`
-      ],
-      evidence: ['Cálculo de margem de contribuição e ponto de equilíbrio (break-even).'],
+      observations: [hasPrice ? `Preço: R$ ${context.currentPrice}` : 'Preço não informado.'],
+      evidence: ['Cálculo de margem de contribuição.'],
       hypotheses: [
         {
           id: `hyp_off_${Date.now()}`,
-          statement: 'Precificação alinhada à margem alvo garante sustentabilidade do CAC máximo.',
+          statement: 'Precificação alinhada à margem alvo garante sustentabilidade.',
           specialist: 'OFFER_STRATEGIST',
-          supportingEvidence: ['Relação direta entre ticket médio, margem e teto de CAC.'],
+          supportingEvidence: ['Relação direta entre ticket médio, margem e CAC.'],
           contradictingEvidence: [],
-          confidence: hasPrice ? 80 : 45,
+          confidence: confidence.confidenceScore,
           status: hasPrice ? 'SUPPORTED' : 'INSUFFICIENT_DATA'
         }
       ],
@@ -334,21 +318,21 @@ export class OfferStrategistAgent extends BaseSpecialist {
         {
           id: `rec_off_${Date.now()}`,
           type: 'PRICE',
-          title: 'Manter Alinhamento entre Preço, Margem e CAC Alvo',
-          description: 'Garantir que o custo de aquisição permaneça abaixo do limite de margem de lucro.',
+          title: 'Alinhar Preço, Margem e CAC Alvo',
+          description: 'Garantir que o custo de aquisição permaneça abaixo do limite de margem.',
           specialist: 'OFFER_STRATEGIST',
           priority: 'HIGH',
-          evidence: ['Sustentabilidade financeira da operação de anúncios.'],
+          evidence: ['Sustentabilidade financeira.'],
           hypothesisIds: [],
-          confidence: 82,
+          confidence: confidence.confidenceScore,
           expectedImpact: 'Proteção da margem líquida',
-          risk: 'Sensibilidade de preço do público',
+          risk: 'Sensibilidade de preço',
           status: 'PROPOSED',
           createdAt: new Date().toISOString(),
           classification: 'AI_RECOMMENDATION'
         }
       ],
-      risks: ['Pressão competitiva sobre preços.'],
+      risks: ['Pressão competitiva.'],
       contradictions: [],
       confidence,
       dataQuality,
@@ -365,19 +349,16 @@ export class CreativeStrategistAgent extends BaseSpecialist {
 
     return {
       specialist: 'CREATIVE_STRATEGIST',
-      observations: [
-        'REGRA ABSOLUTA: O Creative Strategist atua exclusivamente como CREATIVE DIRECTION ENGINE. Nenhuma imagem ou vídeo é gerado automaticamente.',
-        `Produto/Serviço base para direcionamento: ${context.productOrService || 'Não especificado'}`
-      ],
-      evidence: ['Formatos verticais (9:16) com hooks direcionados à principal dor do cliente geram melhor retenção.'],
+      observations: ['Creative Direction Engine: Briefing criativo.'],
+      evidence: ['Formatos verticais 9:16 com hooks direcionados geram melhor retenção.'],
       hypotheses: [
         {
           id: `hyp_cre_${Date.now()}`,
-          statement: 'Hooks de interrogação nos primeiros 3 segundos elevam o CTR e reduzem o custo por clique.',
+          statement: 'Hooks nos primeiros 3 segundos elevam o CTR.',
           specialist: 'CREATIVE_STRATEGIST',
-          supportingEvidence: ['Padrões de consumo de vídeo em plataformas mobile.'],
+          supportingEvidence: ['Padrões de consumo mobile.'],
           contradictingEvidence: [],
-          confidence: 85,
+          confidence: confidence.confidenceScore,
           status: 'SUPPORTED'
         }
       ],
@@ -385,21 +366,21 @@ export class CreativeStrategistAgent extends BaseSpecialist {
         {
           id: `rec_cre_${Date.now()}`,
           type: 'CREATIVE_DIRECTION',
-          title: 'Briefing para Produção Externa de Vídeo 9:16 (CREATIVE_DIRECTION)',
-          description: 'Produzir 3 variações de vídeo vertical com hooks distintos para testes A/B (produção externa obrigatória).',
+          title: 'Briefing para Produção de Vídeo 9:16',
+          description: 'Produzir 3 variações com hooks distintos.',
           specialist: 'CREATIVE_STRATEGIST',
           priority: 'HIGH',
-          evidence: ['Retenção superior em vídeos curtos formatados para mobile.'],
+          evidence: ['Retenção superior em vídeos curtos.'],
           hypothesisIds: [],
-          confidence: 88,
-          expectedImpact: 'Melhoria de CTR e CPC',
-          risk: 'Atraso na entrega dos ficheiros pela equipa externa',
+          confidence: confidence.confidenceScore,
+          expectedImpact: 'Melhoria de CTR',
+          risk: 'Atraso na entrega externa',
           status: 'PROPOSED',
           createdAt: new Date().toISOString(),
           classification: 'AI_RECOMMENDATION'
         }
       ],
-      risks: ['Fadiga criativa após período prolongado de veiculação.'],
+      risks: ['Fadiga criativa.'],
       contradictions: [],
       confidence,
       dataQuality,
