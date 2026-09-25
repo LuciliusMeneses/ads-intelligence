@@ -1,7 +1,6 @@
 /**
  * ADS INTELLIGENCE — Campaign Proposal Builder
  * Aggregates specialist analyses, recommendations, and evidence into an actionable, auditable proposal.
- * STRICT: Zero hardcoded commercial/financial production fallbacks. Missing data handled via explicit contracts.
  */
 
 import {
@@ -40,23 +39,23 @@ export class CampaignProposalBuilder {
         format: 'VIDEO_9_16',
         durationSeconds: 20,
         aspectRatio: '9:16',
-        concept: 'Direção Criativa Orientada a Proposta de Valor e Dor Imediata',
-        hook: 'Hook focado em interrogação ou dor principal do público',
-        approach: 'Demonstração de solução rápida em 3 passos',
-        coreMessage: context.productOrService || 'Proposta de valor principal',
-        narrativeStructure: 'Hook (0-3s) -> Problema (3-8s) -> Solução (8-15s) -> CTA (15-20s)',
-        callToAction: 'Saiba Mais / Comprar Agora',
+        concept: 'Direção Criativa Orientada',
+        hook: 'Hook focado em dor principal',
+        approach: 'Demonstração de solução',
+        coreMessage: context.productOrService || 'Proposta principal',
+        narrativeStructure: 'Hook -> Problema -> Solução -> CTA',
+        callToAction: 'Saiba Mais',
         testVariationsCount: 3,
-        note: 'REGRA ABSOLUTA: A IA não gera imagens ou vídeos. Produção criativa externa obrigatória.'
+        note: 'IA não gera mídia. Produção externa obrigatória.'
       },
       copy: {
-        primaryText: context.productOrService ? `Conheça a solução definitiva em ${context.productOrService}.` : 'Solução ideal para o seu negócio.',
-        headline: context.businessObjective || 'Aumente Seus Resultados',
-        description: 'Condição especial por tempo limitado.',
+        primaryText: context.productOrService ? `Conheça a solução em ${context.productOrService}.` : 'Solução ideal.',
+        headline: context.businessObjective || 'Resultados',
+        description: 'Condição especial.',
         cta: 'SAIBA MAIS',
         humanDecision: 'ACCEPT'
       },
-      testPlan: 'Testes A/B estruturados de hooks criativos e públicos com verba controlada.',
+      testPlan: 'Testes A/B estruturados.',
       evidence: analyses.flatMap(a => a.evidence),
       risks: analyses.flatMap(a => a.risks),
       confidence: overallConfidence,
@@ -70,14 +69,13 @@ export class CampaignProposalBuilder {
       createdAt: new Date().toISOString()
     };
 
-    // If offer pricing context is present, map it without hardcoded magic numbers
     if (context.currentPrice !== undefined) {
       proposal.offer = {
         currentPrice: context.currentPrice,
         marketPrice: context.averageTicket || context.currentPrice,
-        aiSuggestedPrice: context.currentPrice, // Default to current unless explicitly modeled
+        aiSuggestedPrice: context.currentPrice,
         currency: 'BRL',
-        originAndJustification: 'Derivado do contexto de preço informado pelo utilizador.',
+        originAndJustification: 'Contexto do usuário',
         averageTicket: context.averageTicket || context.currentPrice,
         targetMarginPercent: context.margin || 50,
         maxAllowableCac: context.targetCac || 0,
@@ -85,9 +83,7 @@ export class CampaignProposalBuilder {
       };
     }
 
-    // Run audit
     proposal.auditResult = CampaignAuditor.audit(proposal);
-
     return proposal;
   }
 }

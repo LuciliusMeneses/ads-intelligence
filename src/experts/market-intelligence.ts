@@ -4,21 +4,23 @@
  */
 
 import { MarketReference } from '../types/ads-intelligence';
+import { LLMRuntime } from '../llm/runtime';
 
 export class MarketIntelligenceSpecialist {
   private references: MarketReference[] = [];
+  private llmRuntime?: LLMRuntime;
 
-  /**
-   * Adds an external market reference with strict validation.
-   * Regra Crítica: Nunca apresentar pesquisa simulada como pesquisa real.
-   */
+  constructor(llmRuntime?: LLMRuntime) {
+    this.llmRuntime = llmRuntime;
+  }
+
   public addReference(ref: Omit<MarketReference, 'id'>): MarketReference {
     if (ref.isSimulated) {
       throw new Error('[MarketIntelligence] Pesquisa simulada não pode ser apresentada como pesquisa real.');
     }
 
     if (!ref.source || !ref.urlOrRef || !ref.foundInfo) {
-      throw new Error('[MarketIntelligence] Campos obrigatórios ausentes na referência de mercado.');
+      throw new Error('[MarketIntelligence] Campos obrigatórios ausentes.');
     }
 
     const newRef: MarketReference = {
@@ -30,10 +32,6 @@ export class MarketIntelligenceSpecialist {
     return newRef;
   }
 
-  /**
-   * Returns all stored references.
-   * Verifica se há o suporte mínimo de 5 referências recentes para embasamento seguro.
-   */
   public getReferences(): MarketReference[] {
     return [...this.references];
   }
@@ -42,9 +40,6 @@ export class MarketIntelligenceSpecialist {
     return this.references.length >= 5;
   }
 
-  /**
-   * Summarizes competitor pricing and positioning.
-   */
   public generateIntelligenceSummary(): {
     totalReferences: number;
     hasMinimumCoverage: boolean;
