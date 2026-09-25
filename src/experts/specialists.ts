@@ -39,7 +39,6 @@ export class BaseSpecialist {
 export class AdsOrchestratorAgent extends BaseSpecialist {
   constructor() { super('ORCHESTRATOR'); }
   public analyze(context: SpecialistContext, subAnalyses: SpecialistAnalysis[]): SpecialistAnalysis {
-    // Detect contradictions across all specialist sub-analyses
     const contradictions = ContradictionEngine.detectContradictions(subAnalyses);
     const hasContra = contradictions.length > 0;
 
@@ -70,7 +69,7 @@ export class AdsOrchestratorAgent extends BaseSpecialist {
         description: hasContra ? 'Conflitos identificados requerem despacho humano ou refinamento de dados.' : 'Proposta aprovada pelo swarm para revisão humana (Approval Gate).',
         specialist: 'ORCHESTRATOR',
         priority: hasContra ? 'HIGH' : 'MEDIUM',
-        evidence: ['Análise transversal dos relatórios dos 6 especialistas de domínio.'],
+        evidence: ['Análise transversal dos relatórios dos especialistas de domínio.'],
         hypothesisIds: [hypotheses[0].id],
         confidence: confidence.confidenceScore,
         expectedImpact: 'Decisão auditada e segura contra contradições de agentes.',

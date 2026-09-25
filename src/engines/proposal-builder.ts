@@ -54,7 +54,7 @@ export class CampaignProposalBuilder {
         headline: context.businessObjective || 'Aumente Seus Resultados',
         description: 'Condição especial por tempo limitado.',
         cta: 'SAIBA MAIS',
-        humanDecision: 'ACCEPT'
+        humanDecision: 'PENDING'
       },
       testPlan: 'Testes A/B estruturados de hooks criativos e públicos com verba controlada.',
       evidence: analyses.flatMap(a => a.evidence),
@@ -70,12 +70,11 @@ export class CampaignProposalBuilder {
       createdAt: new Date().toISOString()
     };
 
-    // If offer pricing context is present, map it without hardcoded magic numbers
     if (context.currentPrice !== undefined) {
       proposal.offer = {
         currentPrice: context.currentPrice,
         marketPrice: context.averageTicket || context.currentPrice,
-        aiSuggestedPrice: context.currentPrice, // Default to current unless explicitly modeled
+        aiSuggestedPrice: context.currentPrice,
         currency: 'BRL',
         originAndJustification: 'Derivado do contexto de preço informado pelo utilizador.',
         averageTicket: context.averageTicket || context.currentPrice,
@@ -85,7 +84,6 @@ export class CampaignProposalBuilder {
       };
     }
 
-    // Run audit
     proposal.auditResult = CampaignAuditor.audit(proposal);
 
     return proposal;
