@@ -117,9 +117,12 @@ export interface ExpertAnalysisReport {
   expert: ExpertRole;
   timestamp: string;
   summary: string;
-  recommendations: string[];
+  recommendations: any[]; // Normalized to Recommendation type
   evidenceOrRisks: string[];
   confidence: number;
+  provenance: string[];
+  riskScore: number;
+  metadata: Record<string, any>;
 }
 
 export interface CampaignProposal {
