@@ -163,7 +163,17 @@ export class CreativeStrategistAgent extends BaseSpecialist {
   public analyze(context: SpecialistContext): SpecialistAnalysis {
     const { dataQuality, confidence } = this.baseAnalysis(context, 3, 0);
     return { 
-      specialist: 'CREATIVE_STRATEGIST', observations: [], evidence: [], hypotheses: [], recommendations: [], risks: [], contradictions: [], confidence, dataQuality, missingData: dataQuality.missingData, createdAt: new Date().toISOString() 
+      specialist: 'CREATIVE_STRATEGIST', 
+      observations: ['CREATIVE DIRECTION ENGINE: Otimização de hooks sem geração de mídia.'],
+      evidence: [], 
+      hypotheses: [], 
+      recommendations: [], 
+      risks: [], 
+      contradictions: [], 
+      confidence, 
+      dataQuality, 
+      missingData: dataQuality.missingData, 
+      createdAt: new Date().toISOString() 
     };
   }
 }
