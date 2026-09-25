@@ -58,11 +58,14 @@ export class CampaignAuditor {
     }
 
     // Determine final status
-    let status: 'PASS' | 'PASS_WITH_WARNINGS' | 'BLOCKED' = 'PASS';
+    let status: 'PASS' | 'PASS_WITH_WARNINGS' | 'BLOCKED' | 'PENDING_APPROVAL' = 'PASS';
     if (blockers.length > 0) {
       status = 'BLOCKED';
     } else if (warnings.length > 0) {
       status = 'PASS_WITH_WARNINGS';
+    } else {
+      // If passing but needing human oversight
+      status = 'PENDING_APPROVAL';
     }
 
     return {
