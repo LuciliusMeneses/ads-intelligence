@@ -13,49 +13,12 @@ import {
   MediaSpecification,
   CreativeRecommendation
 } from '../types/ads-intelligence';
-import { ApprovalGate } from '../state-machine/approval-gate';
+import { ContradictionEngine } from '../engines/contradiction-engine';
+import { SpecialistAnalysis } from '../types/intelligence';
 
 export class AdsOrchestrator {
   /**
-   * Evaluates expert reports for contradictions and missing evidence.
-   */
-  public static auditExpertReports(reports: ExpertAnalysisReport[]): {
-    hasContradictions: boolean;
-    contradictionNotes: string[];
-    missingEvidence: boolean;
-    evidenceNotes: string[];
-  } {
-    const contradictionNotes: string[] = [];
-    const evidenceNotes: string[] = [];
-
-    // Check if market intelligence has evidence
-    const marketReport = reports.find(r => r.expert === 'MARKET_INTELLIGENCE');
-    if (!marketReport || marketReport.evidenceOrRisks.length === 0) {
-      evidenceNotes.push('Market Intelligence carece de evidências ou referências verificáveis.');
-    }
-
-    // Check for contradictions between Offer Strategist and Performance Analyst
-    const offerReport = reports.find(r => r.expert === 'OFFER_STRATEGIST');
-    const perfReport = reports.find(r => r.expert === 'PERFORMANCE_ANALYST');
-
-    if (offerReport && perfReport) {
-      // Example heuristic check
-      if (offerReport.recommendations.some(r => r.includes('aumentar preço')) &&
-          perfReport.recommendations.some(r => r.includes('queda de conversão'))) {
-        contradictionNotes.push('Contradiction detected: Offer Strategist sugere aumento de preço enquanto Performance Analyst aponta queda de conversão.');
-      }
-    }
-
-    return {
-      hasContradictions: contradictionNotes.length > 0,
-      contradictionNotes,
-      missingEvidence: evidenceNotes.length > 0,
-      evidenceNotes
-    };
-  }
-
-  /**
-   * Consolidates all expert analyses into a rigorous campaign proposal.
+   * Synthesizes analyst swarm reports into a governed proposal.
    */
   public static createCampaignProposal(params: {
     id: string;
@@ -66,37 +29,36 @@ export class AdsOrchestrator {
     audience: AudienceSpecification;
     media: MediaSpecification;
     creatives: CreativeRecommendation[];
-    expertReports: ExpertAnalysisReport[];
+    expertAnalyses: SpecialistAnalysis[];
   }): CampaignProposal {
-    // Run orchestrator audit
-    const audit = this.auditExpertReports(params.expertReports);
-
-    if (audit.hasContradictions) {
-      console.warn('[AdsOrchestrator] Alerta de Contradição detectada entre especialistas:', audit.contradictionNotes);
-    }
-
+    const contradictions = ContradictionEngine.detectContradictions(params.expertAnalyses);
+    
     const proposal: CampaignProposal = {
       id: params.id,
       name: params.name,
       advertiserId: params.advertiserId,
-      currentState: 'RECOMMENDED',
+      currentState: contradictions.length > 0 ? 'PENDING_RESOLUTION' : 'RECOMMENDED',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       marketIntelligence: {
         references: params.references,
-        marketSummary: `Analisadas ${params.references.length} referências recentes de mercado.`
+        marketSummary: `Analisadas ${params.references.length} referências.`
       },
       offer: params.offer,
       audience: params.audience,
       media: params.media,
       creatives: params.creatives,
-      expertReports: params.expertReports,
+      expertReports: params.expertAnalyses.map(a => ({
+        expert: a.specialist,
+        recommendations: a.recommendations.map(r => r.title),
+        evidenceOrRisks: [...a.evidence, ...a.risks]
+      })),
       auditLog: [
         {
           timestamp: new Date().toISOString(),
-          action: 'CAMPAIGN_RECOMMENDED',
+          action: 'CAMPAIGN_SYNTHESIZED',
           actor: 'AdsOrchestrator',
-          details: `Proposta gerada com ${params.expertReports.length} relatórios de especialistas.`
+          details: `Swarm de especialistas executado: ${params.expertAnalyses.length} relatórios processados.`
         }
       ]
     };
