@@ -13,7 +13,6 @@ import {
   MediaSpecification,
   CreativeRecommendation
 } from '../types/ads-intelligence';
-import { ApprovalGate } from '../state-machine/approval-gate';
 
 export class AdsOrchestrator {
   /**
@@ -39,10 +38,19 @@ export class AdsOrchestrator {
     const perfReport = reports.find(r => r.expert === 'PERFORMANCE_ANALYST');
 
     if (offerReport && perfReport) {
-      // Example heuristic check
       if (offerReport.recommendations.some(r => r.includes('aumentar preço')) &&
           perfReport.recommendations.some(r => r.includes('queda de conversão'))) {
-        contradictionNotes.push('Contradiction detected: Offer Strategist sugere aumento de preço enquanto Performance Analyst aponta queda de conversão.');
+        contradictionNotes.push('Contradição: Offer Strategist sugere aumento de preço enquanto Performance Analyst aponta queda de conversão.');
+      }
+    }
+
+    // Check for contradictions between Market Intelligence and Offer Strategist
+    if (marketReport && offerReport) {
+      const priceAlert = marketReport.evidenceOrRisks.some(e => e.includes('PREÇO_ALTO'));
+      const priceIncrease = offerReport.recommendations.some(r => r.includes('aumento') || r.includes('elevar'));
+      
+      if (priceAlert && priceIncrease) {
+        contradictionNotes.push('Contradição: Market Intelligence indica preço alto, mas Offer Strategist sugere novo aumento.');
       }
     }
 
@@ -96,7 +104,7 @@ export class AdsOrchestrator {
           timestamp: new Date().toISOString(),
           action: 'CAMPAIGN_RECOMMENDED',
           actor: 'AdsOrchestrator',
-          details: `Proposta gerada com ${params.expertReports.length} relatórios de especialistas.`
+          details: `Proposta gerada com ${params.expertReports.length} relatórios de especialistas.${audit.hasContradictions ? ' Contradições detetadas.' : ''}`
         }
       ]
     };
