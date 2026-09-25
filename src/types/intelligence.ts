@@ -1,25 +1,14 @@
 /**
  * ADS INTELLIGENCE — Intelligence & Recommendation Engine Types
- * Prompt 02 & 02B Core Domain Definitions
+ * Sprint 05 Specialist Intelligence Execution support.
  */
 
 import { ExpertRole, CampaignState, MarketReference, OfferPricing, AudienceSpecification, MediaSpecification, CreativeRecommendation } from './ads-intelligence';
 export { ExpertRole, CampaignState, MarketReference, OfferPricing, AudienceSpecification, MediaSpecification, CreativeRecommendation };
 
-export type FactClassification =
-  | 'FACT'
-  | 'CALCULATION'
-  | 'EXTERNAL_EVIDENCE'
-  | 'AI_INFERENCE'
-  | 'AI_RECOMMENDATION';
+export type FactClassification = 'FACT' | 'CALCULATION' | 'EXTERNAL_EVIDENCE' | 'AI_INFERENCE' | 'AI_RECOMMENDATION';
 
-export type HypothesisStatus =
-  | 'PROPOSED'
-  | 'SUPPORTED'
-  | 'CONTRADICTED'
-  | 'INSUFFICIENT_DATA'
-  | 'VALIDATED'
-  | 'REJECTED';
+export type HypothesisStatus = 'PROPOSED' | 'SUPPORTED' | 'CONTRADICTED' | 'INSUFFICIENT_DATA' | 'VALIDATED' | 'REJECTED';
 
 export interface Hypothesis {
   id: string;
@@ -31,26 +20,9 @@ export interface Hypothesis {
   status: HypothesisStatus;
 }
 
-export type RecommendationType =
-  | 'BUDGET'
-  | 'AUDIENCE'
-  | 'OFFER'
-  | 'PRICE'
-  | 'CREATIVE_DIRECTION'
-  | 'CAMPAIGN_STRUCTURE'
-  | 'PLACEMENT'
-  | 'LANDING_PAGE'
-  | 'TEST'
-  | 'PAUSE'
-  | 'SCALE'
-  | 'MONITOR';
+export type RecommendationType = 'BUDGET' | 'AUDIENCE' | 'OFFER' | 'PRICE' | 'CREATIVE_DIRECTION' | 'CAMPAIGN_STRUCTURE' | 'PLACEMENT' | 'LANDING_PAGE' | 'TEST' | 'PAUSE' | 'SCALE' | 'MONITOR';
 
-export type RecommendationStatus =
-  | 'PROPOSED'
-  | 'ACCEPTED'
-  | 'REJECTED'
-  | 'MODIFIED'
-  | 'SUPERSEDED';
+export type RecommendationStatus = 'PROPOSED' | 'ACCEPTED' | 'REJECTED' | 'MODIFIED' | 'SUPERSEDED';
 
 export interface Recommendation {
   id: string;
@@ -69,23 +41,9 @@ export interface Recommendation {
   classification: FactClassification;
 }
 
-export type ConfidenceBand =
-  | 'VERY_LOW'
-  | 'LOW'
-  | 'MEDIUM'
-  | 'HIGH'
-  | 'VERY_HIGH'
-  | 'INSUFFICIENT_DATA';
+export type ConfidenceBand = 'VERY_LOW' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH' | 'INSUFFICIENT_DATA';
 
-export type ConfidenceComponentKey =
-  | 'DATA_COMPLETENESS'
-  | 'SOURCE_QUALITY'
-  | 'RECENCY'
-  | 'SAMPLE_RELIABILITY'
-  | 'HISTORICAL_CONSISTENCY'
-  | 'CROSS_SPECIALIST_AGREEMENT'
-  | 'SUPPORTING_EVIDENCE'
-  | 'CONTRADICTING_EVIDENCE';
+export type ConfidenceComponentKey = 'DATA_COMPLETENESS' | 'SOURCE_QUALITY' | 'RECENCY' | 'SAMPLE_RELIABILITY' | 'HISTORICAL_CONSISTENCY' | 'CROSS_SPECIALIST_AGREEMENT' | 'SUPPORTING_EVIDENCE' | 'CONTRADICTING_EVIDENCE';
 
 export interface ConfidenceComponent {
   component: ConfidenceComponentKey;
@@ -103,12 +61,7 @@ export interface ConfidenceResult {
   explanation: string;
 }
 
-export type DataQualityGrade =
-  | 'EXCELLENT'
-  | 'GOOD'
-  | 'LIMITED'
-  | 'POOR'
-  | 'INSUFFICIENT';
+export type DataQualityGrade = 'EXCELLENT' | 'GOOD' | 'LIMITED' | 'POOR' | 'INSUFFICIENT';
 
 export interface DataQualityAssessment {
   grade: DataQualityGrade;
@@ -130,16 +83,7 @@ export interface SpecialistContext {
   targetCac?: number;
   sampleSize?: number;
   historicalCampaigns?: any[];
-  performanceMetrics?: {
-    ctr?: number;
-    cpm?: number;
-    cpc?: number;
-    cpa?: number;
-    roas?: number;
-    spend?: number;
-    revenue?: number;
-    cvr?: number;
-  };
+  performanceMetrics?: { ctr?: number; cpm?: number; cpc?: number; cpa?: number; roas?: number; spend?: number; revenue?: number; cvr?: number; };
   audiences?: string[];
   marketResearch?: MarketReference[];
   competitorReferences?: MarketReference[];
@@ -147,10 +91,7 @@ export interface SpecialistContext {
   previousLearnings?: string[];
   landingDestination?: string;
   geography?: string[];
-  budgetConstraints?: {
-    dailyMax?: number;
-    totalBudget?: number;
-  };
+  budgetConstraints?: { dailyMax?: number; totalBudget?: number; };
 }
 
 export interface SpecialistAnalysis {
@@ -217,13 +158,7 @@ export interface ComprehensiveCampaignProposal {
   targetCpaOrCpl?: number;
   breakEven?: number;
   creativeDirection?: CreativeRecommendation;
-  copy?: {
-    primaryText: string;
-    headline: string;
-    description: string;
-    cta: string;
-    humanDecision: HumanDecision;
-  };
+  copy?: { primaryText: string; headline: string; description: string; cta: string; humanDecision: HumanDecision; };
   testPlan?: string;
   evidence: string[];
   risks: string[];
@@ -231,4 +166,5 @@ export interface ComprehensiveCampaignProposal {
   missingData: string[];
   auditResult: CampaignAuditResult;
   createdAt: string;
+  expertReports?: any[];
 }
