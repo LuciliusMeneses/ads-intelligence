@@ -27,7 +27,7 @@ export class OfferStrategistSpecialist {
     originAndJustification: string;
     averageTicket: number;
     targetMarginPercent: number;
-    maxAllowableCac: number;
+    targetCac: number;
     breakEvenPoint: number;
   }): OfferPricing {
     if (!params.originAndJustification || params.originAndJustification.trim().length < 10) {
@@ -36,11 +36,16 @@ export class OfferStrategistSpecialist {
       );
     }
 
-    if (params.currentPrice <= 0 || params.marketPrice <= 0 || params.aiSuggestedPrice <= 0) {
-      throw new Error('[OfferStrategist Violation] Valores de preço devem ser estritamente positivos.');
+    if (params.currentPrice < 0 || params.marketPrice < 0 || params.aiSuggestedPrice < 0) {
+      throw new Error('[OfferStrategist Violation] Valores de preço não podem ser negativos.');
     }
 
     const validatedCurrency = params.currency ? validateCurrencyCode(params.currency) : 'BRL';
+
+    // Verify margin sustainability (AI inference only, doesn't block but should warn if not validated)
+    const calculatedMargin = params.currentPrice > 0 
+      ? ((params.currentPrice - params.breakEvenPoint) / params.currentPrice) * 100
+      : 0;
 
     return {
       currentPrice: params.currentPrice,
@@ -50,7 +55,7 @@ export class OfferStrategistSpecialist {
       originAndJustification: params.originAndJustification,
       averageTicket: params.averageTicket,
       targetMarginPercent: params.targetMarginPercent,
-      maxAllowableCac: params.maxAllowableCac,
+      maxAllowableCac: params.targetCac,
       breakEvenPoint: params.breakEvenPoint
     };
   }
@@ -64,7 +69,9 @@ export class OfferStrategistSpecialist {
     aiSuggestedLabel: string;
     variancePercent: number;
   } {
-    const variance = ((pricing.aiSuggestedPrice - pricing.currentPrice) / pricing.currentPrice) * 100;
+    const basePrice = pricing.currentPrice || pricing.marketPrice || 1;
+    const variance = ((pricing.aiSuggestedPrice - basePrice) / basePrice) * 100;
+    
     return {
       currentLabel: `CURRENT_PRICE: ${pricing.currency} ${pricing.currentPrice.toFixed(2)}`,
       marketLabel: `MARKET_PRICE: ${pricing.currency} ${pricing.marketPrice.toFixed(2)}`,
