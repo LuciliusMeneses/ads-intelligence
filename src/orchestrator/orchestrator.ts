@@ -28,18 +28,15 @@ export class AdsOrchestrator {
     const contradictionNotes: string[] = [];
     const evidenceNotes: string[] = [];
 
-    // Check if market intelligence has evidence
     const marketReport = reports.find(r => r.expert === 'MARKET_INTELLIGENCE');
     if (!marketReport || marketReport.evidenceOrRisks.length === 0) {
       evidenceNotes.push('Market Intelligence carece de evidências ou referências verificáveis.');
     }
 
-    // Check for contradictions between Offer Strategist and Performance Analyst
     const offerReport = reports.find(r => r.expert === 'OFFER_STRATEGIST');
     const perfReport = reports.find(r => r.expert === 'PERFORMANCE_ANALYST');
 
     if (offerReport && perfReport) {
-      // Example heuristic check
       if (offerReport.recommendations.some(r => r.includes('aumentar preço')) &&
           perfReport.recommendations.some(r => r.includes('queda de conversão'))) {
         contradictionNotes.push('Contradiction detected: Offer Strategist sugere aumento de preço enquanto Performance Analyst aponta queda de conversão.');
@@ -68,7 +65,6 @@ export class AdsOrchestrator {
     creatives: CreativeRecommendation[];
     expertReports: ExpertAnalysisReport[];
   }): CampaignProposal {
-    // Run orchestrator audit
     const audit = this.auditExpertReports(params.expertReports);
 
     if (audit.hasContradictions) {
@@ -79,7 +75,7 @@ export class AdsOrchestrator {
       id: params.id,
       name: params.name,
       advertiserId: params.advertiserId,
-      currentState: 'RECOMMENDED',
+      currentState: 'READY_FOR_REVIEW',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       marketIntelligence: {
@@ -96,7 +92,7 @@ export class AdsOrchestrator {
           timestamp: new Date().toISOString(),
           action: 'CAMPAIGN_RECOMMENDED',
           actor: 'AdsOrchestrator',
-          details: `Proposta gerada com ${params.expertReports.length} relatórios de especialistas.`
+          details: `Proposta gerada com ${params.expertReports.length} relatórios de especialistas. Gate de aprovação humana ativado.`
         }
       ]
     };
