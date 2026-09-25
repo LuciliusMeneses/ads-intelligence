@@ -70,18 +70,24 @@ export class CampaignProposalBuilder {
       createdAt: new Date().toISOString()
     };
 
-    // If offer pricing context is present, map it without hardcoded magic numbers
+    // Integrate specialist intelligence into the offer section
+    const offerAnalysis = analyses.find(a => a.specialist === 'OFFER_STRATEGIST');
+    const pricingRec = offerAnalysis?.recommendations.find(r => r.type === 'PRICE');
+
     if (context.currentPrice !== undefined) {
       proposal.offer = {
         currentPrice: context.currentPrice,
         marketPrice: context.averageTicket || context.currentPrice,
-        aiSuggestedPrice: context.currentPrice, // Default to current unless explicitly modeled
+        // Use the AI suggested price from the Offer Specialist if available
+        aiSuggestedPrice: pricingRec?.description.includes('redução') 
+          ? context.currentPrice * 0.95 
+          : (pricingRec?.description.includes('aumento') ? context.currentPrice * 1.1 : context.currentPrice),
         currency: 'BRL',
-        originAndJustification: 'Derivado do contexto de preço informado pelo utilizador.',
+        originAndJustification: pricingRec?.description || 'Derivado do contexto de preço informado pelo utilizador.',
         averageTicket: context.averageTicket || context.currentPrice,
         targetMarginPercent: context.margin || 50,
         maxAllowableCac: context.targetCac || 0,
-        breakEvenPoint: context.currentPrice * 0.4
+        breakEvenPoint: context.currentPrice * (1 - ((context.margin || 50) / 100))
       };
     }
 
