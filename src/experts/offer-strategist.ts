@@ -5,20 +5,23 @@
 
 import { OfferPricing } from '../types/ads-intelligence';
 import { CurrencyCode, SUPPORTED_CURRENCIES } from '../types/currency';
+import { LLMRuntime } from '../llm/runtime';
 
 function validateCurrencyCode(value: string): CurrencyCode {
   const upper = value.toUpperCase() as CurrencyCode;
   if (!(upper in SUPPORTED_CURRENCIES)) {
-    throw new Error(`[OfferStrategist Violation] Moeda não suportada: ${value}. Suportadas: BRL, USD, EUR, GBP`);
+    throw new Error(`[OfferStrategist Violation] Moeda não suportada: ${value}.`);
   }
   return upper;
 }
 
 export class OfferStrategistSpecialist {
-  /**
-   * Builds an OfferPricing object strictly adhering to the price integrity rule.
-   * Regra Crítica: Nunca apresentar um preço sugerido como se fosse preço real.
-   */
+  private llmRuntime?: LLMRuntime;
+
+  constructor(llmRuntime?: LLMRuntime) {
+    this.llmRuntime = llmRuntime;
+  }
+
   public static createOfferPricing(params: {
     currentPrice: number;
     marketPrice: number;
@@ -31,13 +34,11 @@ export class OfferStrategistSpecialist {
     breakEvenPoint: number;
   }): OfferPricing {
     if (!params.originAndJustification || params.originAndJustification.trim().length < 10) {
-      throw new Error(
-        '[OfferStrategist Violation] Toda sugestão de preço (AI_SUGGESTED_PRICE) deve conter origem e justificativa detalhadas.'
-      );
+      throw new Error('[OfferStrategist Violation] Justificativa necessária.');
     }
 
     if (params.currentPrice <= 0 || params.marketPrice <= 0 || params.aiSuggestedPrice <= 0) {
-      throw new Error('[OfferStrategist Violation] Valores de preço devem ser estritamente positivos.');
+      throw new Error('[OfferStrategist Violation] Preços devem ser positivos.');
     }
 
     const validatedCurrency = params.currency ? validateCurrencyCode(params.currency) : 'BRL';
@@ -55,9 +56,6 @@ export class OfferStrategistSpecialist {
     };
   }
 
-  /**
-   * Formats prices with clear labels for human presentation.
-   */
   public static formatPriceComparison(pricing: OfferPricing): {
     currentLabel: string;
     marketLabel: string;
@@ -68,7 +66,7 @@ export class OfferStrategistSpecialist {
     return {
       currentLabel: `CURRENT_PRICE: ${pricing.currency} ${pricing.currentPrice.toFixed(2)}`,
       marketLabel: `MARKET_PRICE: ${pricing.currency} ${pricing.marketPrice.toFixed(2)}`,
-      aiSuggestedLabel: `AI_SUGGESTED_PRICE: ${pricing.currency} ${pricing.aiSuggestedPrice.toFixed(2)} (${pricing.originAndJustification})`,
+      aiSuggestedLabel: `AI_SUGGESTED_PRICE: ${pricing.currency} ${pricing.aiSuggestedPrice.toFixed(2)}`,
       variancePercent: parseFloat(variance.toFixed(1))
     };
   }
