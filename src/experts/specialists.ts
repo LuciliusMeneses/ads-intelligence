@@ -31,7 +31,7 @@ export class BaseSpecialist {
     confidence: any;
   } {
     const dataQuality = DataQualityEngine.assess(context);
-    const confidence = ConfidenceEngine.calculateConfidence(context, false, supportCount, contraCount);
+    const confidence = ConfidenceEngine.calculateConfidence(context, contraCount > 0, supportCount, contraCount);
     return { dataQuality, confidence };
   }
 }
@@ -39,7 +39,6 @@ export class BaseSpecialist {
 export class AdsOrchestratorAgent extends BaseSpecialist {
   constructor() { super('ORCHESTRATOR'); }
   public analyze(context: SpecialistContext, subAnalyses: SpecialistAnalysis[]): SpecialistAnalysis {
-    // Detect contradictions across all specialist sub-analyses
     const contradictions = ContradictionEngine.detectContradictions(subAnalyses);
     const hasContra = contradictions.length > 0;
 
