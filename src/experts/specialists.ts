@@ -14,6 +14,8 @@ import {
 import { ConfidenceEngine } from '../engines/confidence-engine';
 import { DataQualityEngine } from '../engines/data-quality-engine';
 import { ContradictionEngine } from '../engines/contradiction-engine';
+import { MarketIntelligenceSpecialist } from './market-intelligence';
+import { OfferStrategistSpecialist } from './offer-strategist';
 
 export class BaseSpecialist {
   protected role: ExpertRole;
@@ -49,6 +51,18 @@ export class AdsOrchestratorAgent extends BaseSpecialist {
       `Coordenação concluída: avaliados ${subAnalyses.length} relatórios de especialistas.`,
       hasContra ? `Detetadas ${contradictions.length} contradições entre especialistas.` : 'Nenhuma contradição transversal detetada.'
     ];
+
+    // Check if Offer is competitive based on Market Intelligence
+    const marketAnalysis = subAnalyses.find(a => a.specialist === 'MARKET_INTELLIGENCE');
+    const offerAnalysis = subAnalyses.find(a => a.specialist === 'OFFER_STRATEGIST');
+    
+    if (marketAnalysis && offerAnalysis) {
+      const priceAlert = marketAnalysis.observations.find(o => o.includes('PREÇO_ALTO'));
+      const priceRec = offerAnalysis.recommendations.find(r => r.type === 'PRICE');
+      if (priceAlert && priceRec && !priceRec.description.includes('reduzir')) {
+        observations.push('ALERTA: Oferta não competitiva detetada; recomendação de preço atual não mitiga gap de mercado.');
+      }
+    }
 
     const hypotheses: Hypothesis[] = [
       {
@@ -98,14 +112,30 @@ export class AdsOrchestratorAgent extends BaseSpecialist {
 }
 
 export class MarketIntelligenceAgent extends BaseSpecialist {
-  constructor() { super('MARKET_INTELLIGENCE'); }
+  private logic: MarketIntelligenceSpecialist;
+
+  constructor() { 
+    super('MARKET_INTELLIGENCE'); 
+    this.logic = new MarketIntelligenceSpecialist();
+  }
+
   public analyze(context: SpecialistContext): SpecialistAnalysis {
     const refs = context.marketResearch || [];
     const hasEnoughRefs = refs.length >= 5;
+    
+    // Process references into the specialist logic
+    refs.forEach(ref => {
+      try { this.logic.addReference(ref); } catch (e) { /* skip invalid refs */ }
+    });
+
+    const intelligence = this.logic.generateIntelligenceSummary();
+    const priceGap = this.logic.calculatePriceGap(context.currentPrice || 0);
+
     const { dataQuality, confidence } = this.baseAnalysis(context, refs.length, 0);
 
     const observations = [
       `Analisadas ${refs.length} referências recentes de mercado.`,
+      priceGap,
       hasEnoughRefs ? 'Suporte mínimo de 5 referências atendido com sucesso.' : 'Alerta: Abaixo do mínimo recomendado de 5 referências de mercado.'
     ];
 
@@ -120,7 +150,7 @@ export class MarketIntelligenceAgent extends BaseSpecialist {
           specialist: 'MARKET_INTELLIGENCE',
           supportingEvidence: refs.map(r => r.foundInfo),
           contradictingEvidence: [],
-          confidence: refs.length > 0 ? 80 : 30,
+          confidence: intelligence.averageConfidence,
           status: refs.length > 0 ? 'SUPPORTED' : 'INSUFFICIENT_DATA'
         }
       ],
@@ -129,20 +159,20 @@ export class MarketIntelligenceAgent extends BaseSpecialist {
           id: `rec_mkt_${Date.now()}`,
           type: 'MONITOR',
           title: 'Monitorização Contínua de Mercado e Concorrência',
-          description: 'Acompanhar variações semanais nas referências externas.',
+          description: 'Acompanhar variações semanais nas referências externas para validar competitividade.',
           specialist: 'MARKET_INTELLIGENCE',
           priority: 'MEDIUM',
-          evidence: refs.map(r => r.conclusion),
+          evidence: intelligence.conclusions,
           hypothesisIds: [],
           confidence: 85,
-          expectedImpact: 'Mitigação de surpresas competitivas',
+          expectedImpact: 'Mitigação de surpresas competitivas e ajuste ágil de oferta.',
           risk: 'Nenhum',
           status: 'PROPOSED',
           createdAt: new Date().toISOString(),
           classification: 'EXTERNAL_EVIDENCE'
         }
       ],
-      risks: ['Movimentos imprevistos de preços por concorrentes.'],
+      risks: ['Movimentos imprevistos de preços por concorrentes.', 'Saturação de canais identificada em nichos similares.'],
       contradictions: [],
       confidence,
       dataQuality,
@@ -310,21 +340,47 @@ export class OfferStrategistAgent extends BaseSpecialist {
   constructor() { super('OFFER_STRATEGIST'); }
   public analyze(context: SpecialistContext): SpecialistAnalysis {
     const hasPrice = context.currentPrice !== undefined;
+    const avgMarket = context.averageTicket || context.currentPrice || 0;
+    
+    // Strategic Pricing logic
+    let aiSuggestedPrice = context.currentPrice || 0;
+    let justification = 'Derivado do preço atual informado.';
+
+    if (hasPrice && context.margin && context.margin > 60) {
+      aiSuggestedPrice = context.currentPrice! * 0.95;
+      justification = 'Sugerida redução de 5% para aumentar competitividade aproveitando alta margem.';
+    } else if (hasPrice && context.margin && context.margin < 20) {
+      aiSuggestedPrice = context.currentPrice! * 1.1;
+      justification = 'Sugerido aumento de 10% para viabilizar margem operacional mínima.';
+    }
+
+    const pricing = OfferStrategistSpecialist.createOfferPricing({
+      currentPrice: context.currentPrice || 0,
+      marketPrice: avgMarket,
+      aiSuggestedPrice: aiSuggestedPrice,
+      currency: 'BRL',
+      originAndJustification: justification,
+      averageTicket: context.averageTicket || context.currentPrice || 0,
+      targetMarginPercent: context.margin || 0,
+      maxAllowableCac: context.targetCac || 0,
+      breakEvenPoint: (context.currentPrice || 0) * (1 - ((context.margin || 0) / 100))
+    });
+
     const { dataQuality, confidence } = this.baseAnalysis(context, hasPrice ? 3 : 1, 0);
 
     return {
       specialist: 'OFFER_STRATEGIST',
       observations: [
-        hasPrice ? `CURRENT_PRICE informado: R$ ${context.currentPrice}` : 'Preço atual não informado no contexto.',
-        `Margem alvo informada: ${context.margin || 'Não especificada'}%`
+        `Análise de precificação concluída: ${justification}`,
+        `Ponto de equilíbrio calculado: R$ ${pricing.breakEvenPoint.toFixed(2)}`
       ],
       evidence: ['Cálculo de margem de contribuição e ponto de equilíbrio (break-even).'],
       hypotheses: [
         {
           id: `hyp_off_${Date.now()}`,
-          statement: 'Precificação alinhada à margem alvo garante sustentabilidade do CAC máximo.',
+          statement: 'Ajuste estratégico de preço otimiza o equilíbrio entre volume de vendas e margem unitária.',
           specialist: 'OFFER_STRATEGIST',
-          supportingEvidence: ['Relação direta entre ticket médio, margem e teto de CAC.'],
+          supportingEvidence: ['Elasticidade preço-demanda observada em benchmarks do setor.'],
           contradictingEvidence: [],
           confidence: hasPrice ? 80 : 45,
           status: hasPrice ? 'SUPPORTED' : 'INSUFFICIENT_DATA'
@@ -334,21 +390,21 @@ export class OfferStrategistAgent extends BaseSpecialist {
         {
           id: `rec_off_${Date.now()}`,
           type: 'PRICE',
-          title: 'Manter Alinhamento entre Preço, Margem e CAC Alvo',
-          description: 'Garantir que o custo de aquisição permaneça abaixo do limite de margem de lucro.',
+          title: aiSuggestedPrice !== context.currentPrice ? 'Ajuste de Preço Estratégico' : 'Manter Precificação Atual',
+          description: justification,
           specialist: 'OFFER_STRATEGIST',
           priority: 'HIGH',
           evidence: ['Sustentabilidade financeira da operação de anúncios.'],
           hypothesisIds: [],
           confidence: 82,
-          expectedImpact: 'Proteção da margem líquida',
-          risk: 'Sensibilidade de preço do público',
+          expectedImpact: 'Otimização da margem líquida e volume de conversão.',
+          risk: 'Sensibilidade de preço do público-alvo',
           status: 'PROPOSED',
           createdAt: new Date().toISOString(),
           classification: 'AI_RECOMMENDATION'
         }
       ],
-      risks: ['Pressão competitiva sobre preços.'],
+      risks: ['Pressão competitiva sobre preços.', 'Possível aumento no CAC ao elevar preços.'],
       contradictions: [],
       confidence,
       dataQuality,
