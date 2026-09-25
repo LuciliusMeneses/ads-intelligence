@@ -11,6 +11,7 @@ import {
   ConfidenceResult
 } from '../types/intelligence';
 import { CampaignAuditor } from './campaign-auditor';
+import { ConfidenceEngine } from './confidence-engine';
 
 export class CampaignProposalBuilder {
   public static build(
@@ -70,12 +71,11 @@ export class CampaignProposalBuilder {
       createdAt: new Date().toISOString()
     };
 
-    // If offer pricing context is present, map it without hardcoded magic numbers
     if (context.currentPrice !== undefined) {
       proposal.offer = {
         currentPrice: context.currentPrice,
         marketPrice: context.averageTicket || context.currentPrice,
-        aiSuggestedPrice: context.currentPrice, // Default to current unless explicitly modeled
+        aiSuggestedPrice: context.currentPrice,
         currency: 'BRL',
         originAndJustification: 'Derivado do contexto de preço informado pelo utilizador.',
         averageTicket: context.averageTicket || context.currentPrice,
@@ -85,7 +85,6 @@ export class CampaignProposalBuilder {
       };
     }
 
-    // Run audit
     proposal.auditResult = CampaignAuditor.audit(proposal);
 
     return proposal;
