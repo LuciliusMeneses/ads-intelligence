@@ -1,7 +1,7 @@
 /**
  * ADS INTELLIGENCE Pages - RecommendationsPage
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { ProvenanceBadge } from '../components/provenance/ProvenanceBadge';
@@ -9,7 +9,24 @@ import { ConfidenceCircle } from '../components/confidence/ConfidenceIndicator';
 import { ComprehensiveCampaignProposal } from '../../src/types/intelligence';
 
 export const RecommendationsPage: React.FC = () => {
-  const [proposals] = useState<ComprehensiveCampaignProposal[]>([]);
+  const [proposals, setProposals] = useState<ComprehensiveCampaignProposal[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    // Simulação de recuperação de dados do motor de propostas
+    // Em uma implementação real, chamaria o serviço de API correspondente
+    const fetchProposals = async () => {
+      try {
+        setIsLoading(true);
+        // Implementação futura: await proposalService.fetch();
+      } catch (err) {
+        console.error('Falha ao carregar propostas:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProposals();
+  }, []);
 
   return (
     <div className="space-y-6">
