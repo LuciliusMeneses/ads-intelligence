@@ -20,17 +20,11 @@ export const VALID_TRANSITIONS: Record<CampaignState, CampaignState[]> = {
 };
 
 export class ApprovalGate {
-  /**
-   * Validates if a state transition is allowed according to the governance rules.
-   */
   public static canTransition(currentState: CampaignState, targetState: CampaignState): boolean {
     const allowed = VALID_TRANSITIONS[currentState] || [];
     return allowed.includes(targetState);
   }
 
-  /**
-   * Transitions a campaign state if valid, or throws an error.
-   */
   public static transition(currentState: CampaignState, targetState: CampaignState, actor: string): CampaignState {
     if (!this.canTransition(currentState, targetState)) {
       throw new Error(
@@ -40,17 +34,15 @@ export class ApprovalGate {
     return targetState;
   }
 
-  /**
-   * Checks if a state requires human approval intervention.
-   */
   public static requiresHumanReview(state: CampaignState): boolean {
     return state === 'READY_FOR_REVIEW';
   }
 
-  /**
-   * Checks if publishing is permitted.
-   */
   public static isPublishAllowed(state: CampaignState): boolean {
     return state === 'APPROVED';
+  }
+
+  public static enforceExpertSpecialistRetain(state: CampaignState): boolean {
+    return ['RECOMMENDED', 'READY_FOR_REVIEW'].includes(state);
   }
 }
