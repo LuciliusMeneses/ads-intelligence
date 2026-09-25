@@ -1,31 +1,12 @@
 /**
  * ADS INTELLIGENCE — Core Domain Types
- * Senior Software Architect & AI Performance Engineer
  */
 
 import { CurrencyCode } from './currency';
 
-export type CampaignState =
-  | 'DRAFT'
-  | 'ANALYZING'
-  | 'RECOMMENDED'
-  | 'WAITING_CREATIVE'
-  | 'READY_FOR_REVIEW'
-  | 'CHANGES_REQUESTED'
-  | 'APPROVED'
-  | 'REJECTED'
-  | 'PUBLISHED'
-  | 'PAUSED'
-  | 'COMPLETED';
+export type CampaignState = 'DRAFT' | 'ANALYZING' | 'RECOMMENDED' | 'WAITING_CREATIVE' | 'READY_FOR_REVIEW' | 'APPROVED' | 'REJECTED' | 'PUBLISHED' | 'PAUSED' | 'COMPLETED';
 
-export type ExpertRole =
-  | 'ORCHESTRATOR'
-  | 'MARKET_INTELLIGENCE'
-  | 'AUDIENCE_STRATEGIST'
-  | 'MEDIA_STRATEGIST'
-  | 'PERFORMANCE_ANALYST'
-  | 'OFFER_STRATEGIST'
-  | 'CREATIVE_STRATEGIST';
+export type ExpertRole = 'ORCHESTRATOR' | 'MARKET_INTELLIGENCE' | 'AUDIENCE_STRATEGIST' | 'MEDIA_STRATEGIST' | 'PERFORMANCE_ANALYST' | 'OFFER_STRATEGIST' | 'CREATIVE_STRATEGIST';
 
 export interface MarketReference {
   id: string;
@@ -35,8 +16,8 @@ export interface MarketReference {
   foundInfo: string;
   relevance: 'HIGH' | 'MEDIUM' | 'LOW';
   conclusion: string;
-  confidenceLevel: number; // 0 to 100
-  isSimulated: false; // Never true for real data
+  confidenceLevel: number;
+  isSimulated: false;
 }
 
 export interface OfferPricing {
@@ -68,11 +49,7 @@ export interface MediaSpecification {
   platform: 'META_ADS' | 'GOOGLE_ADS' | 'MULTI_CHANNEL';
   objective: 'CONVERSIONS' | 'LEADS' | 'TRAFFIC' | 'SALES' | 'AWARENESS';
   campaignStructure: string;
-  budgetDistribution: {
-    acquisitionPercent: number;
-    remarketingPercent: number;
-    testingPercent: number;
-  };
+  budgetDistribution: { acquisitionPercent: number; remarketingPercent: number; testingPercent: number };
   dailyBudget: number;
   currency: CurrencyCode;
   durationDays: number;
@@ -92,21 +69,20 @@ export interface CreativeRecommendation {
   narrativeStructure: string;
   callToAction: string;
   testVariationsCount: number;
-  note: string; // Explicit reminder: NO automated generation
+  note: string;
 }
 
 export interface PerformanceMetrics {
-  ctr: number; // %
+  ctr: number;
   cpm: number;
   cpc: number;
   cpa: number;
   cpl?: number;
-  cvr: number; // %
+  cvr: number;
   roas: number;
   frequency: number;
   spend: number;
   revenue: number;
-  leads?: number;
   conversions: number;
   period: string;
   anomaliesDetected: string[];
@@ -129,20 +105,12 @@ export interface CampaignProposal {
   currentState: CampaignState;
   createdAt: string;
   updatedAt: string;
-  marketIntelligence: {
-    references: MarketReference[];
-    marketSummary: string;
-  };
+  marketIntelligence: { references: MarketReference[]; marketSummary: string };
   offer: OfferPricing;
   audience: AudienceSpecification;
   media: MediaSpecification;
   creatives: CreativeRecommendation[];
   performance?: PerformanceMetrics;
   expertReports: ExpertAnalysisReport[];
-  auditLog: {
-    timestamp: string;
-    action: string;
-    actor: string;
-    details: string;
-  }[];
+  auditLog: { timestamp: string; action: string; actor: string; details: string }[];
 }
