@@ -14,6 +14,8 @@ import {
 import { ConfidenceEngine } from '../engines/confidence-engine';
 import { DataQualityEngine } from '../engines/data-quality-engine';
 import { ContradictionEngine } from '../engines/contradiction-engine';
+import { MarketIntelligenceSpecialist } from './market-intelligence';
+import { OfferStrategistSpecialist } from './offer-strategist';
 
 export class BaseSpecialist {
   protected role: ExpertRole;
@@ -100,28 +102,32 @@ export class AdsOrchestratorAgent extends BaseSpecialist {
 export class MarketIntelligenceAgent extends BaseSpecialist {
   constructor() { super('MARKET_INTELLIGENCE'); }
   public analyze(context: SpecialistContext): SpecialistAnalysis {
-    const refs = context.marketResearch || [];
-    const hasEnoughRefs = refs.length >= 5;
-    const { dataQuality, confidence } = this.baseAnalysis(context, refs.length, 0);
+    const mktSvc = new MarketIntelligenceSpecialist();
+    (context.marketResearch || []).forEach(ref => {
+      try { mktSvc.addReference(ref); } catch (e) { /* Ignore invalid refs for analysis */ }
+    });
+    
+    const summary = mktSvc.generateIntelligenceSummary();
+    const { dataQuality, confidence } = this.baseAnalysis(context, summary.totalReferences, 0);
 
     const observations = [
-      `Analisadas ${refs.length} referências recentes de mercado.`,
-      hasEnoughRefs ? 'Suporte mínimo de 5 referências atendido com sucesso.' : 'Alerta: Abaixo do mínimo recomendado de 5 referências de mercado.'
+      `Analisadas ${summary.totalReferences} referências de mercado.`,
+      summary.hasMinimumCoverage ? 'Suporte de referências atendido.' : 'Aviso: Baixo volume de referências externas.'
     ];
 
     return {
       specialist: 'MARKET_INTELLIGENCE',
       observations,
-      evidence: refs.map(r => `[${r.source}] ${r.foundInfo}`),
+      evidence: summary.conclusions,
       hypotheses: [
         {
           id: `hyp_mkt_${Date.now()}`,
           statement: 'Contexto competitivo e tendências setoriais suportam o posicionamento pretendido.',
           specialist: 'MARKET_INTELLIGENCE',
-          supportingEvidence: refs.map(r => r.foundInfo),
+          supportingEvidence: summary.conclusions,
           contradictingEvidence: [],
-          confidence: refs.length > 0 ? 80 : 30,
-          status: refs.length > 0 ? 'SUPPORTED' : 'INSUFFICIENT_DATA'
+          confidence: summary.averageConfidence,
+          status: summary.totalReferences > 0 ? 'SUPPORTED' : 'INSUFFICIENT_DATA'
         }
       ],
       recommendations: [
@@ -129,10 +135,10 @@ export class MarketIntelligenceAgent extends BaseSpecialist {
           id: `rec_mkt_${Date.now()}`,
           type: 'MONITOR',
           title: 'Monitorização Contínua de Mercado e Concorrência',
-          description: 'Acompanhar variações semanais nas referências externas.',
+          description: 'Acompanhar variações semanais nas referências externas para ajuste de lances.',
           specialist: 'MARKET_INTELLIGENCE',
           priority: 'MEDIUM',
-          evidence: refs.map(r => r.conclusion),
+          evidence: summary.conclusions,
           hypothesisIds: [],
           confidence: 85,
           expectedImpact: 'Mitigação de surpresas competitivas',
@@ -312,13 +318,28 @@ export class OfferStrategistAgent extends BaseSpecialist {
     const hasPrice = context.currentPrice !== undefined;
     const { dataQuality, confidence } = this.baseAnalysis(context, hasPrice ? 3 : 1, 0);
 
+    const pricing = OfferStrategistSpecialist.createOfferPricing({
+      currentPrice: context.currentPrice || 0,
+      marketPrice: context.averageTicket || context.currentPrice || 0,
+      aiSuggestedPrice: context.currentPrice || 0,
+      currency: 'BRL',
+      originAndJustification: 'Alinhamento com ticket médio histórico e margem informada.',
+      averageTicket: context.averageTicket || context.currentPrice || 0,
+      targetMarginPercent: context.margin || 0,
+      targetCac: context.targetCac || 0,
+      breakEvenPoint: (context.currentPrice || 0) * (1 - ((context.margin || 0) / 100))
+    });
+
+    const comparison = OfferStrategistSpecialist.formatPriceComparison(pricing);
+
     return {
       specialist: 'OFFER_STRATEGIST',
       observations: [
-        hasPrice ? `CURRENT_PRICE informado: R$ ${context.currentPrice}` : 'Preço atual não informado no contexto.',
-        `Margem alvo informada: ${context.margin || 'Não especificada'}%`
+        comparison.currentLabel,
+        `Margem alvo informada: ${context.margin || 'Não especificada'}%`,
+        `Break-even calculado: R$ ${pricing.breakEvenPoint.toFixed(2)}`
       ],
-      evidence: ['Cálculo de margem de contribuição e ponto de equilíbrio (break-even).'],
+      evidence: ['Cálculo de margem de contribuição e sustentabilidade de CAC.'],
       hypotheses: [
         {
           id: `hyp_off_${Date.now()}`,
@@ -335,7 +356,7 @@ export class OfferStrategistAgent extends BaseSpecialist {
           id: `rec_off_${Date.now()}`,
           type: 'PRICE',
           title: 'Manter Alinhamento entre Preço, Margem e CAC Alvo',
-          description: 'Garantir que o custo de aquisição permaneça abaixo do limite de margem de lucro.',
+          description: 'Garantir que o custo de aquisição permaneça abaixo do limite de margem de lucro operacional.',
           specialist: 'OFFER_STRATEGIST',
           priority: 'HIGH',
           evidence: ['Sustentabilidade financeira da operação de anúncios.'],
