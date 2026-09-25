@@ -55,7 +55,7 @@ export class LLMRuntime {
       { role: 'system', content: promptDef.systemPrompt },
       {
         role: 'user',
-        content: `[CONTEXTO DE DOMÍNIO - TENANT ISOLADO: ${params.organizationId}]\n${JSON.stringify(params.context, null, 2)}\n\nCITE SOMENTE EVIDENCE_IDS EXISTENTES: [${params.validEvidenceIds.join(', ')}]`
+        content: `[CONTEXTO DE DOMÍNIO - TENANT ISOLADO: ${params.organizationId}] [ESPECIALISTA: ${params.specialist}]\n${JSON.stringify(params.context, null, 2)}\n\nCITE SOMENTE EVIDENCE_IDS EXISTENTES: [${params.validEvidenceIds.join(', ')}]`
       }
     ];
 
@@ -76,18 +76,15 @@ export class LLMRuntime {
           }
         );
 
-        // Verify Evidence Binding
         const binding = StructuredOutputValidator.verifyEvidenceBinding(data, params.validEvidenceIds);
         if (!binding.valid) {
           throw new Error(`[INVALID_EVIDENCE_REFERENCE] O LLM citou Evidence IDs inexistentes: ${binding.invalidIds.join(', ')}`);
         }
 
-        // Verify Provenance
         if (!StructuredOutputValidator.verifyProvenance(data)) {
           throw new Error('[PROVENANCE_VIOLATION] O LLM promoveu AI_INFERENCE para FACT sem evidência direta.');
         }
 
-        // Persist LLM Execution
         await this.logExecution({
           organizationId: params.organizationId,
           campaignId: params.campaignId,
@@ -132,7 +129,6 @@ export class LLMRuntime {
           throw err;
         }
 
-        // Exponential backoff for transient retries
         await new Promise(res => setTimeout(res, 500 * Math.pow(2, attempt)));
       }
     }
@@ -144,9 +140,7 @@ export class LLMRuntime {
     if (this.executionLogger) {
       try {
         await this.executionLogger(record);
-      } catch {
-        // Observability logging failures must not break operational flow
-      }
+      } catch {}
     }
   }
 }
