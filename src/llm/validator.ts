@@ -4,7 +4,6 @@
  */
 
 import { z } from 'zod';
-import { FactClassification } from '../types/intelligence';
 
 export const FactClassificationEnum = z.enum([
   'FACT',
@@ -34,7 +33,9 @@ export const SpecialistLLMOutputSchema = z.object({
   evidenceIds: z.array(z.string()).default([]),
   missingData: z.array(z.string()).default([]),
   risks: z.array(z.string()).default([]),
-  confidenceRationale: z.string()
+  confidenceRationale: z.string(),
+  provenance: z.array(z.string()).default([]),
+  executionMetadata: z.record(z.any()).default({})
 });
 
 export type SpecialistLLMOutput = z.infer<typeof SpecialistLLMOutputSchema>;
@@ -48,9 +49,6 @@ export class StructuredOutputValidator {
     }
   }
 
-  /**
-   * Evidence Binding check: ensures cited evidence IDs actually exist in the provided context or research sources.
-   */
   public static verifyEvidenceBinding(output: SpecialistLLMOutput, validEvidenceIds: string[]): { valid: boolean; invalidIds: string[] } {
     const invalidIds: string[] = [];
     for (const id of output.evidenceIds) {
@@ -64,11 +62,7 @@ export class StructuredOutputValidator {
     };
   }
 
-  /**
-   * Hallucination & Provenance Guard: ensures LLM did not promote AI_INFERENCE to FACT.
-   */
   public static verifyProvenance(output: SpecialistLLMOutput): boolean {
-    // Check if any recommendation classified as FACT lacks calculation or direct evidence
     for (const rec of output.recommendations) {
       if (rec.classification === 'FACT' && output.evidenceIds.length === 0) {
         return false;
