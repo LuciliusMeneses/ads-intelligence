@@ -6,7 +6,8 @@
 
 import { ComprehensiveCampaignProposal, CampaignAuditResult } from '../types/intelligence';
 
-export class CampaignAuditor {\n  public static audit(proposal: ComprehensiveCampaignProposal): CampaignAuditResult {
+export class CampaignAuditor {
+  public static audit(proposal: ComprehensiveCampaignProposal): CampaignAuditResult {
     const blockers: string[] = [];
     const warnings: string[] = [];
     const observations: string[] = [];
@@ -87,4 +88,6 @@ export class CampaignAuditor {\n  public static audit(proposal: ComprehensiveCam
       blockers,
       warnings,
       observations
-    };\n  }\n}\n
+    };
+  }
+}
