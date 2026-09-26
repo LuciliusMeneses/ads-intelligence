@@ -2,13 +2,15 @@
  * ADS INTELLIGENCE — Campaign Proposal Builder
  * Aggregates specialist analyses, recommendations, and evidence into an actionable, auditable proposal.
  * STRICT: Zero hardcoded commercial/financial production fallbacks. Missing data handled via explicit contracts.
+ * Evidence-aware: prevents promoting assumptions to facts.
  */
 
 import {
   SpecialistContext,
   SpecialistAnalysis,
   ComprehensiveCampaignProposal,
-  ConfidenceResult
+  ConfidenceResult,
+  EvidenceCategory
 } from '../types/intelligence';
 import { CampaignAuditor } from './campaign-auditor';
 
@@ -18,6 +20,10 @@ export class CampaignProposalBuilder {
     analyses: SpecialistAnalysis[],
     overallConfidence: ConfidenceResult
   ): ComprehensiveCampaignProposal {
+    // Collect all evidences and filter out unverified/assumption claims if treating as FACT
+    const allEvidence = analyses.flatMap(a => a.evidence);
+    const verifiedEvidence = allEvidence.filter(e => !e.includes('ASSUMPTION') && !e.includes('UNKNOWN'));
+
     const proposal: ComprehensiveCampaignProposal = {
       id: `prop_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
       name: `Campanha Publicitária — ${context.brand || 'Marca Não Informada'}`,
@@ -57,10 +63,10 @@ export class CampaignProposalBuilder {
         humanDecision: 'ACCEPT'
       },
       testPlan: 'Testes A/B estruturados de hooks criativos e públicos com verba controlada.',
-      evidence: analyses.flatMap(a => a.evidence),
+      evidence: verifiedEvidence.length > 0 ? verifiedEvidence : ['UNKNOWN: Sem evidências verificadas suficientes. Tratado como UNKNOWN.'],
       risks: analyses.flatMap(a => a.risks),
       confidence: overallConfidence,
-      missingData: overallConfidence.confidenceReasons.filter(r => r.includes('Ausência') || r.includes('desconhecida')),
+      missingData: overallConfidence.confidenceReasons.filter(r => r.includes('Ausência') || r.includes('desconhecida') || r.includes('UNKNOWN')),
       auditResult: {
         status: 'PASS',
         blockers: [],
