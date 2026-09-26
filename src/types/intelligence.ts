@@ -11,7 +11,29 @@ export type FactClassification =
   | 'CALCULATION'
   | 'EXTERNAL_EVIDENCE'
   | 'AI_INFERENCE'
-  | 'AI_RECOMMENDATION';
+  | 'AI_RECOMMENDATION'
+  | 'OBSERVATION'
+  | 'ASSUMPTION'
+  | 'RECOMMENDATION'
+  | 'UNKNOWN';
+
+export type EvidenceCategory =
+  | 'FACT'
+  | 'OBSERVATION'
+  | 'ASSUMPTION'
+  | 'RECOMMENDATION'
+  | 'UNKNOWN';
+
+export interface EvidenceMetadata {
+  id: string;
+  category: EvidenceCategory;
+  provenanceSource: string;
+  urlOrRef: string;
+  confidence: number;
+  freshness: string; // ISO date string
+  isVerified: boolean;
+  isSimulated: boolean;
+}
 
 export type HypothesisStatus =
   | 'PROPOSED'
@@ -29,6 +51,8 @@ export interface Hypothesis {
   contradictingEvidence: string[];
   confidence: number;
   status: HypothesisStatus;
+  evidenceCategory?: EvidenceCategory;
+  metadata?: EvidenceMetadata;
 }
 
 export type RecommendationType =
@@ -67,6 +91,10 @@ export interface Recommendation {
   status: RecommendationStatus;
   createdAt: string;
   classification: FactClassification;
+  evidenceCategory?: EvidenceCategory;
+  provenanceSource?: string;
+  urlOrRef?: string;
+  isVerified?: boolean;
 }
 
 export type ConfidenceBand =
