@@ -11,7 +11,6 @@ import path from 'path';
 import { FakeLLMProvider } from './src/llm/provider';
 import { LLMRuntime } from './src/llm/runtime';
 import { SpecialistCapability } from './src/llm/routing';
-import { SpecialistContext } from './src/types/intelligence';
 import {
   AdsOrchestratorAgent,
   MarketIntelligenceAgent,
@@ -35,53 +34,57 @@ const PORT = process.env.PORT || 3000;
 app.get('/api/healthcheck', async (req, res) => {
   try {
     const adminClient = createAdminSupabaseClient();
-    const { data, error } = await adminClient.from('organizations').select('id').limit(1);
+    const { error } = await adminClient.from('organizations').select('id').limit(1);
     
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase connection error:', error);
+      res.status(503).json({ success: false, error: 'Service Unavailable' });
+      return;
+    }
     
     res.json({ success: true, message: 'Supabase connection established', timestamp: new Date().toISOString() });
-  } catch (err: any) {
-    console.error('Healthcheck Error:', err);
-    res.status(503).json({ success: false, error: 'Service Unavailable', details: err.message });
+  } catch (err) {
+    console.error('Healthcheck System Error:', err);
+    res.status(503).json({ success: false, error: 'Service Unavailable' });
   }
 });
 
 // 1. API Endpoint: Run Full Specialist Swarm & Build Proposal
 app.post('/api/simulate', async (req, res) => {
   try {
-    const context: SpecialistContext = req.body || TEST_FIXTURE_CONTEXT;
+    const context = req.body || TEST_FIXTURE_CONTEXT;
     const provider = new FakeLLMProvider();
     const runtime = new LLMRuntime(provider);
 
-    const agents = [\
-      new MarketIntelligenceAgent(),\
-      new AudienceStrategistAgent(),\
-      new MediaStrategistAgent(),\
-      new PerformanceAnalystAgent(),\
-      new OfferStrategistAgent(),\
-      new CreativeStrategistAgent(),\
-      new AdsOrchestratorAgent()\
+    const agents = [
+      new MarketIntelligenceAgent(),
+      new AudienceStrategistAgent(),
+      new MediaStrategistAgent(),
+      new PerformanceAnalystAgent(),
+      new OfferStrategistAgent(),
+      new CreativeStrategistAgent(),
+      new AdsOrchestratorAgent()
     ];
 
     const analyses = [];
     for (const agent of agents) {
-      const result = await runtime.executeSpecialist({\
-        organizationId: context.organization || 'enterprise_org_1',\
-        specialist: agent.role as any,\
-        capability: SpecialistCapability.DEEP_REASONING,\
-        context,\
-        validEvidenceIds: (context.marketResearch || []).map(r => r.id)\
+      const result = await runtime.executeSpecialist({
+        organizationId: context.organization || 'enterprise_org_1',
+        specialist: agent.role,
+        capability: SpecialistCapability.DEEP_REASONING,
+        context,
+        validEvidenceIds: (context.marketResearch || []).map(r => r.id)
       });
-      analyses.push(result.output);\
+      analyses.push(result.output);
     }
 
     const overallConfidence = analyses[0]?.confidence || { confidenceScore: 89, confidenceBand: 'HIGH' };
-    const proposal = CampaignProposalBuilder.build(context, analyses, overallConfidence as any);\
+    const proposal = CampaignProposalBuilder.build(context, analyses, overallConfidence);
 
     res.json({ success: true, proposal, analyses });
-  } catch (err: any) {
+  } catch (err) {
     console.error('Simulation Error:', err);
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
 
@@ -290,7 +293,7 @@ app.get('/', (req, res) => {
         loading.classList.add('hidden');
         results.classList.remove('hidden');
       } catch (err) {
-        alert('Erro na simulação: ' + err.message);
+        alert('Erro na simulação');
         loading.classList.add('hidden');
       } finally {
         btn.disabled = false;
@@ -307,6 +310,6 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log('================================================================');
   console.log('🚀 ADS INTELLIGENCE — SISTEMA FULL-STACK ATIVO E OPERACIONAL');
-  console.log(`🌐 Aceda ao painel corporativo em: http://localhost:${PORT}`);
+  console.log(\`🌐 Aceda ao painel corporativo em: http://localhost:\${PORT}\`);
   console.log('================================================================');
 });
