@@ -9,7 +9,8 @@ import {
   SpecialistAnalysis,
   ExpertRole,
   Hypothesis,
-  Recommendation
+  Recommendation,
+  EvidenceItem
 } from '../types/intelligence';
 import { ConfidenceEngine } from '../engines/confidence-engine';
 import { DataQualityEngine } from '../engines/data-quality-engine';
@@ -81,10 +82,18 @@ export class AdsOrchestratorAgent extends BaseSpecialist {
       }
     ];
 
+    const structuredEvidence: EvidenceItem[] = subAnalyses.flatMap((a, aIdx) => 
+      (a.structuredEvidence || []).map((e, eIdx) => ({
+        ...e,
+        id: `ev_orch_${aIdx}_${eIdx}_${Date.now()}`
+      }))
+    );
+
     return {
       specialist: 'ORCHESTRATOR',
       observations,
       evidence: subAnalyses.flatMap(a => a.evidence),
+      structuredEvidence,
       hypotheses,
       recommendations,
       risks: contradictions.map(c => c.impact),
@@ -109,10 +118,24 @@ export class MarketIntelligenceAgent extends BaseSpecialist {
       hasEnoughRefs ? 'Suporte mínimo de 5 referências atendido com sucesso.' : 'Alerta: Abaixo do mínimo recomendado de 5 referências de mercado.'
     ];
 
+    const structuredEvidence: EvidenceItem[] = refs.map((r, idx) => ({
+      id: `ev_mkt_${idx}_${Date.now()}`,
+      level: 'EXTERNAL_EVIDENCE' as const,
+      statement: `[${r.source}] ${r.foundInfo}`,
+      provenance: {
+        source: r.source,
+        urlOrRef: r.url || 'market-reference',
+        collectedAt: new Date().toISOString(),
+        confidence: 85,
+        freshnessDays: 30
+      }
+    }));
+
     return {
       specialist: 'MARKET_INTELLIGENCE',
       observations,
       evidence: refs.map(r => `[${r.source}] ${r.foundInfo}`),
+      structuredEvidence,
       hypotheses: [
         {
           id: `hyp_mkt_${Date.now()}`,
@@ -158,12 +181,27 @@ export class AudienceStrategistAgent extends BaseSpecialist {
     const hasAudiences = (context.audiences || []).length > 0;
     const { dataQuality, confidence } = this.baseAnalysis(context, hasAudiences ? 3 : 1, 0);
 
+    const evidenceStrs = ['Públicos amplos combinados com criativos fortes apresentam melhor eficiência no leilão atual.'];
+    const structuredEvidence: EvidenceItem[] = evidenceStrs.map((stmt, idx) => ({
+      id: `ev_aud_${idx}_${Date.now()}`,
+      level: 'OBSERVATION' as const,
+      statement: stmt,
+      provenance: {
+        source: 'AudienceStrategistAgent',
+        urlOrRef: 'context-audiences',
+        collectedAt: new Date().toISOString(),
+        confidence: 80,
+        freshnessDays: 1
+      }
+    }));
+
     return {
       specialist: 'AUDIENCE_STRATEGIST',
       observations: [
         hasAudiences ? `Audiências base fornecidas: ${context.audiences?.join(', ')}.` : 'Nenhuma audiência específica informada; recomendada estratégia Broad.'
       ],
-      evidence: ['Públicos amplos combinados com criativos fortes apresentam melhor eficiência no leilão atual.'],
+      evidence: evidenceStrs,
+      structuredEvidence,
       hypotheses: [
         {
           id: `hyp_aud_${Date.now()}`,
@@ -209,12 +247,27 @@ export class MediaStrategistAgent extends BaseSpecialist {
     const hasBudget = context.budgetConstraints && context.budgetConstraints.dailyMax;
     const { dataQuality, confidence } = this.baseAnalysis(context, hasBudget ? 4 : 1, 0);
 
+    const evidenceStrs = ['Meta Ads apresenta melhor retorno histórico para o objetivo de conversão.'];
+    const structuredEvidence: EvidenceItem[] = evidenceStrs.map((stmt, idx) => ({
+      id: `ev_med_${idx}_${Date.now()}`,
+      level: 'OBSERVATION' as const,
+      statement: stmt,
+      provenance: {
+        source: 'MediaStrategistAgent',
+        urlOrRef: 'context-budget',
+        collectedAt: new Date().toISOString(),
+        confidence: 85,
+        freshnessDays: 1
+      }
+    }));
+
     return {
       specialist: 'MEDIA_STRATEGIST',
       observations: [
         hasBudget ? `Orçamento diário máximo configurado: R$ ${context.budgetConstraints?.dailyMax}` : 'Orçamento diário não especificado no contexto.'
       ],
-      evidence: ['Meta Ads apresenta melhor retorno histórico para o objetivo de conversão.'],
+      evidence: evidenceStrs,
+      structuredEvidence,
       hypotheses: [
         {
           id: `hyp_med_${Date.now()}`,
@@ -261,12 +314,27 @@ export class PerformanceAnalystAgent extends BaseSpecialist {
     const hasMetrics = Object.keys(metrics).length > 0;
     const { dataQuality, confidence } = this.baseAnalysis(context, hasMetrics ? 3 : 1, 0);
 
+    const evidenceStrs = ['Análise paramétrica baseada nos dados de spend e retorno informados.'];
+    const structuredEvidence: EvidenceItem[] = evidenceStrs.map((stmt, idx) => ({
+      id: `ev_perf_${idx}_${Date.now()}`,
+      level: 'FACT' as const,
+      statement: stmt,
+      provenance: {
+        source: 'PerformanceAnalystAgent',
+        urlOrRef: 'context-metrics',
+        collectedAt: new Date().toISOString(),
+        confidence: 90,
+        freshnessDays: 1
+      }
+    }));
+
     return {
       specialist: 'PERFORMANCE_ANALYST',
       observations: [
         hasMetrics ? `Métricas históricas detetadas (ROAS: ${metrics.roas || 'N/A'}, CVR: ${metrics.cvr || 'N/A'}%).` : 'Sem métricas históricas de performance no contexto.'
       ],
-      evidence: ['Análise paramétrica baseada nos dados de spend e retorno informados.'],
+      evidence: evidenceStrs,
+      structuredEvidence,
       hypotheses: [
         {
           id: `hyp_perf_${Date.now()}`,
@@ -312,13 +380,28 @@ export class OfferStrategistAgent extends BaseSpecialist {
     const hasPrice = context.currentPrice !== undefined;
     const { dataQuality, confidence } = this.baseAnalysis(context, hasPrice ? 3 : 1, 0);
 
+    const evidenceStrs = ['Cálculo de margem de contribuição e ponto de equilíbrio (break-even).'];
+    const structuredEvidence: EvidenceItem[] = evidenceStrs.map((stmt, idx) => ({
+      id: `ev_off_${idx}_${Date.now()}`,
+      level: 'CALCULATION' as const,
+      statement: stmt,
+      provenance: {
+        source: 'OfferStrategistAgent',
+        urlOrRef: 'context-pricing',
+        collectedAt: new Date().toISOString(),
+        confidence: 90,
+        freshnessDays: 1
+      }
+    }));
+
     return {
       specialist: 'OFFER_STRATEGIST',
       observations: [
         hasPrice ? `CURRENT_PRICE informado: R$ ${context.currentPrice}` : 'Preço atual não informado no contexto.',
         `Margem alvo informada: ${context.margin || 'Não especificada'}%`
       ],
-      evidence: ['Cálculo de margem de contribuição e ponto de equilíbrio (break-even).'],
+      evidence: evidenceStrs,
+      structuredEvidence,
       hypotheses: [
         {
           id: `hyp_off_${Date.now()}`,
@@ -363,13 +446,28 @@ export class CreativeStrategistAgent extends BaseSpecialist {
   public analyze(context: SpecialistContext): SpecialistAnalysis {
     const { dataQuality, confidence } = this.baseAnalysis(context, 3, 0);
 
+    const evidenceStrs = ['Formatos verticais (9:16) com hooks direcionados à principal dor do cliente geram melhor retenção.'];
+    const structuredEvidence: EvidenceItem[] = evidenceStrs.map((stmt, idx) => ({
+      id: `ev_cre_${idx}_${Date.now()}`,
+      level: 'RECOMMENDATION' as const,
+      statement: stmt,
+      provenance: {
+        source: 'CreativeStrategistAgent',
+        urlOrRef: 'context-creative',
+        collectedAt: new Date().toISOString(),
+        confidence: 85,
+        freshnessDays: 1
+      }
+    }));
+
     return {
       specialist: 'CREATIVE_STRATEGIST',
       observations: [
         'REGRA ABSOLUTA: O Creative Strategist atua exclusivamente como CREATIVE DIRECTION ENGINE. Nenhuma imagem ou vídeo é gerado automaticamente.',
         `Produto/Serviço base para direcionamento: ${context.productOrService || 'Não especificado'}`
       ],
-      evidence: ['Formatos verticais (9:16) com hooks direcionados à principal dor do cliente geram melhor retenção.'],
+      evidence: evidenceStrs,
+      structuredEvidence,
       hypotheses: [
         {
           id: `hyp_cre_${Date.now()}`,
