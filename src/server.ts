@@ -289,6 +289,7 @@ app.post('/demo', async (req, res) => {
         specialist: agent.getRole(),
         observations: [...llmOut.facts, ...llmOut.inferences],
         evidence: llmOut.evidenceIds,
+        structuredEvidence: [],
         hypotheses: [],
         recommendations: llmOut.recommendations.map((r, idx) => ({
           id: `rec_${Date.now()}_${idx}`,
