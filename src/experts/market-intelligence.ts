@@ -35,7 +35,8 @@ export class MarketIntelligenceSpecialist {
    * Returns all stored references.
    * Verifica se há o suporte mínimo de 5 referências recentes para embasamento seguro.
    */
-  public getReferences(): MarketReference[] {\n    return [...this.references];
+  public getReferences(): MarketReference[] {
+    return [...this.references];
   }
 
   public hasMinimumReferences(): boolean {
