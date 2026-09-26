@@ -2,6 +2,7 @@
  * ADS INTELLIGENCE — Campaign Auditor
  * Audits campaign proposals against governance rules and mandatory parameters.
  * Explicitly differentiates CREATIVE_DIRECTION (IA specification) from CREATIVE_ASSET (external graphic/video).
+ * Enforces evidence provenance checking: blocks claims without sufficient source metadata.
  */
 
 import { ComprehensiveCampaignProposal, CampaignAuditResult } from '../types/intelligence';
@@ -41,14 +42,24 @@ export class CampaignAuditor {
     }
 
     // 5. Creative Direction vs Creative Asset check (Requirement 9)
-    // The proposal only requires CREATIVE_DIRECTION (briefing/concept/hook), NOT external CREATIVE_ASSET (file/media)
     if (!proposal.creativeDirection || !proposal.creativeDirection.concept) {
       blockers.push('Direção criativa (CREATIVE_DIRECTION) obrigatória ausente.');
     } else {
       observations.push('Direção criativa (CREATIVE_DIRECTION) especificada. Ativos de mídia finais (CREATIVE_ASSET) serão associados externamente antes da publicação.');
     }
 
-    // 6. Warnings
+    // 6. Evidence Provenance check (Market & Competitor Intelligence enforcement)
+    if (!proposal.evidence || proposal.evidence.length === 0 || proposal.evidence.some(e => e.includes('UNKNOWN'))) {
+      warnings.push('Aviso de Governança: Proposta contém itens de evidência desconhecida (UNKNOWN) ou ausência de provenance detalhada.');
+    }
+
+    // Check for unverified assertions treated as absolute facts
+    const hasUnverifiedFactClaim = proposal.evidence.some(e => e.includes('ASSUMPTION') && !e.includes('provenance'));
+    if (hasUnverifiedFactClaim) {
+      blockers.push('Violação de Evidência: Tentativa de promover pressuposição (ASSUMPTION) a facto sem proveniência verificada.');
+    }
+
+    // 7. Confidence Warnings
     if (proposal.confidence.confidenceScore < 50) {
       warnings.push('Nível de confiança global baixo (<50%). Recomenda-se adicionar mais dados ou referências de mercado.');
     }
