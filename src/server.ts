@@ -289,9 +289,10 @@ app.post('/demo', async (req, res) => {
         specialist: agent.getRole(),
         observations: [...llmOut.facts, ...llmOut.inferences],
         evidence: llmOut.evidenceIds,
+        structuredEvidence: [],
         hypotheses: [],
         recommendations: llmOut.recommendations.map((r, idx) => ({
-          id: `rec_${Date.now()}_${idx}`,
+          id: \`rec_\${Date.now()}_\${idx}\`,
           type: (r.type.toUpperCase() as any) || 'BUDGET',
           title: r.title,
           description: r.description,
@@ -333,5 +334,5 @@ app.post('/demo', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 ADS Intelligence Dashboard enterprise ativo em: http://localhost:${PORT}`);
+  console.log(\`🚀 ADS Intelligence Dashboard enterprise ativo em: http://localhost:\${PORT}\`);
 });
