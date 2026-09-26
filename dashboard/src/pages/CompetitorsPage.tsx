@@ -19,13 +19,14 @@ interface CompetitorRow {
   outrankingShare: string;
   topOfPageRate: string;
   trend: 'up' | 'down' | 'stable';
+  evidenceLevel: 'FACT' | 'OBSERVATION' | 'ASSUMPTION';
 }
 
 const mockCompetitors: CompetitorRow[] = [
-  { id: '1', competitor: 'Concorrente Demo A', impressionShare: '32,4%', overlapRate: '48.2%', positionAboveRate: '22.1%', outrankingShare: '65.4%', topOfPageRate: '88.5%', trend: 'up' },
-  { id: '2', competitor: 'Concorrente Demo B', impressionShare: '24.1%', overlapRate: '35.0%', positionAboveRate: '18.4%', outrankingShare: '58.2%', topOfPageRate: '75.2%', trend: 'stable' },
-  { id: '3', competitor: 'Concorrente Demo C', impressionShare: '15.8%', overlapRate: '21.5%', positionAboveRate: '12.0%', outrankingShare: '42.1%', topOfPageRate: '62.0%', trend: 'down' },
-  { id: '4', competitor: 'Concorrente Demo D', impressionShare: '8.2%', overlapRate: '14.2%', positionAboveRate: '5.3%', outrankingShare: '28.5%', topOfPageRate: '45.0%', trend: 'stable' },
+  { id: '1', competitor: 'Concorrente Demo A', impressionShare: '32,4%', overlapRate: '48.2%', positionAboveRate: '22.1%', outrankingShare: '65.4%', topOfPageRate: '88.5%', trend: 'up', evidenceLevel: 'FACT' },
+  { id: '2', competitor: 'Concorrente Demo B', impressionShare: '24.1%', overlapRate: '35.0%', positionAboveRate: '18.4%', outrankingShare: '58.2%', topOfPageRate: '75.2%', trend: 'stable', evidenceLevel: 'FACT' },
+  { id: '3', competitor: 'Concorrente Demo C', impressionShare: '15.8%', overlapRate: '21.5%', positionAboveRate: '12.0%', outrankingShare: '42.1%', topOfPageRate: '62.0%', trend: 'down', evidenceLevel: 'OBSERVATION' },
+  { id: '4', competitor: 'Concorrente Demo D', impressionShare: '8.2%', overlapRate: '14.2%', positionAboveRate: '5.3%', outrankingShare: '28.5%', topOfPageRate: '45.0%', trend: 'stable', evidenceLevel: 'ASSUMPTION' },
 ];
 
 export const CompetitorsPage: React.FC = () => {
@@ -40,7 +41,17 @@ export const CompetitorsPage: React.FC = () => {
   ];
 
   const columns: Column<CompetitorRow>[] = [
-    { key: 'competitor', header: 'Concorrente / Leilão', minWidth: '220px', sticky: true, render: (row) => <span className="font-semibold text-gray-900">{row.competitor}</span> },
+    { key: 'competitor', header: 'Concorrente / Leilão', minWidth: '220px', sticky: true, render: (row) => (
+      <div className="flex flex-col">
+        <span className="font-semibold text-gray-900">{row.competitor}</span>
+        <div className="flex gap-1 mt-1">
+           <Badge size="xs" variant="outlined" className={
+             row.evidenceLevel === 'FACT' ? 'border-green-200 text-green-700' : 
+             row.evidenceLevel === 'OBSERVATION' ? 'border-blue-200 text-blue-700' : 'border-amber-200 text-amber-700'
+           }>{row.evidenceLevel}</Badge>
+        </div>
+      </div>
+    ) },
     { key: 'impressionShare', header: 'Parcela de Impressões', width: '150px', align: 'right', render: (row) => <span className="tabular-nums font-medium text-gray-900">{row.impressionShare}</span> },
     { key: 'overlapRate', header: 'Taxa Sobreposição', width: '130px', align: 'right', render: (row) => <span className="tabular-nums text-gray-600">{row.overlapRate}</span> },
     { key: 'positionAboveRate', header: 'Posição Superior', width: '130px', align: 'right', render: (row) => <span className="tabular-nums text-gray-600">{row.positionAboveRate}</span> },
@@ -60,7 +71,7 @@ export const CompetitorsPage: React.FC = () => {
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-4 border-b" style={{ borderColor: colors.border }}>
         <div>
           <h1 className="text-3xl font-bold text-gray-900" style={{ fontSize: typography.fontSize['3xl'][0] }}>Radar de Concorrentes</h1>
-          <p className="text-gray-500 mt-1" style={{ fontSize: typography.fontSize.base[0] }}>Informações do leilão, parcela de impressões e monitoramento competitivo.</p>
+          <p className="text-gray-500 mt-1" style={{ fontSize: typography.fontSize.base[0] }}>Monitoramento competitivo baseado em evidências (Evidence-Aware Architecture).</p>
         </div>
         <div className="flex items-center gap-3">
           <Badge variant="outlined" size="md">Varredura: Há 15 min</Badge>
@@ -68,9 +79,11 @@ export const CompetitorsPage: React.FC = () => {
       </div>
 
       {/* Demo Mode Indicator */}
-      <div className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm text-gray-500" style={{ backgroundColor: colors.surfaceHover, border: `1px solid ${colors.border}` }}>
-        <span className="material-symbols-outlined text-base">science</span>
-        <span>Modo demonstração — dados simulados</span>
+      <div className="flex items-center justify-between px-4 py-3 rounded-lg text-sm bg-gray-50 border border-gray-200">
+        <div className="flex items-center gap-2 text-gray-500">
+          <span className="material-symbols-outlined text-base">science</span>
+          <span>Modo demonstração — dados simulados categorizados por nível de prova</span>
+        </div>
       </div>
 
       {/* KPI Metrics */}
@@ -84,16 +97,22 @@ export const CompetitorsPage: React.FC = () => {
         <CardContent className="space-y-3 p-4">
           <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-50 border border-amber-200">
             <span className="material-symbols-outlined text-amber-700 mt-0.5">warning</span>
-            <div>
-              <h4 className="text-sm font-semibold text-amber-900">Concorrente Demo A aumentou presença em termos de alta intenção</h4>
-              <p className="text-xs text-amber-700 mt-0.5">Aumento de 8.2% na taxa de sobreposição nas campanhas de Search B2B. Sugerida revisão de lances por palavra-chave.</p>
+            <div className="flex-1">
+              <div className="flex justify-between">
+                <h4 className="text-sm font-semibold text-amber-900">Concorrente Demo A aumentou presença em termos de alta intenção</h4>
+                <Badge size="xs" className="bg-green-100 text-green-800">FACT</Badge>
+              </div>
+              <p className="text-xs text-amber-700 mt-0.5">Aumento de 8.2% na taxa de sobreposição nas campanhas de Search B2B. Evidência direta de Auction Insights.</p>
             </div>
           </div>
           <div className="flex items-start gap-3 p-3 rounded-lg bg-blue-50 border border-blue-200">
             <span className="material-symbols-outlined text-blue-700 mt-0.5">info</span>
-            <div>
-              <h4 className="text-sm font-semibold text-blue-900">Oportunidade de expansão em parcela superior</h4>
-              <p className="text-xs text-blue-700 mt-0.5">Sua taxa de 'Top of Page' atingiu 88.5%, superando a média do leilão em 12%. Oportunidade para escalar orçamento em horários de pico.</p>
+            <div className="flex-1">
+              <div className="flex justify-between">
+                <h4 className="text-sm font-semibold text-blue-900">Oportunidade de expansão em parcela superior</h4>
+                <Badge size="xs" className="bg-blue-100 text-blue-800">OBSERVATION</Badge>
+              </div>
+              <p className="text-xs text-blue-700 mt-0.5">Sua taxa de 'Top of Page' atingiu 88.5%. Observação baseada em tendências de lances das últimas 24h.</p>
             </div>
           </div>
         </CardContent>

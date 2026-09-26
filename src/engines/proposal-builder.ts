@@ -8,7 +8,8 @@ import {
   SpecialistContext,
   SpecialistAnalysis,
   ComprehensiveCampaignProposal,
-  ConfidenceResult
+  ConfidenceResult,
+  EvidenceItem
 } from '../types/intelligence';
 import { CampaignAuditor } from './campaign-auditor';
 
@@ -18,6 +19,9 @@ export class CampaignProposalBuilder {
     analyses: SpecialistAnalysis[],
     overallConfidence: ConfidenceResult
   ): ComprehensiveCampaignProposal {
+    // Collect all structured evidence from specialists
+    const allStructuredEvidence: EvidenceItem[] = analyses.flatMap(a => a.structuredEvidence || []);
+
     const proposal: ComprehensiveCampaignProposal = {
       id: `prop_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
       name: `Campanha Publicitária — ${context.brand || 'Marca Não Informada'}`,
@@ -58,6 +62,7 @@ export class CampaignProposalBuilder {
       },
       testPlan: 'Testes A/B estruturados de hooks criativos e públicos com verba controlada.',
       evidence: analyses.flatMap(a => a.evidence),
+      structuredEvidence: allStructuredEvidence,
       risks: analyses.flatMap(a => a.risks),
       confidence: overallConfidence,
       missingData: overallConfidence.confidenceReasons.filter(r => r.includes('Ausência') || r.includes('desconhecida')),

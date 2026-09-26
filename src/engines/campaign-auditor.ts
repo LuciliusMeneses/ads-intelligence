@@ -48,7 +48,25 @@ export class CampaignAuditor {
       observations.push('Direção criativa (CREATIVE_DIRECTION) especificada. Ativos de mídia finais (CREATIVE_ASSET) serão associados externamente antes da publicação.');
     }
 
-    // 6. Warnings
+    // 6. Evidence-Aware Audit (Requirement: Sprint 08)
+    if (proposal.structuredEvidence) {
+      const unknowns = proposal.structuredEvidence.filter(e => e.level === 'UNKNOWN');
+      if (unknowns.length > 0) {
+        blockers.push(`Bloqueio: ${unknowns.length} itens de evidência marcados como UNKNOWN. Proveniência obrigatória não verificada.`);
+      }
+
+      const assumptions = proposal.structuredEvidence.filter(e => e.level === 'ASSUMPTION');
+      if (assumptions.length > 0) {
+        warnings.push(`Atenção: A proposta baseia-se em ${assumptions.length} suposições (ASSUMPTION) sem provas factuais definitivas.`);
+      }
+
+      const facts = proposal.structuredEvidence.filter(e => e.level === 'FACT');
+      if (facts.length === 0) {
+        warnings.push('Alerta de Fragilidade: Nenhuma evidência de nível FACT encontrada para suportar esta proposta.');
+      }
+    }
+
+    // 7. Global Warnings
     if (proposal.confidence.confidenceScore < 50) {
       warnings.push('Nível de confiança global baixo (<50%). Recomenda-se adicionar mais dados ou referências de mercado.');
     }
