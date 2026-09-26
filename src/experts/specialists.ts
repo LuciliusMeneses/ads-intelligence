@@ -9,11 +9,13 @@ import {
   SpecialistAnalysis,
   ExpertRole,
   Hypothesis,
-  Recommendation
+  Recommendation,
+  EvidenceItem
 } from '../types/intelligence';
 import { ConfidenceEngine } from '../engines/confidence-engine';
 import { DataQualityEngine } from '../engines/data-quality-engine';
 import { ContradictionEngine } from '../engines/contradiction-engine';
+import { MarketIntelligenceSpecialist } from './market-intelligence';
 
 export class BaseSpecialist {
   protected role: ExpertRole;
@@ -85,6 +87,7 @@ export class AdsOrchestratorAgent extends BaseSpecialist {
       specialist: 'ORCHESTRATOR',
       observations,
       evidence: subAnalyses.flatMap(a => a.evidence),
+      structuredEvidence: subAnalyses.flatMap(a => a.structuredEvidence),
       hypotheses,
       recommendations,
       risks: contradictions.map(c => c.impact),
@@ -98,10 +101,15 @@ export class AdsOrchestratorAgent extends BaseSpecialist {
 }
 
 export class MarketIntelligenceAgent extends BaseSpecialist {
-  constructor() { super('MARKET_INTELLIGENCE'); }
+  private specialist: MarketIntelligenceSpecialist;
+  constructor() { 
+    super('MARKET_INTELLIGENCE'); 
+    this.specialist = new MarketIntelligenceSpecialist();
+  }
   public analyze(context: SpecialistContext): SpecialistAnalysis {
     const refs = context.marketResearch || [];
-    const hasEnoughRefs = refs.length >= 5;
+    refs.forEach(r => this.specialist.addReference(r));
+    const hasEnoughRefs = this.specialist.hasMinimumReferences();
     const { dataQuality, confidence } = this.baseAnalysis(context, refs.length, 0);
 
     const observations = [
@@ -113,6 +121,7 @@ export class MarketIntelligenceAgent extends BaseSpecialist {
       specialist: 'MARKET_INTELLIGENCE',
       observations,
       evidence: refs.map(r => `[${r.source}] ${r.foundInfo}`),
+      structuredEvidence: this.specialist.getStructuredEvidence(),
       hypotheses: [
         {
           id: `hyp_mkt_${Date.now()}`,
@@ -164,6 +173,7 @@ export class AudienceStrategistAgent extends BaseSpecialist {
         hasAudiences ? `Audiências base fornecidas: ${context.audiences?.join(', ')}.` : 'Nenhuma audiência específica informada; recomendada estratégia Broad.'
       ],
       evidence: ['Públicos amplos combinados com criativos fortes apresentam melhor eficiência no leilão atual.'],
+      structuredEvidence: [],
       hypotheses: [
         {
           id: `hyp_aud_${Date.now()}`,
@@ -215,6 +225,7 @@ export class MediaStrategistAgent extends BaseSpecialist {
         hasBudget ? `Orçamento diário máximo configurado: R$ ${context.budgetConstraints?.dailyMax}` : 'Orçamento diário não especificado no contexto.'
       ],
       evidence: ['Meta Ads apresenta melhor retorno histórico para o objetivo de conversão.'],
+      structuredEvidence: [],
       hypotheses: [
         {
           id: `hyp_med_${Date.now()}`,
@@ -267,6 +278,7 @@ export class PerformanceAnalystAgent extends BaseSpecialist {
         hasMetrics ? `Métricas históricas detetadas (ROAS: ${metrics.roas || 'N/A'}, CVR: ${metrics.cvr || 'N/A'}%).` : 'Sem métricas históricas de performance no contexto.'
       ],
       evidence: ['Análise paramétrica baseada nos dados de spend e retorno informados.'],
+      structuredEvidence: [],
       hypotheses: [
         {
           id: `hyp_perf_${Date.now()}`,
@@ -319,6 +331,7 @@ export class OfferStrategistAgent extends BaseSpecialist {
         `Margem alvo informada: ${context.margin || 'Não especificada'}%`
       ],
       evidence: ['Cálculo de margem de contribuição e ponto de equilíbrio (break-even).'],
+      structuredEvidence: [],
       hypotheses: [
         {
           id: `hyp_off_${Date.now()}`,
@@ -370,6 +383,7 @@ export class CreativeStrategistAgent extends BaseSpecialist {
         `Produto/Serviço base para direcionamento: ${context.productOrService || 'Não especificado'}`
       ],
       evidence: ['Formatos verticais (9:16) com hooks direcionados à principal dor do cliente geram melhor retenção.'],
+      structuredEvidence: [],
       hypotheses: [
         {
           id: `hyp_cre_${Date.now()}`,
