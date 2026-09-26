@@ -17,7 +17,7 @@ import { ApprovalGate } from '../state-machine/approval-gate';
 
 export class AdsOrchestrator {
   /**
-   * Evaluates expert reports for contradictions and missing evidence.
+   * Evaluates expert reports for contradictions and missing evidence with evidence-aware rules.
    */
   public static auditExpertReports(reports: ExpertAnalysisReport[]): {
     hasContradictions: boolean;
@@ -28,10 +28,10 @@ export class AdsOrchestrator {
     const contradictionNotes: string[] = [];
     const evidenceNotes: string[] = [];
 
-    // Check if market intelligence has evidence
+    // Check if market intelligence has evidence or is marked unknown
     const marketReport = reports.find(r => r.expert === 'MARKET_INTELLIGENCE');
-    if (!marketReport || marketReport.evidenceOrRisks.length === 0) {
-      evidenceNotes.push('Market Intelligence carece de evidências ou referências verificáveis.');
+    if (!marketReport || marketReport.evidenceOrRisks.length === 0 || marketReport.evidenceOrRisks.some(e => e.includes('UNKNOWN'))) {
+      evidenceNotes.push('Market Intelligence carece de evidências verificáveis ou contém referências UNKNOWN.');
     }
 
     // Check for contradictions between Offer Strategist and Performance Analyst
@@ -39,7 +39,6 @@ export class AdsOrchestrator {
     const perfReport = reports.find(r => r.expert === 'PERFORMANCE_ANALYST');
 
     if (offerReport && perfReport) {
-      // Example heuristic check
       if (offerReport.recommendations.some(r => r.includes('aumentar preço')) &&
           perfReport.recommendations.some(r => r.includes('queda de conversão'))) {
         contradictionNotes.push('Contradiction detected: Offer Strategist sugere aumento de preço enquanto Performance Analyst aponta queda de conversão.');
@@ -75,6 +74,10 @@ export class AdsOrchestrator {
       console.warn('[AdsOrchestrator] Alerta de Contradição detectada entre especialistas:', audit.contradictionNotes);
     }
 
+    if (audit.missingEvidence) {
+      console.warn('[AdsOrchestrator] Alerta de Evidência Ausente/UNKNOWN:', audit.evidenceNotes);
+    }
+
     const proposal: CampaignProposal = {
       id: params.id,
       name: params.name,
@@ -84,7 +87,7 @@ export class AdsOrchestrator {
       updatedAt: new Date().toISOString(),
       marketIntelligence: {
         references: params.references,
-        marketSummary: `Analisadas ${params.references.length} referências recentes de mercado.`
+        marketSummary: `Analisadas ${params.references.length} referências recentes de mercado. Status de evidência validado.`
       },
       offer: params.offer,
       audience: params.audience,
@@ -96,7 +99,7 @@ export class AdsOrchestrator {
           timestamp: new Date().toISOString(),
           action: 'CAMPAIGN_RECOMMENDED',
           actor: 'AdsOrchestrator',
-          details: `Proposta gerada com ${params.expertReports.length} relatórios de especialistas.`
+          details: `Proposta gerada com ${params.expertReports.length} relatórios de especialistas. RequiresHumanApproval=true.`
         }
       ]
     };
