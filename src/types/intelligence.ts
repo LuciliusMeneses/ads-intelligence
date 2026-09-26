@@ -13,6 +13,28 @@ export type FactClassification =
   | 'AI_INFERENCE'
   | 'AI_RECOMMENDATION';
 
+export type EvidenceLevel =
+  | 'FACT'
+  | 'OBSERVATION'
+  | 'ASSUMPTION'
+  | 'RECOMMENDATION'
+  | 'UNKNOWN';
+
+export interface ProvenanceMetadata {
+  source: string;
+  urlOrRef: string;
+  collectedAt: string;
+  confidence: number;
+  freshnessDays: number;
+}
+
+export interface EvidenceItem {
+  id: string;
+  level: EvidenceLevel;
+  statement: string;
+  provenance: ProvenanceMetadata;
+}
+
 export type HypothesisStatus =
   | 'PROPOSED'
   | 'SUPPORTED'
@@ -67,6 +89,8 @@ export interface Recommendation {
   status: RecommendationStatus;
   createdAt: string;
   classification: FactClassification;
+  evidenceLevel?: EvidenceLevel;
+  structuredEvidence?: EvidenceItem[];
 }
 
 export type ConfidenceBand =
@@ -157,6 +181,7 @@ export interface SpecialistAnalysis {
   specialist: ExpertRole;
   observations: string[];
   evidence: string[];
+  structuredEvidence: EvidenceItem[];
   hypotheses: Hypothesis[];
   recommendations: Recommendation[];
   risks: string[];
@@ -226,6 +251,7 @@ export interface ComprehensiveCampaignProposal {
   };
   testPlan?: string;
   evidence: string[];
+  structuredEvidence: EvidenceItem[];
   risks: string[];
   confidence: ConfidenceResult;
   missingData: string[];
