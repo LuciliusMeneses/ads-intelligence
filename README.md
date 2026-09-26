@@ -99,3 +99,4 @@ ads-intelligence/
 ```
 
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
+<!-- Validação: branch ai/task-dev-223 criada -->
