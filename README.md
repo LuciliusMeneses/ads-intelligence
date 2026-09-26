@@ -99,3 +99,5 @@ ads-intelligence/
 ```
 
 © 2026 ADS INTELLIGENCE. Todos os direitos reservados.
+
+<!-- Regressão Builder: OK -->

@@ -23,12 +23,28 @@ import {
 } from './src/experts/specialists';
 import { CampaignProposalBuilder } from './src/engines/proposal-builder';
 import { TEST_FIXTURE_CONTEXT } from './src/tests/fixtures/mock-context';
+import { createAdminSupabaseClient } from './src/lib/supabase';
 
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
 
 const PORT = process.env.PORT || 3000;
+
+// 0. Healthcheck Endpoint: Connectivity Verification
+app.get('/api/healthcheck', async (req, res) => {
+  try {
+    const adminClient = createAdminSupabaseClient();
+    const { data, error } = await adminClient.from('organizations').select('id').limit(1);
+    
+    if (error) throw error;
+    
+    res.json({ success: true, message: 'Supabase connection established', timestamp: new Date().toISOString() });
+  } catch (err: any) {
+    console.error('Healthcheck Error:', err);
+    res.status(503).json({ success: false, error: 'Service Unavailable', details: err.message });
+  }
+});
 
 // 1. API Endpoint: Run Full Specialist Swarm & Build Proposal
 app.post('/api/simulate', async (req, res) => {
@@ -37,30 +53,30 @@ app.post('/api/simulate', async (req, res) => {
     const provider = new FakeLLMProvider();
     const runtime = new LLMRuntime(provider);
 
-    const agents = [
-      new MarketIntelligenceAgent(),
-      new AudienceStrategistAgent(),
-      new MediaStrategistAgent(),
-      new PerformanceAnalystAgent(),
-      new OfferStrategistAgent(),
-      new CreativeStrategistAgent(),
-      new AdsOrchestratorAgent()
+    const agents = [\
+      new MarketIntelligenceAgent(),\
+      new AudienceStrategistAgent(),\
+      new MediaStrategistAgent(),\
+      new PerformanceAnalystAgent(),\
+      new OfferStrategistAgent(),\
+      new CreativeStrategistAgent(),\
+      new AdsOrchestratorAgent()\
     ];
 
     const analyses = [];
     for (const agent of agents) {
-      const result = await runtime.executeSpecialist({
-        organizationId: context.organization || 'enterprise_org_1',
-        specialist: agent.role as any,
-        capability: SpecialistCapability.DEEP_REASONING,
-        context,
-        validEvidenceIds: (context.marketResearch || []).map(r => r.id)
+      const result = await runtime.executeSpecialist({\
+        organizationId: context.organization || 'enterprise_org_1',\
+        specialist: agent.role as any,\
+        capability: SpecialistCapability.DEEP_REASONING,\
+        context,\
+        validEvidenceIds: (context.marketResearch || []).map(r => r.id)\
       });
-      analyses.push(result.output);
+      analyses.push(result.output);\
     }
 
     const overallConfidence = analyses[0]?.confidence || { confidenceScore: 89, confidenceBand: 'HIGH' };
-    const proposal = CampaignProposalBuilder.build(context, analyses, overallConfidence as any);
+    const proposal = CampaignProposalBuilder.build(context, analyses, overallConfidence as any);\
 
     res.json({ success: true, proposal, analyses });
   } catch (err: any) {
