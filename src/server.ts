@@ -3,7 +3,7 @@ import cors from 'cors';
 import { LLMRuntime } from './llm/runtime';
 import { FakeLLMProvider } from './llm/provider';
 import { SpecialistCapability } from './llm/routing';
-import { SpecialistContext, SpecialistAnalysis, ConfidenceResult } from './types/intelligence';
+import { SpecialistContext, SpecialistAnalysis, ConfidenceResult, EvidenceItem } from './types/intelligence';
 import { SpecialistLLMOutput } from './llm/validator';
 import { AdsOrchestratorAgent, MarketIntelligenceAgent, AudienceStrategistAgent, MediaStrategistAgent, PerformanceAnalystAgent, OfferStrategistAgent, CreativeStrategistAgent } from './experts/specialists';
 import { CampaignProposalBuilder } from './engines/proposal-builder';
@@ -208,8 +208,8 @@ app.get('/', (req, res) => {
           <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between space-y-4 hover:border-slate-700 transition-all">
             <div>
               <div class="flex items-center justify-between mb-3">
-                <h4 class="font-bold text-white text-base">\${a.specialist}</h4>
-                <span class="text-xs font-semibold px-2.5 py-1 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full">\${a.recommendations.length} Recs</span>
+                <h4 class="font-bold text-white text-base\">\${a.specialist}</h4>
+                <span class="text-xs font-semibold px-2.5 py-1 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full\">\${a.recommendations.length} Recs</span>
               </div>
               <div class="space-y-2">
                 <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Observações</p>
@@ -285,10 +285,24 @@ app.post('/demo', async (req, res) => {
       });
       // Convert SpecialistLLMOutput to SpecialistAnalysis domain model safely
       const llmOut: SpecialistLLMOutput = result.output;
+      const structuredEvidence: EvidenceItem[] = llmOut.evidenceIds.map((evId, idx) => ({
+        id: `ev_llm_${idx}_${Date.now()}`,
+        level: 'OBSERVATION',
+        statement: evId,
+        provenance: {
+          source: agent.getRole(),
+          urlOrRef: evId,
+          collectedAt: new Date().toISOString(),
+          confidence: 85,
+          freshnessDays: 1
+        }
+      }));
+
       const specialistReport: SpecialistAnalysis = {
         specialist: agent.getRole(),
         observations: [...llmOut.facts, ...llmOut.inferences],
         evidence: llmOut.evidenceIds,
+        structuredEvidence,
         hypotheses: [],
         recommendations: llmOut.recommendations.map((r, idx) => ({
           id: `rec_${Date.now()}_${idx}`,
