@@ -185,7 +185,6 @@ app.get('/', (req, res) => {
 
         // Preencher Métricas
         const p = data.proposal;
-        document.getElementById('metricConfidence.innerHTML').innerHTML = ''; // safe
         document.getElementById('metricConfidence').innerText = p.confidence.confidenceScore + '% (' + p.confidence.confidenceBand + ')';
         document.getElementById('metricAudit').innerText = p.auditResult.status;
 
