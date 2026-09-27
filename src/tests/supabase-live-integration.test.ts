@@ -114,7 +114,31 @@ async function runStrictSupabaseIntegrationTests() {
     auditStatus: 'PASS'
   });
 
-  const dummyRecId = '00000000-0000-0000-0000-000000000001';
+  const { data: testRecommendation, error: recommendationError } = await adminClient
+  .from('recommendations')
+  .insert({
+    organization_id: org.id,
+    campaign_id: campaign.id,
+    proposal_id: proposal.id,
+    specialist: 'CERTIFICATION_TEST',
+    type: 'BUDGET',
+    title: 'Recommendation Append-Only Test',
+    description: 'Recommendation criada exclusivamente para o teste de integração.',
+    priority: 'MEDIUM',
+    confidence: 90,
+    status: 'PROPOSED'
+  })
+  .select('id')
+  .single();
+
+if (recommendationError || !testRecommendation) {
+  throw new Error(
+    `[Supabase Error: create test recommendation] ${recommendationError?.message ?? 'No recommendation returned'}`
+  );
+}
+
+const dummyRecId = testRecommendation.id;
+
   // Insert Decision 1
   await humanRepo.create({
     organizationId: org.id,

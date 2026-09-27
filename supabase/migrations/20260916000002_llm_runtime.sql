@@ -5,7 +5,7 @@
 
 -- 1. Prompt Registry Table
 create table if not exists prompt_registry (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   prompt_id text not null,
   specialist text not null,
   version text not null,
@@ -18,7 +18,7 @@ create table if not exists prompt_registry (
 
 -- 2. LLM Executions Table (Observability, Tokens, Latency, Cost)
 create table if not exists llm_executions (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   campaign_id uuid references campaigns(id) on delete set null,
   specialist text not null,

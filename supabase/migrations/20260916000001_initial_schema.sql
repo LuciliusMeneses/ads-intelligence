@@ -3,12 +3,10 @@
  * Multi-Tenant Architecture, RLS Policies, Tables, Indexes, and Audit Triggers.
  */
 
--- Enable UUID extension
-create extension if not exists "uuid-ossp";
 
 -- 1. Organizations
 create table if not exists organizations (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   name text not null,
   slug text not null unique,
   status text not null default 'ACTIVE' check (status in ('ACTIVE', 'INACTIVE')),
@@ -18,7 +16,7 @@ create table if not exists organizations (
 
 -- 2. Organization Members
 create table if not exists organization_members (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   user_id uuid not null,
   role text not null default 'ANALYST' check (role in ('OWNER', 'ADMIN', 'MANAGER', 'ANALYST', 'VIEWER')),
@@ -28,7 +26,7 @@ create table if not exists organization_members (
 
 -- 3. Brands
 create table if not exists brands (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   name text not null,
   website text,
@@ -42,7 +40,7 @@ create table if not exists brands (
 
 -- 4. Ad Accounts
 create table if not exists ad_accounts (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   brand_id uuid not null references brands(id) on delete cascade,
   platform text not null check (platform in ('META', 'GOOGLE')),
@@ -55,7 +53,7 @@ create table if not exists ad_accounts (
 
 -- 5. Product / Service
 create table if not exists product_services (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   brand_id uuid not null references brands(id) on delete cascade,
   type text not null check (type in ('PRODUCT', 'SERVICE')),
@@ -75,7 +73,7 @@ create table if not exists product_services (
 
 -- 6. Campaigns
 create table if not exists campaigns (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   brand_id uuid not null references brands(id) on delete cascade,
   ad_account_id uuid references ad_accounts(id) on delete set null,
@@ -94,7 +92,7 @@ create table if not exists campaigns (
 
 -- 7. Campaign Proposals (Versioned)
 create table if not exists campaign_proposals (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   campaign_id uuid not null references campaigns(id) on delete cascade,
   version integer not null default 1,
@@ -109,7 +107,7 @@ create table if not exists campaign_proposals (
 
 -- 8. Hypotheses
 create table if not exists hypotheses (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   campaign_id uuid not null references campaigns(id) on delete cascade,
   specialist text not null,
@@ -122,7 +120,7 @@ create table if not exists hypotheses (
 
 -- 9. Recommendations
 create table if not exists recommendations (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   campaign_id uuid not null references campaigns(id) on delete cascade,
   proposal_id uuid references campaign_proposals(id) on delete cascade,
@@ -141,7 +139,7 @@ create table if not exists recommendations (
 
 -- 10. Recommendation Evidence
 create table if not exists recommendation_evidence (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   campaign_id uuid not null references campaigns(id) on delete cascade,
   recommendation_id uuid references recommendations(id) on delete cascade,
@@ -158,7 +156,7 @@ create table if not exists recommendation_evidence (
 
 -- 11. Human Decisions (Append-Only)
 create table if not exists human_decisions (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   recommendation_id uuid not null references recommendations(id) on delete cascade,
   user_id uuid not null,
@@ -171,7 +169,7 @@ create table if not exists human_decisions (
 
 -- 12. Contradictions
 create table if not exists contradictions (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   campaign_id uuid not null references campaigns(id) on delete cascade,
   specialist_a text not null,
@@ -187,7 +185,7 @@ create table if not exists contradictions (
 
 -- 13. Campaign Audits
 create table if not exists campaign_audits (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   campaign_id uuid not null references campaigns(id) on delete cascade,
   proposal_id uuid references campaign_proposals(id) on delete cascade,
@@ -200,7 +198,7 @@ create table if not exists campaign_audits (
 
 -- 14. Creative Directions
 create table if not exists creative_directions (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   campaign_id uuid not null references campaigns(id) on delete cascade,
   proposal_id uuid references campaign_proposals(id) on delete cascade,
@@ -220,7 +218,7 @@ create table if not exists creative_directions (
 
 -- 15. Creative Assets (External files)
 create table if not exists creative_assets (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   campaign_id uuid not null references campaigns(id) on delete cascade,
   creative_direction_id uuid references creative_directions(id) on delete set null,
@@ -235,7 +233,7 @@ create table if not exists creative_assets (
 
 -- 16. Performance Snapshots (Idempotent per campaign + timestamp)
 create table if not exists performance_snapshots (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   campaign_id uuid not null references campaigns(id) on delete cascade,
   captured_at timestamptz not null,
@@ -260,7 +258,7 @@ create table if not exists performance_snapshots (
 
 -- 17. Learning Records
 create table if not exists learning_records (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   brand_id uuid references brands(id) on delete cascade,
   campaign_id uuid references campaigns(id) on delete cascade,
@@ -278,7 +276,7 @@ create table if not exists learning_records (
 
 -- 18. Research Sources
 create table if not exists research_sources (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   brand_id uuid references brands(id) on delete cascade,
   campaign_id uuid references campaigns(id) on delete cascade,
@@ -296,7 +294,7 @@ create table if not exists research_sources (
 
 -- 19. Technical Audit Logs
 create table if not exists audit_logs (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id) on delete cascade,
   user_id uuid,
   entity_type text not null,
